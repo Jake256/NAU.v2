@@ -15,20 +15,20 @@ namespace NAUCountryIdeaHub.Repositories
 
 
         ///Constructor
-        public IdeaHubRepository(IOptions<ConnectionStringsConfig> connectionString) => ConnectionString = connectionString.Value.DefaultConnection;
-        //public IdeaHubRepository(string connectionString)
-        //{
-        //    ConnectionString = connectionString;
-        //}
+        //public IdeaHubRepository(IOptions<ConnectionStringsConfig> connectionString) => ConnectionString = connectionString.Value.DefaultConnection;
+        public IdeaHubRepository(IConfiguration config)
+        {
+            ConnectionString = config.GetConnectionString("DefaultConnection");
+        }
 
 
         public async Task<IEnumerable<RequestEntity>> GetIdeasAsync()
         {
             try
             {
-                var connectionString = "Data Source=localhost;Initial Catalog=NAU;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+                //var connectionString = _connectionString;
 
-                var connection = new SqlConnection(connectionString);
+                var connection = new SqlConnection(ConnectionString);
                 await connection.OpenAsync();
 
                 var ideas = await connection.QueryAsync<RequestEntity>(SqlCommands.GetIdeas);
