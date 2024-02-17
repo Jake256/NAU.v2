@@ -1,0 +1,19 @@
+﻿@using MudBlazor
+<MudNavMenu>
+    <MudNavLink Href="idealist" Icon="@Icons.Material.Filled.Home">NAU Ideas</MudNavLink>
+    <MudNavLink Href="auth" Icon="@Icons.Material.Filled.Security">Authentication</MudNavLink>
+    <MudNavLink Href="ideainfo" Icon="@Icons.Material.Filled.DensitySmall">Idea Details</MudNavLink>
+    <MudNavLink Href="newrequest" Icon="@Icons.Material.Filled.Add">New Idea</MudNavLink>
+    <MudNavLink Href="pastrequests" Icon="@Icons.Material.Filled.Beenhere">Old Ideas</MudNavLink>
+</MudNavMenu>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NAUIdeaHub", "NAUIdeaHub.csproj", "{68AA9F4F-603A-48DC-A0EB-5ADAFCD3371A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68AA9F4F-603A-48DC-A0EB-5ADAFCD3371A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68AA9F4F-603A-48DC-A0EB-5ADAFCD3371A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68AA9F4F-603A-48DC-A0EB-5ADAFCD3371A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68AA9F4F-603A-48DC-A0EB-5ADAFCD3371A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {515A17E1-4D2F-496A-A5E1-C3A071979B5B}
+	EndGlobalSection
+EndGlobal
