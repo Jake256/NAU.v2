@@ -45,6 +45,29 @@ namespace NAUCountryIdeaHub.Repositories
             }
         }
 
+        public async Task<IEnumerable<RequestEntity>> GetCompletedIdeasAsync()
+        {
+            try
+            {
+                //var connectionString = _connectionString;
+
+                var connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync();
+
+                var ideas = await connection.QueryAsync<RequestEntity>(SqlCommands.GetCompletedIdeas);
+
+                //return our list of ideas from db
+                return ideas;
+
+            }
+            catch (Exception ex)
+            {
+                //can help with debugging if run into errors/exceptions
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         private static class SqlCommands
         {
             public static readonly string GetIdeas =
@@ -52,8 +75,20 @@ namespace NAUCountryIdeaHub.Repositories
                 Name,
                 Type,
                 Status,
-                Description
+                Description,
+                Resolution,
+                DateTimeSubmitted
             FROM [dbo].[Request]";
+
+            public static readonly string GetCompletedIdeas =
+               @"SELECT
+                Name,
+                Type,
+                Status,
+                Description,
+                Resolution,
+                DateTimeSubmitted
+            FROM [dbo].[Request] WHERE Status = 'Complete'";
         }
         //-----------------------------------------------END EXAMPLE CODE-------------------------------------------------------------
     }

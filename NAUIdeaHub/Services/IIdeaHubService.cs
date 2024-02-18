@@ -6,6 +6,7 @@ namespace NAUCountryIdeaHub.Services
     {
         //-------------------Example--------------------
         public Task<IEnumerable<Request>> GetIdeasAsync();
+        public Task<IEnumerable<Request>> GetCompletedIdeasAsync();
         //-----------------------------------------------
     }
 }
