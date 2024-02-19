@@ -1,5 +1,53 @@
 ﻿@page "/idealist"
 
+<MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
+    <MudTabPanel Text="Your Ideas"></MudTabPanel>
+    <MudTabPanel Text="All Ideas">
+        @if(Ideas!=null){
+        <MudTable Items = "@Ideas" Style="width: 100%">
+            <HeaderContent>
+                <MudTh>Name</MudTh>
+                <MudTh>Type</MudTh>
+                <MudTh>Status</MudTh>
+                <MudTh>Description</MudTh>
+                <MudTh>Resolution</MudTh>
+                <MudTh>Submission Date</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Name">@context.Name</MudTd>
+                <MudTd DataLabel="Type">@context.Type</MudTd>
+                <MudTd DataLabel="Status">@context.Status</MudTd>
+                <MudTd DataLabel="Description">@context.Description</MudTd>
+                <MudTd DataLabel="Resolution">@context.Resolution</MudTd>
+                <MudTd DataLabel="Submission Date">@context.DateTimeSubmitted</MudTd>
+            </RowTemplate>
+        </MudTable>
+        }       
+    </MudTabPanel>
+    <MudTabPanel Text="Completed Ideas">
+        @if(CompletedIdeas!=null){
+        <MudTable Items = "@CompletedIdeas" Style="width: 100%">
+            <HeaderContent>
+                <MudTh>Name</MudTh>
+                <MudTh>Type</MudTh>
+                <MudTh>Status</MudTh>
+                <MudTh>Description</MudTh>
+                <MudTh>Resolution</MudTh>
+                <MudTh>Submission Date</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Name">@context.Name</MudTd>
+                <MudTd DataLabel="Type">@context.Type</MudTd>
+                <MudTd DataLabel="Status">@context.Status</MudTd>
+                <MudTd DataLabel="Description">@context.Description</MudTd>
+                <MudTd DataLabel="Resolution">@context.Resolution</MudTd>
+                <MudTd DataLabel="Submission Date">@context.DateTimeSubmitted</MudTd>
+            </RowTemplate>
+        </MudTable>
+        }
+    </MudTabPanel>
+</MudTabs>
+
 @code {
 
 }
