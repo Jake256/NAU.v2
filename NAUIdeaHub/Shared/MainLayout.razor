@@ -6,11 +6,15 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <div style="display: flex; justify-content: center; align-items: center; background-color: #00AEEF;">
+    <div style="display: flex; justify-content: center; align-items: center; background-color: #FFFFFF;">
         <img src="nau.png" alt="NAU Country"  />
     </div>
+    <div style="display: flex; justify-content: left; align-items: center; background-color: #00AEEF;">
+        <MudButton OnClick="@ToggleDrawer" Color="Color.Primary"><img src="NavMenuToggle.png" alt="NAU Country" width="25"/></MudButton>
+        <br /><br />
+    </div>
 
-    <MudDrawer Open="true">
+    <MudDrawer Open="@openNavMenu">
         <MudDrawerHeader>
             <MudText>NAU Country Idea Hub</MudText>
         </MudDrawerHeader>
@@ -21,3 +25,14 @@
         @Body
     </MudMainContent>
 </MudLayout>
+
+@code{
+
+    bool openNavMenu = false;
+
+    void ToggleDrawer()
+    {
+        openNavMenu = !openNavMenu;
+    }
+
+}
