@@ -1,5 +1,9 @@
-.nau-blue-text{
-    color:#00AEEF;
+.nau-clickable-blue-text {
+    color: #00AEEF;
+}
+
+.nau-clickable-blue-text:hover, .nau-clickable-blue-text:focus{
+    color:#000000;
 }
 
 .navbar-toggler {
