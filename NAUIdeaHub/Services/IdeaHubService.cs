@@ -26,6 +26,12 @@ namespace NAUCountryIdeaHub.Services
             var idea = await _repository.GetCompletedIdeasAsync();
             return idea.Adapt<IEnumerable<Request>>().ToList(); //This is where mapster is need
         }
+
+        public async Task<IEnumerable<User>> GetUsersAsync()
+        {
+            var user = await _repository.GetUsersAsync();
+            return user.Adapt<IEnumerable<User>>().ToList(); //This is where mapster is need
+        }
         //----------------------------------------------END EXAMPLE CODE----------------------------------------------------------
     }
 }

@@ -66,8 +66,7 @@
 
     MudForm form;
 
-    string dummyUsername = "testUser";
-    string dummyPassword = "1234";
+
     // Variables used with testing validation. Will be replaced with values retrieved from the database
 
     private string TestEmail(string uname) // Username/Email validation function
@@ -76,7 +75,11 @@
         {
             return "Enter something";
         }
-        else if (!uname.Equals(dummyUsername))
+        else if (users.FirstOrDefault(x => x.Email.Equals(uname)) == null)
+        {
+            return "Not correct";
+        }
+        else if (!uname.Equals(users.FirstOrDefault(x => x.Email.Equals(uname)).Email))
         {
             return "Not correct";
             // Will display this if the value isn't correct
@@ -92,9 +95,17 @@
         {
             return "Enter something";
         }
-        else if (!pword.Equals(dummyPassword))
+        else if (users.FirstOrDefault(x => x.Email.Equals(usernameField.Value)) != null)
         {
-            return "Not correct";
+            string matchingPassword = users.FirstOrDefault(x => x.Email.Equals(usernameField.Value)).Password;
+            if (!matchingPassword.Equals(pword))
+            {
+                return "Not correct";
+            }
+        }
+        else
+        {
+            return "error";
         }
         return null;
     }

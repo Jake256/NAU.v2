@@ -68,6 +68,29 @@ namespace NAUCountryIdeaHub.Repositories
             }
         }
 
+        public async Task<IEnumerable<UserEntity>> GetUsersAsync()
+        {
+            try
+            {
+                //var connectionString = _connectionString;
+
+                var connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync();
+
+                var users = await connection.QueryAsync<UserEntity>(SqlCommands.GetUsers);
+
+                //return our list of ideas from db
+                return users;
+
+            }
+            catch (Exception ex)
+            {
+                //can help with debugging if run into errors/exceptions
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         private static class SqlCommands
         {
             public static readonly string GetIdeas =
@@ -89,6 +112,18 @@ namespace NAUCountryIdeaHub.Repositories
                 Resolution,
                 DateTimeSubmitted
             FROM [dbo].[Request] WHERE Status = 'Complete'";
+
+            public static readonly string GetUsers =
+                @"SELECT
+                 FirstName,
+                 LastName,
+                 Email,
+                 Password,
+                 Active,
+                 IsRequestAdmin,
+                 IsITAdmin,
+                 ReceiveEmailNotifications
+            FROM [dbo].[User]";
         }
         //-----------------------------------------------END EXAMPLE CODE-------------------------------------------------------------
     }
