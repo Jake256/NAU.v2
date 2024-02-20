@@ -85,6 +85,15 @@
             return "Invalid email format";
             // Will display this if the value isn't correct
         }
+        else if (users.FirstOrDefault(x => x.Email.Equals(uname)) == null)
+        {
+            return "Not correct";
+        }
+        else if (!uname.Equals(users.FirstOrDefault(x => x.Email.Equals(uname)).Email))
+        {
+            return "Not correct";
+            // Will display this if the value isn't correct
+        }
 
         return null;
         // The return null can be thought of as the return true
@@ -106,6 +115,7 @@
             }
             return errorString;
         }
+        
         return null;
     }
 
@@ -153,6 +163,14 @@
         if (!lengthRequirement.IsMatch(password))
         {
             passwordErrors.Add("Password must be between 8 and 20 characters");
+        }
+        if (users.FirstOrDefault(x => x.Email.Equals(usernameField.Value)) != null)
+        {
+            string matchingPassword = users.FirstOrDefault(x => x.Email.Equals(usernameField.Value)).Password;
+            if (!matchingPassword.Equals(password))
+            {
+                passwordErrors.Add("Password is incorrect");
+            }
         }
 
         return passwordErrors;
