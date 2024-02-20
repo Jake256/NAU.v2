@@ -4,6 +4,9 @@
         <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     </div>
     <div class="nau-clickable-blue-text">
+        <MudNavLink Href="strategic-plan" Icon="@Icons.Material.Filled.Home">Strategic Plan</MudNavLink>
+    </div>
+    <div class="nau-clickable-blue-text">
         <MudNavLink Href="idealist" Icon="@Icons.Material.Filled.Home">NAU Ideas</MudNavLink>
     </div>
         @if (!@authenticated)
@@ -16,11 +19,17 @@
             <MudNavLink Href="ideainfo" Icon="@Icons.Material.Filled.DensitySmall">Idea Details</MudNavLink>
         </div>
         <div class="nau-clickable-blue-text">
-            <MudNavLink Href="newrequest" Icon="@Icons.Material.Filled.Add">New Idea</MudNavLink>
+            <MudNavLink Href="newrequest" Icon="@Icons.Material.Filled.Add">Submit a New Request</MudNavLink>
         </div>
         <div class="nau-clickable-blue-text">
-            <MudNavLink Href="pastrequests" Icon="@Icons.Material.Filled.Beenhere">Old Ideas</MudNavLink>
+            <MudNavLink Href="pastrequests" Icon="@Icons.Material.Filled.Beenhere">Find Existing Requests</MudNavLink>
         </div>
+        @if (@admin)
+        {
+            <div class="nau-clickable-blue-text">
+                <MudNavLink Href="reporting" Icon="@Icons.Material.Filled.Beenhere">Reporting</MudNavLink>
+            </div>
+        }
         @if (@authenticated)
         {
             <div class="nau-clickable-blue-text">
@@ -31,6 +40,7 @@
 
 @code {
     private bool authenticated = false;
+    private bool admin = true;
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
