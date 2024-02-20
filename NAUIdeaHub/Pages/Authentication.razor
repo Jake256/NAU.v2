@@ -1,17 +1,17 @@
 ﻿@page "/auth"
+@using System.Net.Mail;
 
-<PageTitle>Log-in</PageTitle>
+<PageTitle>Log In</PageTitle>
 
 <MudGrid>
-    <MudItem xs="10">
+    <MudItem xs="3"></MudItem>
+    <MudItem xs="6">
         <MudPaper Class="pa-4">
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+                <MudText>Log In</MudText>
+                <MudTextField T="string" Label="Username or Email" @ref="usernameField" Required="true" RequiredError="Username or Email Required" Validation="@(new Func<string, string>(TestEmail))" OnlyValidateIfDirty="true" />
 
-                <MudTextField T="string" Label="Username or Email" @ref="usernameField" Required="true" RequiredError="Username or Email Required"
-                              Validation="@(new Func<string, string>(TestEmail))" OnlyValidateIfDirty="true" />
-
-                <MudTextField T="string" Label="Password" @ref="passwordField" InputType="InputType.Password"
-                              Validation="@(new Func<string, string>(TestPassword))" Required="true" RequiredError="Password is required" OnlyValidateIfDirty="true" />
+                <MudTextField T="string" Label="Password" @ref="passwordField" InputType="InputType.Password" Validation="@(new Func<string, string>(TestPassword))" Required="true" RequiredError="Password is required" OnlyValidateIfDirty="true" />
 
                 <!--
                     MudTextFields are the text fields that will be taking the users input.
@@ -26,23 +26,26 @@
                     OnlyValidateIfDirty: Will only attempt to validate if the user enters something in. Won't attempt if the
                         user simply clicks on it and clicks off.
                 -->
-
+                <!--
                 <MudButton Variant="Variant.Filled" Color="Color.Success" Disabled="@(!success)" Class="m1-auto">Register</MudButton>
-
+                -->
                 <!--
                     Button to attempt registration. Will only be available if the above information is correct (success variable).
                 -->
 
             </MudForm>
-        </MudPaper>
-        <MudPaper Class="pa-4 mt-4">
             <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(() => form.Validate())">Validate</MudButton>
         </MudPaper>
+        <MudPaper Class="pa-4 mt-4">
+            
+        </MudPaper>
+        <MudText Class="pa-4 blue darken-1 shades-text text-white">
+            Don't have an account?
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" Href="auth/signup">Sign Up</MudButton>
+        </MudText>
     </MudItem>
+    <MudItem xs="3"></MudItem>
 </MudGrid>
-
-<MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" Href="auth/signup">to sign in</MudButton>
-
 
 @if (success)
 {
@@ -74,13 +77,14 @@
     {
         if (string.IsNullOrWhiteSpace(uname))
         {
-            return "Enter something";
+            return "Email cannot be left blank";
         }
-        else if (!uname.Equals(dummyUsername))
+        else if (!ValidEmailFormat(uname))
         {
-            return "Not correct";
+            return "Invalid email format";
             // Will display this if the value isn't correct
         }
+
         return null;
         // The return null can be thought of as the return true
     }
@@ -97,6 +101,33 @@
             return "Not correct";
         }
         return null;
+    }
+
+    //validates if the input into the email field is a valid email
+    private bool ValidEmailFormat(string email)
+    {
+        try
+        {
+            MailAddress mailAddress = new MailAddress(email);
+            return true;
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
+    }
+
+    private bool ValidPasswordFormat(string password)
+    {
+        try
+        {
+            MailAddress mailAddress = new MailAddress(password);
+            return true;
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
     }
 
 }
