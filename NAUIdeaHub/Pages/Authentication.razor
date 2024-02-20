@@ -1,5 +1,7 @@
 ﻿@page "/auth"
 @using System.Net.Mail;
+@using System.Text.RegularExpressions;
+@using System.Collections;
 
 <PageTitle>Log In</PageTitle>
 
@@ -96,9 +98,14 @@
         {
             return "Enter something";
         }
-        else if (!pword.Equals(dummyPassword))
+        else if (ValidPasswordFormat(pword).Count > 0)
         {
-            return "Not correct";
+            string errorString = "";
+            foreach (string i in ValidPasswordFormat(pword))
+            {
+                errorString += i + System.Environment.NewLine;
+            }
+            return errorString;
         }
         return null;
     }
@@ -117,17 +124,40 @@
         }
     }
 
-    private bool ValidPasswordFormat(string password)
+    private ArrayList ValidPasswordFormat(string password)
     {
-        try
+        ArrayList passwordErrors = new ArrayList();
+
+        Regex numberRequirement = new Regex(@"[0-9]+");
+        Regex lowerRequirement = new Regex(@"[a-z]+");
+        Regex upperRequirement = new Regex(@"[A-Z]+");
+        Regex specialRequirement = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
+        Regex lengthRequirement = new Regex(@".{8,20}");
+
+
+        if (!numberRequirement.IsMatch(password))
         {
-            MailAddress mailAddress = new MailAddress(password);
-            return true;
+            passwordErrors.Add("Password must conatin at least one number");
         }
-        catch (FormatException)
+        if (!lowerRequirement.IsMatch(password))
         {
-            return false;
+            passwordErrors.Add("Password must conatin at least one lowercase character");
         }
+        if (!upperRequirement.IsMatch(password))
+        {
+            passwordErrors.Add("Password must conatin at least one uppercase character");
+        }
+        if (!specialRequirement.IsMatch(password))
+        {
+            passwordErrors.Add("Password must conatin at least one special character");
+        }
+        if (!lengthRequirement.IsMatch(password))
+        {
+            passwordErrors.Add("Password must be between 8 and 20 characters");
+        }
+
+        return passwordErrors;
+
     }
 
 }
