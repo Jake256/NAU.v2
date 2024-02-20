@@ -1,5 +1,6 @@
 ﻿@using MudBlazor
 <MudNavMenu>
+    <div class="nau-blue-text">
     <MudNavLink Href="" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
     <MudNavLink Href="idealist" Icon="@Icons.Material.Filled.Home">NAU Ideas</MudNavLink>
     @if (!@authenticated)
@@ -13,6 +14,7 @@
     {
         <MudNavLink Href="auth" Icon="@Icons.Material.Filled.Security">Sign Out</MudNavLink>
     }
+    </div>
 </MudNavMenu>
 
 @code {
