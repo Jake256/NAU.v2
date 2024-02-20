@@ -36,15 +36,12 @@
                 -->
 
             </MudForm>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(() => form.Validate())">Validate</MudButton>
+            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(() => form.Validate())">Validate</MudButton>
+            <MudText Class="pa-4 mt-4 blue darken-1 shades-text text-white">
+                Don't have an account?
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" Href="auth/signup">Sign Up</MudButton>
+            </MudText>
         </MudPaper>
-        <MudPaper Class="pa-4 mt-4">
-            
-        </MudPaper>
-        <MudText Class="pa-4 blue darken-1 shades-text text-white">
-            Don't have an account?
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" Href="auth/signup">Sign Up</MudButton>
-        </MudText>
     </MudItem>
     <MudItem xs="3"></MudItem>
 </MudGrid>
