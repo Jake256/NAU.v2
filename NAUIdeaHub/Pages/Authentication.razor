@@ -36,7 +36,7 @@
                 -->
 
             </MudForm>
-            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="@(() => form.Validate())">Validate</MudButton>
+            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Disabled="@(!success)" OnClick="logIn">Log In</MudButton>
             <MudText Class="pa-4 mt-4 blue darken-1 shades-text text-white">
                 Don't have an account?
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Href="auth/signup">Sign Up</MudButton>
@@ -52,6 +52,13 @@
     <!--
         If statement for debugging with validation
     -->
+
+
+}
+
+@if (loggedInUser != null)
+{
+    <MudText>The email is @loggedInUser.Email</MudText>
 }
 
 
@@ -112,7 +119,7 @@
             }
             return errorString;
         }
-        
+
         return null;
     }
 

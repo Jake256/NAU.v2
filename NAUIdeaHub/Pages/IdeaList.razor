@@ -48,6 +48,15 @@
     </MudTabPanel>
 </MudTabs>
 
+
+@if ( loggedInUser != null)
+{
+    <MudText>
+        Email of logged in user is @loggedInUser.Email
+    </MudText>
+}
+
+
 @code {
 
 }
