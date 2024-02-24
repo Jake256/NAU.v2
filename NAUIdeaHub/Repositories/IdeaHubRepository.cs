@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using NAUCountryIdeaHub.Configuration;
 using NAUCountryIdeaHub.Entities;
+using NAUIdeaHub.Pages;
 using static Dapper.SqlMapper;
 
 namespace NAUCountryIdeaHub.Repositories
@@ -91,6 +92,29 @@ namespace NAUCountryIdeaHub.Repositories
             }
         }
 
+        public async Task<IEnumerable<RequestEntity>> GetIdeasBySearchAsync()
+        {
+            try
+            {
+                //var connectionString = _connectionString;
+
+                var connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync();
+
+                var ideas = await connection.QueryAsync<RequestEntity>(SqlCommands.GetIdeasBySearch);
+
+                //return our list of ideas from db
+                return ideas;
+
+            }
+            catch (Exception ex)
+            {
+                //can help with debugging if run into errors/exceptions
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         private static class SqlCommands
         {
             public static readonly string GetIdeas =
@@ -124,6 +148,16 @@ namespace NAUCountryIdeaHub.Repositories
                  IsITAdmin,
                  ReceiveEmailNotifications
             FROM [dbo].[User]";
+
+            public static readonly string GetIdeasBySearch =
+                @"SELECT
+                Name,
+                Type,
+                Status,
+                Description,
+                Resolution,
+                DateTimeSubmitted
+            FROM [dbo].[Request] WHERE [Name] LIKE '%" + IdeaList.SearchString + "%'";
         }
         //-----------------------------------------------END EXAMPLE CODE-------------------------------------------------------------
     }

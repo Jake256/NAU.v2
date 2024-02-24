@@ -16,7 +16,7 @@ namespace NAUIdeaHub.Pages
             try
             {
                 Ideas = await _service.GetIdeasAsync();
-                CompletedIdeas = await _service.GetCompletedIdeasAsync(); 
+                CompletedIdeas = await _service.GetCompletedIdeasAsync();
             }
             catch(Exception ex)
             {
@@ -24,5 +24,16 @@ namespace NAUIdeaHub.Pages
             }
         }
 
+        protected async Task OnChangedSearchAsync()
+        {
+            try
+            {
+                Ideas = await _service.GetIdeasBySearchAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

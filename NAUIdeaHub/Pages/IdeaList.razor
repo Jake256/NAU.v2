@@ -1,17 +1,44 @@
 ﻿@page "/idealist"
+@using NAUCountryIdeaHub.Models
 
 <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
     <MudTabPanel Text="Your Ideas"></MudTabPanel>
     <MudTabPanel Text="All Ideas">
+        <MudTextField Value="@SearchString"></MudTextField>
+        <MudTextField Value="@Ideas.ToString"></MudTextField>
+        @if(selected != null){
+            <MudTextField Value="@selected.ToString"></MudTextField>
+        }
+        <MudTextField Value="@Ideas.ToString"></MudTextField>
         @if(Ideas!=null){
         <MudTable Items = "@Ideas" Style="width: 100%">
+            <ToolBarContent>
+                <MudTextField 
+                    @bind-Value="SearchString" 
+                    Placeholder="Search" 
+                    Adornment="Adornment.Start" 
+                    AdornmentIcon="@Icons.Material.Filled.Search"
+                    IconSize="Size.Medium" 
+                    Class="mt-0"
+                    TextChanged="OnChangedSearchAsync"></MudTextField>
+                    <MudChipSet @bind-SelectedChips="selected" MultiSelection="true" Filter="true">
+                        <MudChip Text="Milk"></MudChip>
+                        <MudChip Text="Eggs"></MudChip>
+                        <MudChip Text="Soap"></MudChip>
+                        <MudChip Text="Cornflakes"></MudChip>
+                        <MudChip Text="Salad"></MudChip>
+                        <MudChip Text="Apples"></MudChip>
+                        <MudChip Text="Red wine"></MudChip>
+                    </MudChipSet>
+            </ToolBarContent>
             <HeaderContent>
-                <MudTh>Name</MudTh>
-                <MudTh>Type</MudTh>
-                <MudTh>Status</MudTh>
+                @* Table headers with built in sorting *@
+                <MudTh><MudTableSortLabel SortBy="new Func<Request, object>(x=>x.Name)">Name</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Request, object>(x=>x.Type)">Type</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Request, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
                 <MudTh>Description</MudTh>
                 <MudTh>Resolution</MudTh>
-                <MudTh>Submission Date</MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<Request, object>(x=>x.DateTimeSubmitted)">Submission Date</MudTableSortLabel></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="Name">@context.Name</MudTd>
@@ -49,5 +76,7 @@
 </MudTabs>
 
 @code {
+    public static string SearchString { get; set; } = "";
 
+    MudChip[] selected;
 }
