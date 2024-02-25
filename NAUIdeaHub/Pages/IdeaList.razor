@@ -4,14 +4,8 @@
 <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
     <MudTabPanel Text="Your Ideas"></MudTabPanel>
     <MudTabPanel Text="All Ideas">
-        <MudTextField Value="@SearchString"></MudTextField>
-        <MudTextField Value="@Ideas.ToString"></MudTextField>
-        @if(selected != null){
-            <MudTextField Value="@selected.ToString"></MudTextField>
-        }
-        <MudTextField Value="@Ideas.ToString"></MudTextField>
         @if(Ideas!=null){
-        <MudTable Items = "@Ideas" Style="width: 100%">
+        <MudTable Items = "@Ideas" Style="width: 100%" Filter="new Func<Request, bool>(FilterFunc1)">
             <ToolBarContent>
                 <MudTextField 
                     @bind-Value="SearchString" 
@@ -21,7 +15,7 @@
                     IconSize="Size.Medium" 
                     Class="mt-0"
                     TextChanged="OnChangedSearchAsync"></MudTextField>
-                    <MudChipSet @bind-SelectedChips="selected" MultiSelection="true" Filter="true">
+                    @* <MudChipSet @bind-SelectedChips="selected" MultiSelection="true" Filter="true">
                         <MudChip Text="Milk"></MudChip>
                         <MudChip Text="Eggs"></MudChip>
                         <MudChip Text="Soap"></MudChip>
@@ -29,7 +23,7 @@
                         <MudChip Text="Salad"></MudChip>
                         <MudChip Text="Apples"></MudChip>
                         <MudChip Text="Red wine"></MudChip>
-                    </MudChipSet>
+                    </MudChipSet> *@
             </ToolBarContent>
             <HeaderContent>
                 @* Table headers with built in sorting *@
@@ -76,7 +70,21 @@
 </MudTabs>
 
 @code {
-    public static string SearchString { get; set; } = "";
+    // public static string SearchString { get; set; } = "";
+    public string SearchString = "";
 
     MudChip[] selected;
+
+    // Filter function that calls FilterFunc(Request r, string searchString)
+    private bool FilterFunc1(Request r) => FilterFunc(r, SearchString);
+
+    private bool FilterFunc(Request request, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (request.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        // NEED TO CHECK WITH NAU IF THEY WANT TO SEARCH BY MORE THAN JUST NAME
+        return false;
+    }
 }

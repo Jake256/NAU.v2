@@ -26,14 +26,14 @@ namespace NAUIdeaHub.Pages
 
         protected async Task OnChangedSearchAsync()
         {
-            try
-            {
-                Ideas = await _service.GetIdeasBySearchAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            //try
+            //{
+            //    Ideas = await _service.GetIdeasBySearchAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
         }
     }
 }
