@@ -14,5 +14,6 @@ namespace NAUCountryIdeaHub.Entities
         public DateTime DateTimeResolved { get; set; }
         public int Requestor { get; set; }
         public int RequestAdmin { get; set; }
+        public Boolean Complete { get; set; }
     }
 }
