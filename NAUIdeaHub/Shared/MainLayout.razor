@@ -8,9 +8,18 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <div style="display: flex; justify-content: center; align-items: center; background-color: #FFFFFF;">
-        <img src="nau.png" alt="NAU Country"  />
-    </div>
+    <MudGrid>
+        <MudItem xs="2"></MudItem>
+        <MudItem xs="8">
+            <div style="display: flex; justify-content: center; align-items: center; background-color: #FFFFFF;">
+                <img src="nau.png" alt="NAU Country" />
+            </div>
+        </MudItem>
+        <MudItem xs="2" Class="py-8">
+            <MudButton style="display: flex; justify-content: center; align-items: center;" Href="/auth" Color="Color.Primary">Log in</MudButton>
+        </MudItem>
+    </MudGrid>
+    
     <div style="display: flex; justify-content: left; align-items: center; background-color: #00AEEF;">
         <MudButton OnClick="@ToggleDrawer" Color="Color.Primary"><img src="NavMenuToggle.png" alt="NAU Country" width="25"/></MudButton>
     </div>
