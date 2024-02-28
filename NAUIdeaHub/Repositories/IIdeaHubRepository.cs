@@ -6,7 +6,7 @@ namespace NAUCountryIdeaHub.Repositories
     {
         //-------------Example----------------------------------
         public Task<IEnumerable<RequestEntity>> GetIdeasAsync();
-        public Task<IEnumerable<RequestEntity>> GetCompletedIdeasAsync();
+        //public Task<IEnumerable<RequestEntity>> GetCompletedIdeasAsync();
         public Task<IEnumerable<UserEntity>> GetUsersAsync();
         //------------------------------------------------------
     }

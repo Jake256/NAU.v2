@@ -10,17 +10,33 @@ namespace NAUIdeaHub.Pages
         [Inject] private IIdeaHubService _service { get; set; }
 
         public IEnumerable<Request> Ideas { get; set; } = new List<Request>();
-        public IEnumerable<Request> CompletedIdeas { get; set; } = new List<Request>();
+
+        public List<Request> CompletedIdeas { get; set; } = new List<Request>();
+
+        
+
         [Inject] private ILoggedUserService _loggedUser { get; set; }
 
         public User loggedInUser;
+
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 Ideas = await _service.GetIdeasAsync();
-                CompletedIdeas = await _service.GetCompletedIdeasAsync(); 
+
+                //CompletedIdeas = await _service.GetCompletedIdeasAsync(); 
+                foreach (var x in Ideas)
+                {
+                    if (x.Complete == true)
+                    {
+                        CompletedIdeas.Add(x);
+                    }
+                }
+
+
+               
                 if( _loggedUser.getUser() != null)
                 {
                     loggedInUser = _loggedUser.getUser();
@@ -29,6 +45,7 @@ namespace NAUIdeaHub.Pages
                 {
                     // Some code goes here
                 }
+
             }
             catch(Exception ex)
             {
