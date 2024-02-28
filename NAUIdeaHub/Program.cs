@@ -4,6 +4,7 @@ using MudBlazor.Services;
 using NAUCountryIdeaHub.Configuration;
 using NAUCountryIdeaHub.Repositories;
 using NAUCountryIdeaHub.Services;
+using NAUIdeaHub.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 builder.Services.AddScoped<IIdeaHubRepository, IdeaHubRepository>();
 builder.Services.AddScoped<IIdeaHubService, IdeaHubService>();
+builder.Services.AddScoped<ILoggedUserService, LoggedUserService>();
 
 IConfiguration configuration = builder.Configuration;
 var connectionStrings = new ConnectionStringsConfig();
