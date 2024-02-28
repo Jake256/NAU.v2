@@ -3,7 +3,7 @@
 
 <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
     <MudTabPanel Text="Your Ideas"></MudTabPanel>
-    <MudTabPanel Text="All Ideas">
+    <MudTabPanel Text="All Ideas">        
         @if(Ideas!=null){
         <MudTable Items = "@Ideas" Style="width: 100%" Filter="new Func<Request, bool>(FilterFunc1)">
             <ToolBarContent>
@@ -13,17 +13,13 @@
                     Adornment="Adornment.Start" 
                     AdornmentIcon="@Icons.Material.Filled.Search"
                     IconSize="Size.Medium" 
-                    Class="mt-0"
-                    TextChanged="OnChangedSearchAsync"></MudTextField>
-                    @* <MudChipSet @bind-SelectedChips="selected" MultiSelection="true" Filter="true">
-                        <MudChip Text="Milk"></MudChip>
-                        <MudChip Text="Eggs"></MudChip>
-                        <MudChip Text="Soap"></MudChip>
-                        <MudChip Text="Cornflakes"></MudChip>
-                        <MudChip Text="Salad"></MudChip>
-                        <MudChip Text="Apples"></MudChip>
-                        <MudChip Text="Red wine"></MudChip>
-                    </MudChipSet> *@
+                    Class="mt-0"></MudTextField>
+                    <MudChipSet @bind-SelectedChips="selected" MultiSelection="true" Filter="true">
+                        <MudChip Text="Open"></MudChip>
+                        <MudChip Text="Completed"></MudChip>
+                        <MudChip Text="Duplicate"></MudChip>
+                        <MudChip Text="Dismissed"></MudChip>
+                    </MudChipSet>
             </ToolBarContent>
             <HeaderContent>
                 @* Table headers with built in sorting *@
@@ -70,7 +66,6 @@
 </MudTabs>
 
 @code {
-    // public static string SearchString { get; set; } = "";
     public string SearchString = "";
 
     MudChip[] selected;
@@ -80,11 +75,44 @@
 
     private bool FilterFunc(Request request, string searchString)
     {
-        if (string.IsNullOrWhiteSpace(searchString))
-            return true;
-        if (request.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-        // NEED TO CHECK WITH NAU IF THEY WANT TO SEARCH BY MORE THAN JUST NAME
+        if(selected == null) // No need to check for filters because no filters selected
+        {
+            if (string.IsNullOrWhiteSpace(searchString))
+                return true;
+            if (request.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            // TODO: Check with NAU if they want to search by more than just Name  
+            // TODO: Check with NAU what they want to filter by 
+        }
+        else // Check for filters
+        {
+            if (string.IsNullOrWhiteSpace(searchString) && StatusIsInSelected(request))
+                return true;
+            if (request.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) && StatusIsInSelected(request))
+                return true;
+        }
         return false;
     }
+
+    // Private method used in FilterFunc method that checks if the 
+    // status of a request is in MudChip [] selected
+    private bool StatusIsInSelected(Request r)
+    {
+        if(selected.Length == 0)
+        {
+            return true; // Nothing in selected, return true
+        }
+        else
+        {
+            foreach (MudChip s in selected)
+            {
+                if ((s.Text).Equals(r.Status))
+                {
+                    return true; // MudChip Text is equal to request's status, return true
+                }
+            }
+        }
+        return false; // Return false, not found in MudChip [] selected
+    }
+
 }
