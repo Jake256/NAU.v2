@@ -2,6 +2,12 @@
 @using System.Net.Mail;
 @using System.Text.RegularExpressions;
 @using System.Collections;
+@inject NavigationManager NavigationManager
+
+@if (loggedInUser != null)
+{
+    NavigationManager.NavigateTo("/");
+}
 
 <PageTitle>Log In</PageTitle>
 
@@ -11,9 +17,9 @@
         <MudPaper Class="pa-4">
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
                 <MudText>Log In</MudText>
-                <MudTextField T="string" Label="Username or Email" @ref="usernameField" Required="true" RequiredError="Username or Email Required" Validation="@(new Func<string, string>(TestEmail))" OnlyValidateIfDirty="true" />
+                <MudTextField T="string" Label="Username" @ref="usernameField" Required="true" RequiredError="Username Required" Validation="@(new Func<string, string>(TestEmail))" OnlyValidateIfDirty="true" />
 
-                <MudTextField T="string" Label="Password" @ref="passwordField" InputType="InputType.Password" Validation="@(new Func<string, string>(TestPassword))" Required="true" RequiredError="Password is required" OnlyValidateIfDirty="true" />
+                <MudTextField T="string" Label="Password" @ref="passwordField" InputType="InputType.Password" Validation="@(new Func<string, string>(TestPassword))" Required="true" RequiredError="Password Required" OnlyValidateIfDirty="true" />
 
                 <!--
                     MudTextFields are the text fields that will be taking the users input.
@@ -28,40 +34,14 @@
                     OnlyValidateIfDirty: Will only attempt to validate if the user enters something in. Won't attempt if the
                         user simply clicks on it and clicks off.
                 -->
-                <!--
-                <MudButton Variant="Variant.Filled" Color="Color.Success" Disabled="@(!success)" Class="m1-auto">Register</MudButton>
-                -->
-                <!--
-                    Button to attempt registration. Will only be available if the above information is correct (success variable).
-                -->
-
+                
             </MudForm>
             <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Disabled="@(!success)" OnClick="logIn">Log In</MudButton>
-            <MudText Class="pa-4 mt-4 blue darken-1 shades-text text-white">
-                Don't have an account?
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Href="auth/signup">Sign Up</MudButton>
-            </MudText>
+            <!--<MudText Class="pa-4 mt-4 blue darken-1 shades-text text-white"></MudText>-->
         </MudPaper>
     </MudItem>
     <MudItem xs="3"></MudItem>
 </MudGrid>
-
-@if (success)
-{
-    <MudText>Correct!!!!</MudText>
-    <!--
-        If statement for debugging with validation
-    -->
-
-
-}
-
-@if (loggedInUser != null)
-{
-    <MudText>The email is @loggedInUser.Email</MudText>
-}
-
-
 
 @code {
     bool success;
@@ -75,11 +55,11 @@
 
     MudForm form;
 
-
     // Variables used with testing validation. Will be replaced with values retrieved from the database
 
     private string TestEmail(string uname) // Username/Email validation function
     {
+
         if (string.IsNullOrWhiteSpace(uname))
         {
             return "Email cannot be left blank";
@@ -103,26 +83,6 @@
         // The return null can be thought of as the return true
     }
 
-
-    private string TestPassword(string pword) // Password validation function (the same as the username/email function)
-    {
-        if (string.IsNullOrWhiteSpace(pword))
-        {
-            return "Enter something";
-        }
-        else if (ValidPasswordFormat(pword).Count > 0)
-        {
-            string errorString = "";
-            foreach (string i in ValidPasswordFormat(pword))
-            {
-                errorString += i + System.Environment.NewLine;
-            }
-            return errorString;
-        }
-
-        return null;
-    }
-
     //validates if the input into the email field is a valid email
     private bool ValidEmailFormat(string email)
     {
@@ -137,9 +97,18 @@
         }
     }
 
-    private ArrayList ValidPasswordFormat(string password)
+    private string TestPassword(string pword) // Password validation function (the same as the username/email function)
     {
-        ArrayList passwordErrors = new ArrayList();
+        if (string.IsNullOrWhiteSpace(pword))
+        {
+            return "Please enter a password";
+        }
+        return ValidatePassword(pword);
+    }
+
+    //validates the password
+    private string ValidatePassword(string password)
+    {
 
         Regex numberRequirement = new Regex(@"[0-9]+");
         Regex lowerRequirement = new Regex(@"[a-z]+");
@@ -147,37 +116,22 @@
         Regex specialRequirement = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
         Regex lengthRequirement = new Regex(@".{8,20}");
 
-
-        if (!numberRequirement.IsMatch(password))
+        //checks that the password format to limit queries to the database (AD in future)
+        if (!numberRequirement.IsMatch(password) || !lowerRequirement.IsMatch(password) || !upperRequirement.IsMatch(password) || !specialRequirement.IsMatch(password) || !lengthRequirement.IsMatch(password))
         {
-            passwordErrors.Add("Password must conatin at least one number");
-        }
-        if (!lowerRequirement.IsMatch(password))
-        {
-            passwordErrors.Add("Password must conatin at least one lowercase character");
-        }
-        if (!upperRequirement.IsMatch(password))
-        {
-            passwordErrors.Add("Password must conatin at least one uppercase character");
-        }
-        if (!specialRequirement.IsMatch(password))
-        {
-            passwordErrors.Add("Password must conatin at least one special character");
-        }
-        if (!lengthRequirement.IsMatch(password))
-        {
-            passwordErrors.Add("Password must be between 8 and 20 characters");
-        }
-        if (users.FirstOrDefault(x => x.Email.Equals(usernameField.Value)) != null)
-        {
-            string matchingPassword = users.FirstOrDefault(x => x.Email.Equals(usernameField.Value)).Password;
-            if (!matchingPassword.Equals(password))
-            {
-                passwordErrors.Add("Password is incorrect");
-            }
+            return "Invalid password";
         }
 
-        return passwordErrors;
+        //queries the database (AD in future) to validate the password of the user
+        // if (users.FirstOrDefault(x => x.Email.Equals(usernameField.Value)) != null)
+        // {
+        //     if (users.FirstOrDefault(x => x.Email.Equals(usernameField.Value)).Password.Equals(password))
+        //     {
+        //         return "";
+        //     }
+        // }
+
+        return "";
 
     }
 
