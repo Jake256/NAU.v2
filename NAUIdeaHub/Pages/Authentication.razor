@@ -44,16 +44,17 @@
 </MudGrid>
 
 @code {
+
     bool success;
     string[] errors = { };
     // Will hold any error message created. Not currently displayed on the webpage
 
-    MudTextField<string> usernameField;
-    MudTextField<string> passwordField;
+    MudTextField<string>? usernameField;
+    MudTextField<string>? passwordField;
     // Can access the values from the text boxes using .Value
     //  usernameField.Value.Equals(something);
 
-    MudForm form;
+    MudForm? form;
 
     // Variables used with testing validation. Will be replaced with values retrieved from the database
 
