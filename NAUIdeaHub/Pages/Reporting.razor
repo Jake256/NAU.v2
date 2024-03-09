@@ -1,10 +1,18 @@
 ﻿@page "/reporting"
 @using MudBlazor
+@inject NAUIdeaHub.Services.IMailService MailService
 
 <PageTitle>Reporting</PageTitle>
 
 <h3>Reporting</h3>
 
+<MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="TestEmail">Test Email</MudButton>
+
 @code {
 
+    private async Task TestEmail()
+    {
+        await MailService.SendEmailAsync("brandong@bis.midco.net", "test", "test");
+    }
+    
 }
