@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Configuration;
 using MudBlazor.Services;
 using NAUCountryIdeaHub.Configuration;
 using NAUCountryIdeaHub.Repositories;
 using NAUCountryIdeaHub.Services;
+using NAUIdeaHub.Models;
 using NAUIdeaHub.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,12 +17,14 @@ builder.Services.AddMudServices();
 builder.Services.AddScoped<IIdeaHubRepository, IdeaHubRepository>();
 builder.Services.AddScoped<IIdeaHubService, IdeaHubService>();
 builder.Services.AddScoped<ILoggedUserService, LoggedUserService>();
+builder.Services.AddScoped<IMailService, MailService>();
 
 IConfiguration configuration = builder.Configuration;
 var connectionStrings = new ConnectionStringsConfig();
 configuration.GetSection("ConnectionStrings").Bind(connectionStrings);
 Console.WriteLine(connectionStrings.DefaultConnection);
 builder.Services.AddSingleton(connectionStrings);
+builder.Services.AddSingleton(configuration.GetSection("EmailSettings").Get<EmailSettings>());
 
 
 var app = builder.Build();
