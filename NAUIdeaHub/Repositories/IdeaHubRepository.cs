@@ -97,7 +97,7 @@ namespace NAUCountryIdeaHub.Repositories
                 @"SELECT
                 Name,
                 Type,
-                Status,
+                Closed,
                 Description,
                 Resolution,
                 DateTimeSubmitted
@@ -107,11 +107,11 @@ namespace NAUCountryIdeaHub.Repositories
                @"SELECT
                 Name,
                 Type,
-                Status,
+                Closed,
                 Description,
                 Resolution,
                 DateTimeSubmitted
-            FROM [dbo].[Request] WHERE Status = 'Complete'";
+            FROM [dbo].[Request] WHERE Closed = 1";
 
             public static readonly string GetUsers =
                 @"SELECT
