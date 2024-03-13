@@ -1,10 +1,10 @@
-﻿namespace NAUCountryIdeaHub.Models
+﻿namespace NAUCountryIdeaHub.Entities
 {
-    public class RequestVote
+    public class RequestActionsEntity
     {
         public int UserID { get; set; }
         public int RequestID { get; set; }
         public bool UpVote { get; set; }
-        public bool DownVote { get; set; }
+        public bool Favorite { get; set; }
     }
 }
