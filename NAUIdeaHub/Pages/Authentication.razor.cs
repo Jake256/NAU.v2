@@ -22,10 +22,6 @@ namespace NAUIdeaHub.Pages
             try
             {
                 users = await _service.GetUsersAsync();
-                if( _loggedUser != null )
-                {
-                    loggedInUser = _loggedUser.getUser();
-                }
             }
             catch (Exception ex)
             {
