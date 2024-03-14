@@ -97,22 +97,24 @@ namespace NAUCountryIdeaHub.Repositories
                 @"SELECT
                 Name,
                 Type,
-                Status,
+                Closed,
                 Description,
+                URL,
                 Resolution,
                 DateTimeSubmitted,
                 Complete
             FROM [dbo].[Request]";
 
-            //public static readonly string GetCompletedIdeas =
-            //   @"SELECT
-            //    Name,
-            //    Type,
-            //    Status,
-            //    Description,
-            //    Resolution,
-            //    DateTimeSubmitted
-            //FROM [dbo].[Request] WHERE Status = 'Complete'";
+            public static readonly string GetCompletedIdeas =
+               @"SELECT
+                Name,
+                Type,
+                Closed,
+                Description,
+                URL,
+                Resolution,
+                DateTimeSubmitted
+            FROM [dbo].[Request] WHERE Closed = 1";
 
             public static readonly string GetUsers =
                 @"SELECT
@@ -121,8 +123,7 @@ namespace NAUCountryIdeaHub.Repositories
                  Email,
                  Password,
                  Active,
-                 IsRequestAdmin,
-                 IsITAdmin,
+                 IsAdmin,
                  ReceiveEmailNotifications
             FROM [dbo].[User]";
         }
