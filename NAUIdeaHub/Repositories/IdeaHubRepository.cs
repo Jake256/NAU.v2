@@ -101,9 +101,8 @@ namespace NAUCountryIdeaHub.Repositories
                 Description,
                 URL,
                 Resolution,
-                DateTimeSubmitted,
-                Complete
-            FROM [dbo].[Request]";
+                DateTimeSubmitted
+                FROM [dbo].[Request]";
 
             public static readonly string GetCompletedIdeas =
                @"SELECT
@@ -114,7 +113,7 @@ namespace NAUCountryIdeaHub.Repositories
                 URL,
                 Resolution,
                 DateTimeSubmitted
-            FROM [dbo].[Request] WHERE Closed = 1";
+                FROM [dbo].[Request] WHERE Closed = 1";
 
             public static readonly string GetUsers =
                 @"SELECT
@@ -125,7 +124,7 @@ namespace NAUCountryIdeaHub.Repositories
                  Active,
                  IsAdmin,
                  ReceiveEmailNotifications
-            FROM [dbo].[User]";
+                FROM [dbo].[User]";
         }
         //-----------------------------------------------END EXAMPLE CODE-------------------------------------------------------------
     }

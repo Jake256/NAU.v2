@@ -29,7 +29,7 @@ namespace NAUIdeaHub.Pages
                 //CompletedIdeas = await _service.GetCompletedIdeasAsync(); 
                 foreach (var x in Ideas)
                 {
-                    if (x.Complete == true)
+                    if (x.Closed == true)
                     {
                         CompletedIdeas.Add(x);
                     }
