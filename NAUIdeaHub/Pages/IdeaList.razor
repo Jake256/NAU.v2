@@ -28,7 +28,7 @@
         }       
     </MudTabPanel>
     <MudTabPanel Text="Completed Ideas">
-        @if(CompletedIdeas!=null){
+        @if(@CompletedIdeas!=null){
         <MudTable Items = "@CompletedIdeas" Style="width: 100%">
             <HeaderContent>
                 <MudTh>Name</MudTh>
