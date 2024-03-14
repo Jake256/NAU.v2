@@ -3,9 +3,9 @@ using NAUCountryIdeaHub.Services;
 using NAUCountryIdeaHub.Models;
 using NAUIdeaHub.Services;
 
-namespace NAUIdeaHub.Pages
+namespace NAUIdeaHub.Shared
 {
-    public partial class Authentication : ComponentBase
+    public partial class Authentication : LayoutComponentBase
     {
         [Inject] private NavigationManager NavigationManager { get; set; }
         // Allows us to change to a different page within the project.
@@ -41,11 +41,11 @@ namespace NAUIdeaHub.Pages
             loggedInUser = _loggedUser.getUser();
             // Updates the pages user value
 
-            NavigationManager.NavigateTo("idealist");
+            NavigationManager.NavigateTo(NavigationManager.Uri, true);
             // This will route to the idealist page after a successful login
 
             await SetName();
-            
+
         }
 
         private async Task SetName()

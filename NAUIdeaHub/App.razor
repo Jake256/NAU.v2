@@ -1,7 +1,17 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using NAUCountryIdeaHub.Models
+
+<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        @if (authenticatedUser!=null)
+        {
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        }
+        else
+        {
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(Authentication)" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        }
     </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>
@@ -10,3 +20,15 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code{
+
+    User? authenticatedUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await ProtectedSessionStore.GetAsync<User>("AuthenticatedUser");
+        authenticatedUser = result.Success ? result.Value : null;
+    }
+
+}
