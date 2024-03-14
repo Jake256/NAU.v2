@@ -99,6 +99,7 @@ namespace NAUCountryIdeaHub.Repositories
                 Type,
                 Closed,
                 Description,
+                URL,
                 Resolution,
                 DateTimeSubmitted
             FROM [dbo].[Request]";
@@ -109,6 +110,7 @@ namespace NAUCountryIdeaHub.Repositories
                 Type,
                 Closed,
                 Description,
+                URL,
                 Resolution,
                 DateTimeSubmitted
             FROM [dbo].[Request] WHERE Closed = 1";
@@ -120,8 +122,7 @@ namespace NAUCountryIdeaHub.Repositories
                  Email,
                  Password,
                  Active,
-                 IsRequestAdmin,
-                 IsITAdmin,
+                 IsAdmin,
                  ReceiveEmailNotifications
             FROM [dbo].[User]";
         }

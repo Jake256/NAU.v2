@@ -7,6 +7,7 @@
         public string Type { get; set; }
         public bool Closed { get; set; }
         public string Description { get; set; }
+        public string URL {  get; set; }
         public string Resolution { get; set; }
         public DateTime DateTimeSubmitted { get; set; }
         public DateTime DateTimeResolved { get; set; }

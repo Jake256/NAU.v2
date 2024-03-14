@@ -10,7 +10,7 @@
     <MudItem xs="3"></MudItem>
     <MudItem xs="6">
         <MudPaper Class="pa-4">
-            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+            <MudForm @ref="form" @bind-Errors="@errors">
                 <MudText>Log In</MudText>
                 <MudTextField T="string" Label="Username" @ref="usernameField" Required="true" RequiredError="Username Required" Validation="@(new Func<string, string>(TestEmail))" OnlyValidateIfDirty="true" />
 
@@ -38,7 +38,7 @@
                 -->
                 
             </MudForm>
-            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Disabled="@(!success)" OnClick="logIn">Log In</MudButton>
+            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="logIn">Log In</MudButton>
         </MudPaper>
     </MudItem>
     <MudItem xs="3"></MudItem>
@@ -46,7 +46,6 @@
 
 @code {
     bool errorMessage = false;
-    bool success;
     string[] errors = { };
     // Will hold any error message created. Not currently displayed on the webpage
 
