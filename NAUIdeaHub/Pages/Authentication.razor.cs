@@ -33,7 +33,7 @@ namespace NAUIdeaHub.Pages
         /*
          * This method will update the LoggedUserService which will allow the other pages to access this data.
          */
-        public void updateCurrentUser()
+        public async void updateCurrentUser()
         {
             _loggedUser.setUser(users.FirstOrDefault(x => x.Email.Equals(usernameField.Value) && x.Password.Equals(passwordField.Value)));
             // Sets the shared value in the service to whatever the user inputted
@@ -43,6 +43,14 @@ namespace NAUIdeaHub.Pages
 
             NavigationManager.NavigateTo("idealist");
             // This will route to the idealist page after a successful login
+
+            await SetName();
+            
+        }
+
+        private async Task SetName()
+        {
+            await ProtectedSessionStore.SetAsync("AuthenticatedUser", _loggedUser.getUser());
         }
 
     }
