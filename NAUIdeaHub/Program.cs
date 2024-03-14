@@ -26,7 +26,6 @@ Console.WriteLine(connectionStrings.DefaultConnection);
 builder.Services.AddSingleton(connectionStrings);
 builder.Services.AddSingleton(configuration.GetSection("EmailSettings").Get<EmailSettings>());
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

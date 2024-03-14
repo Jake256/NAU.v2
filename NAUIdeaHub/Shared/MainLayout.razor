@@ -1,4 +1,5 @@
 ﻿@using MudBlazor
+@using NAUCountryIdeaHub.Models
 @inherits LayoutComponentBase
 
 <PageTitle>NAU Country Idea Hub</PageTitle>
@@ -15,9 +16,11 @@
                 <img src="nau.png" alt="NAU Country" />
             </div>
         </MudItem>
-        <MudItem xs="2" Class="py-8">
-            <MudButton style="display: flex; justify-content: center; align-items: center;" Href="/auth" Color="Color.Primary">Log in</MudButton>
-        </MudItem>
+        @if(authenticatedUser!=null){
+            <MudItem xs="2" Class="py-8">
+                <MudButton style="display: flex; justify-content: center; align-items: center;" Color="Color.Primary">Welcome, @authenticatedUser.FirstName</MudButton>
+            </MudItem>
+        }
     </MudGrid>
     
     <div style="display: flex; justify-content: left; align-items: center; background-color: #00AEEF;">
@@ -39,10 +42,18 @@
 @code{
 
     bool openNavMenu = false;
+    User? authenticatedUser;
 
     void ToggleDrawer()
     {
         openNavMenu = !openNavMenu;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await ProtectedSessionStore.GetAsync<User>("AuthenticatedUser");
+        authenticatedUser = result.Success ? result.Value : null;
+
     }
 
 }
