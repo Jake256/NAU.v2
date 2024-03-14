@@ -16,7 +16,10 @@
             <RowTemplate>
                 <MudTd DataLabel="Name">@context.Name</MudTd>
                 <MudTd DataLabel="Type">@context.Type</MudTd>
-                <MudTd DataLabel="Status">@context.Status</MudTd>
+                <MudTd DataLabel="Status">
+                    @if (@context.Closed) {<div>Closed</div>}
+                    else{<div>Open</div>}
+                </MudTd>
                 <MudTd DataLabel="Description">@context.Description</MudTd>
                 <MudTd DataLabel="Resolution">@context.Resolution</MudTd>
                 <MudTd DataLabel="Submission Date">@context.DateTimeSubmitted</MudTd>
@@ -25,7 +28,7 @@
         }       
     </MudTabPanel>
     <MudTabPanel Text="Completed Ideas">
-        @if(CompletedIdeas!=null){
+        @if(@CompletedIdeas!=null){
         <MudTable Items = "@CompletedIdeas" Style="width: 100%">
             <HeaderContent>
                 <MudTh>Name</MudTh>
@@ -38,7 +41,9 @@
             <RowTemplate>
                 <MudTd DataLabel="Name">@context.Name</MudTd>
                 <MudTd DataLabel="Type">@context.Type</MudTd>
-                <MudTd DataLabel="Status">@context.Status</MudTd>
+                <MudTd DataLabel="Status">
+                    @if (@context.Closed) {<div>Closed</div>}
+                    else{<div>Open</div>}</MudTd>
                 <MudTd DataLabel="Description">@context.Description</MudTd>
                 <MudTd DataLabel="Resolution">@context.Resolution</MudTd>
                 <MudTd DataLabel="Submission Date">@context.DateTimeSubmitted</MudTd>

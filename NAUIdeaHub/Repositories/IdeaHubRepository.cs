@@ -45,28 +45,28 @@ namespace NAUCountryIdeaHub.Repositories
             }
         }
 
-        public async Task<IEnumerable<RequestEntity>> GetCompletedIdeasAsync()
-        {
-            try
-            {
-                //var connectionString = _connectionString;
+        //public async Task<IEnumerable<RequestEntity>> GetCompletedIdeasAsync()
+        //{
+        //    try
+        //    {
+        //        //var connectionString = _connectionString;
 
-                var connection = new SqlConnection(ConnectionString);
-                await connection.OpenAsync();
+        //        var connection = new SqlConnection(ConnectionString);
+        //        await connection.OpenAsync();
 
-                var ideas = await connection.QueryAsync<RequestEntity>(SqlCommands.GetCompletedIdeas);
+        //        var ideas = await connection.QueryAsync<RequestEntity>(SqlCommands.GetCompletedIdeas);
 
-                //return our list of ideas from db
-                return ideas;
+        //        //return our list of ideas from db
+        //        return ideas;
 
-            }
-            catch (Exception ex)
-            {
-                //can help with debugging if run into errors/exceptions
-                Console.WriteLine(ex.Message);
-                throw;
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //can help with debugging if run into errors/exceptions
+        //        Console.WriteLine(ex.Message);
+        //        throw;
+        //    }
+        //}
 
         public async Task<IEnumerable<UserEntity>> GetUsersAsync()
         {
@@ -97,21 +97,23 @@ namespace NAUCountryIdeaHub.Repositories
                 @"SELECT
                 Name,
                 Type,
-                Status,
+                Closed,
                 Description,
+                URL,
                 Resolution,
                 DateTimeSubmitted
-            FROM [dbo].[Request]";
+                FROM [dbo].[Request]";
 
             public static readonly string GetCompletedIdeas =
                @"SELECT
                 Name,
                 Type,
-                Status,
+                Closed,
                 Description,
+                URL,
                 Resolution,
                 DateTimeSubmitted
-            FROM [dbo].[Request] WHERE Status = 'Complete'";
+                FROM [dbo].[Request] WHERE Closed = 1";
 
             public static readonly string GetUsers =
                 @"SELECT
@@ -120,10 +122,9 @@ namespace NAUCountryIdeaHub.Repositories
                  Email,
                  Password,
                  Active,
-                 IsRequestAdmin,
-                 IsITAdmin,
+                 IsAdmin,
                  ReceiveEmailNotifications
-            FROM [dbo].[User]";
+                FROM [dbo].[User]";
         }
         //-----------------------------------------------END EXAMPLE CODE-------------------------------------------------------------
     }

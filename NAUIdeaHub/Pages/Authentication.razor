@@ -2,12 +2,7 @@
 @using System.Net.Mail;
 @using System.Text.RegularExpressions;
 @using System.Collections;
-@inject NavigationManager NavigationManager
 
-@if (loggedInUser != null)
-{
-    NavigationManager.NavigateTo("/");
-}
 
 <PageTitle>Log In</PageTitle>
 
@@ -15,11 +10,18 @@
     <MudItem xs="3"></MudItem>
     <MudItem xs="6">
         <MudPaper Class="pa-4">
-            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+            <MudForm @ref="form" @bind-Errors="@errors">
                 <MudText>Log In</MudText>
                 <MudTextField T="string" Label="Username" @ref="usernameField" Required="true" RequiredError="Username Required" Validation="@(new Func<string, string>(TestEmail))" OnlyValidateIfDirty="true" />
 
                 <MudTextField T="string" Label="Password" @ref="passwordField" InputType="InputType.Password" Validation="@(new Func<string, string>(TestPassword))" Required="true" RequiredError="Password Required" OnlyValidateIfDirty="true" />
+
+                @if (errorMessage)
+                {
+                    <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Error">
+                        The email or password you entered was incorrect. Please try again.
+                    </MudText>
+                }
 
                 <!--
                     MudTextFields are the text fields that will be taking the users input.
@@ -36,16 +38,14 @@
                 -->
                 
             </MudForm>
-            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Disabled="@(!success)" OnClick="logIn">Log In</MudButton>
-            <!--<MudText Class="pa-4 mt-4 blue darken-1 shades-text text-white"></MudText>-->
+            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="logIn">Log In</MudButton>
         </MudPaper>
     </MudItem>
     <MudItem xs="3"></MudItem>
 </MudGrid>
 
 @code {
-
-    bool success;
+    bool errorMessage = false;
     string[] errors = { };
     // Will hold any error message created. Not currently displayed on the webpage
 
@@ -68,15 +68,6 @@
         else if (!ValidEmailFormat(uname))
         {
             return "Invalid email format";
-            // Will display this if the value isn't correct
-        }
-        else if (users.FirstOrDefault(x => x.Email.Equals(uname)) == null)
-        {
-            return "Not correct";
-        }
-        else if (!uname.Equals(users.FirstOrDefault(x => x.Email.Equals(uname)).Email))
-        {
-            return "Not correct";
             // Will display this if the value isn't correct
         }
 
@@ -104,36 +95,54 @@
         {
             return "Please enter a password";
         }
-        return ValidatePassword(pword);
+        return "";
     }
 
     //validates the password
-    private string ValidatePassword(string password)
-    {
+    //private string ValidatePassword(string password)
+    //{
 
-        Regex numberRequirement = new Regex(@"[0-9]+");
-        Regex lowerRequirement = new Regex(@"[a-z]+");
-        Regex upperRequirement = new Regex(@"[A-Z]+");
-        Regex specialRequirement = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
-        Regex lengthRequirement = new Regex(@".{8,20}");
+        //Regex numberRequirement = new Regex(@"[0-9]+");
+        //Regex lowerRequirement = new Regex(@"[a-z]+");
+        //Regex upperRequirement = new Regex(@"[A-Z]+");
+        //Regex specialRequirement = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
+        //Regex lengthRequirement = new Regex(@".{8,20}");
 
         //checks that the password format to limit queries to the database (AD in future)
-        if (!numberRequirement.IsMatch(password) || !lowerRequirement.IsMatch(password) || !upperRequirement.IsMatch(password) || !specialRequirement.IsMatch(password) || !lengthRequirement.IsMatch(password))
+        //if (!numberRequirement.IsMatch(password) || !lowerRequirement.IsMatch(password) || !upperRequirement.IsMatch(password) || !specialRequirement.IsMatch(password) || !lengthRequirement.IsMatch(password))
+        //{
+        //    return "Invalid password";
+        //}
+
+
+        //return "";
+
+    //}
+
+    /*
+     * This method is to check to see if the use inputted values match a user from the database
+     * We will only query the database (use this method) when everything else has been checked to see if it's a valid email/password
+     * This method also calls a method in the .cs version of this page.
+     */
+    private void logIn()
+    {
+        if (users.FirstOrDefault(x => x.Email.Equals(usernameField.Value) && x.Password.Equals(passwordField.Value)) != null)
         {
-            return "Invalid password";
+            errorMessage = false;
+            // Gets rid of the error message that states the user inputted the wrong email/password if shown already.
+
+            updateCurrentUser();
+            // Calls the updateCurrentUser() method in Authentication.razor.cs
+
         }
+        else
+        {
+            errorMessage = true;
+            // Displays the error message stating that the user inputted the wrong email/password.
 
-        //queries the database (AD in future) to validate the password of the user
-        // if (users.FirstOrDefault(x => x.Email.Equals(usernameField.Value)) != null)
-        // {
-        //     if (users.FirstOrDefault(x => x.Email.Equals(usernameField.Value)).Password.Equals(password))
-        //     {
-        //         return "";
-        //     }
-        // }
-
-        return "";
-
+            passwordField.SetText("");
+            // Gets rid of what's inside the password field.
+        }
     }
 
 }
