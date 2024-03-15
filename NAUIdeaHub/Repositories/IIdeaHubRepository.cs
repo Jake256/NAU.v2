@@ -8,6 +8,8 @@ namespace NAUCountryIdeaHub.Repositories
         public Task<IEnumerable<RequestEntity>> GetIdeasAsync();
         //public Task<IEnumerable<RequestEntity>> GetCompletedIdeasAsync();
         public Task<IEnumerable<UserEntity>> GetUsersAsync();
+
+        public Task<IEnumerable<RequestActionsEntity>> GetActionsAsync(int pk);
         //------------------------------------------------------
     }
 }

@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Options;
 using NAUCountryIdeaHub.Configuration;
 using NAUCountryIdeaHub.Entities;
+using System.ComponentModel;
+using System.Numerics;
 using static Dapper.SqlMapper;
 
 namespace NAUCountryIdeaHub.Repositories
@@ -91,10 +93,34 @@ namespace NAUCountryIdeaHub.Repositories
             }
         }
 
+        public async Task<IEnumerable<RequestActionsEntity>> GetActionsAsync(int pk)
+        {
+            try
+            {
+                //var connectionString = _connectionString;
+
+                var connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync();
+
+                var requestActions = await connection.QueryAsync<RequestActionsEntity>(SqlCommands.GetActions + pk);
+
+                //return our list of ideas from db
+                return requestActions;
+
+            }
+            catch (Exception ex)
+            {
+                //can help with debugging if run into errors/exceptions
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         private static class SqlCommands
         {
             public static readonly string GetIdeas =
                 @"SELECT
+                RequestID,
                 Name,
                 Type,
                 Closed,
@@ -117,6 +143,7 @@ namespace NAUCountryIdeaHub.Repositories
 
             public static readonly string GetUsers =
                 @"SELECT
+                 UserID,
                  FirstName,
                  LastName,
                  Email,
@@ -125,6 +152,16 @@ namespace NAUCountryIdeaHub.Repositories
                  IsAdmin,
                  ReceiveEmailNotifications
                 FROM [dbo].[User]";
+
+            public static readonly string GetActions =
+                @"SELECT
+                 UserID,
+                 RequestID,
+                 UpVote,
+                 Favorite
+                FROM [dbo].[RequestActions]
+                WHERE RequestID = ";
+
         }
         //-----------------------------------------------END EXAMPLE CODE-------------------------------------------------------------
     }

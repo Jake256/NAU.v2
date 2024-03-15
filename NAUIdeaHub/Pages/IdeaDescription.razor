@@ -1,0 +1,39 @@
+﻿@page "/ideadescription"
+
+<h3>IdeaDescription</h3>
+
+@if (currentIdea != null)
+{
+    <MudText><b>Idea name:</b> @currentIdea.Name</MudText>
+    <MudText><b>Idea Description: </b> @currentIdea.Description</MudText>
+
+    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Disabled="notLiked" OnClick="like">Like</MudButton>
+    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="favorite">Favorite</MudButton>
+}
+else
+{
+    <MudText>no current idea</MudText>
+}
+
+@if( loggedInUser != null)
+{
+    <MudText>Current logged user: @loggedInUser.FullName</MudText>
+}
+else{
+    <MudText>Not logged in.</MudText>
+}
+
+@notLiked
+
+@code {
+
+    public static void like()
+    {
+
+    }
+
+    public static void favorite()
+    {
+        
+    }
+}
