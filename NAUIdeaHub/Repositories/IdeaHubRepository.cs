@@ -95,13 +95,15 @@ namespace NAUCountryIdeaHub.Repositories
         {
             public static readonly string GetIdeas =
                 @"SELECT
+                RequestID,
                 Name,
                 Type,
                 Closed,
                 Description,
                 URL,
                 Resolution,
-                DateTimeSubmitted
+                DateTimeSubmitted, 
+                Requestor
                 FROM [dbo].[Request]";
 
             public static readonly string GetCompletedIdeas =
@@ -117,6 +119,7 @@ namespace NAUCountryIdeaHub.Repositories
 
             public static readonly string GetUsers =
                 @"SELECT
+                 UserID,
                  FirstName,
                  LastName,
                  Email,

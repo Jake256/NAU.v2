@@ -13,6 +13,8 @@ namespace NAUIdeaHub.Pages
 
         public List<Request> CompletedIdeas { get; set; } = new List<Request>();
 
+        public List<Request> YourIdeas { get; set; } = new List<Request>();
+
         
 
         [Inject] private ILoggedUserService _loggedUser { get; set; }
@@ -37,13 +39,24 @@ namespace NAUIdeaHub.Pages
 
 
                
-                if( _loggedUser.getUser() != null)
+                if (_loggedUser.getUser() != null)
                 {
                     loggedInUser = _loggedUser.getUser();
                 }
-                else
+                else 
+                { 
+                    //some code goes here
+                }
+
+                if(loggedInUser != null)
                 {
-                    // Some code goes here
+                    foreach(var x in Ideas)
+                    {
+                        if(x.Requestor == loggedInUser.UserID)
+                        {
+                            YourIdeas.Add(x);
+                        }
+                    }
                 }
 
             }
