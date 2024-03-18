@@ -6,7 +6,6 @@ namespace NAUCountryIdeaHub.Services
 {
     public class IdeaHubService : IIdeaHubService
     {
-        //------------------------------------------------EXAMPLE CODE----------------------------------------------------------
         //Private Members - Same as in the service but for our Repo
         private readonly IIdeaHubRepository _repository;
 
@@ -38,6 +37,29 @@ namespace NAUCountryIdeaHub.Services
             var actions = await _repository.GetActionsAsync(pk);
             return actions.Adapt<IEnumerable<RequestActions>>().ToList();
         }
-        //----------------------------------------------END EXAMPLE CODE----------------------------------------------------------
+
+        // ============================= Beginning of methods for idea description =============================
+
+        public void LikeIdea(int ideaPK, int userPK)
+        {
+            _repository.LikeIdea(ideaPK, userPK);
+        }
+
+        public void AlterLike(int ideaPK, int userPK, int value)
+        {
+            _repository.AlterLike(ideaPK, userPK, value);
+        }
+
+        public void FavoriteIdea(int ideaPK, int userPK)
+        {
+            _repository.FavoriteIdea(ideaPK, userPK);
+        }
+
+        public void AlterFavorite(int ideaPK, int userPK, int value)
+        {
+            _repository.AlterFavorite(ideaPK, userPK, value);
+        }
+
+        // =============================== End of methods for idea description ===============================
     }
 }

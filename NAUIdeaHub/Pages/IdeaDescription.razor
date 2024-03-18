@@ -7,8 +7,24 @@
     <MudText><b>Idea name:</b> @currentIdea.Name</MudText>
     <MudText><b>Idea Description: </b> @currentIdea.Description</MudText>
 
-    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" Disabled="notLiked" OnClick="like">Like</MudButton>
-    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="favorite">Favorite</MudButton>
+    @if( liked )
+    {
+        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="unLike">Remove like</MudButton>
+    }
+    else
+    {
+        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="like">Like</MudButton>
+    }
+
+    @if( favorited)
+    {
+        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="unFavorite">Remove Favorite</MudButton>
+    }
+    else
+    {
+        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="favorite">Favorite</MudButton>
+    }
+    
 }
 else
 {
@@ -23,17 +39,6 @@ else{
     <MudText>Not logged in.</MudText>
 }
 
-@notLiked
-
 @code {
 
-    public static void like()
-    {
-
-    }
-
-    public static void favorite()
-    {
-        
-    }
 }
