@@ -24,7 +24,13 @@
     {
         <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="favorite">Favorite</MudButton>
     }
+
+    @if( loggedInUser.IsAdmin)
+    {
+        <MudText>This user is an admin</MudText>
+    }
     
+
 }
 else
 {
