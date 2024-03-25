@@ -205,6 +205,14 @@ namespace NAUCountryIdeaHub.Repositories
 
         private static class SqlCommands
         {
+           
+            /*public static readonly string GetIdeas =
+                @"SELECT Request.*
+                FROM Request
+                LEFT JOIN RequestActions ON Request.RequestID = RequestActions.RequestID AND RequestActions.UserID = {0}
+                ORDER BY RequestActions.Favorite DESC";*/
+
+
             public static readonly string GetIdeas =
                 @"SELECT
                 RequestID,
@@ -216,7 +224,7 @@ namespace NAUCountryIdeaHub.Repositories
                 Resolution,
                 DateTimeSubmitted
                 FROM [dbo].[Request]";
-
+            
             public static readonly string GetCompletedIdeas =
                @"SELECT
                 Name,

@@ -47,7 +47,7 @@ namespace NAUIdeaHub.Pages
             loggedInUser = _loggedUser.getUser();
             // Updates the pages user value
 
-            Layout.Username = loggedInUser.FullName;
+            Layout.Username = loggedInUser.FirstName;
             // Sets the Username object in the MainLayout.razor page to the loggedInUser's full name
 
             NavigationManager.NavigateTo("idealist");

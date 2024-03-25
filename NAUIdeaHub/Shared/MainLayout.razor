@@ -23,9 +23,13 @@
                 }
                 else
                 {
-                    <MudText>
-                        Welcome @username <MudButton style="display: flex; justify-content: center; align-items: center;" OnClick="signOut" Color="Color.Primary">Sign out</MudButton>
-                    </MudText>
+                    <MudPaper Class="d-flex align-center flex-grow-1" Elevation="0">
+                        <MudPaper Class="d-flex flex-1" Elevation="0"><MudText>Welcome @username</MudText></MudPaper>
+                        <MudPaper Class="d-flex flex-1" Elevation="0"><MudButton style="display: flex; justify-content: center; align-items: center;" OnClick="signOut" Color="Color.Primary">Sign out</MudButton></MudPaper>
+                    </MudPaper>
+
+                    
+                    
                 }
             </MudItem>
         </MudGrid>

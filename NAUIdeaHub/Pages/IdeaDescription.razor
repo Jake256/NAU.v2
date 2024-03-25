@@ -4,33 +4,43 @@
 
 @if (currentIdea != null)
 {
-    <MudText><b>Idea name:</b> @currentIdea.Name</MudText>
-    <MudText><b>Idea Description: </b> @currentIdea.Description</MudText>
+    <MudGrid>
+        <MudItem xs="6">
+            <MudText><b>Idea name:</b> @currentIdea.Name</MudText>
+            <MudText><b>Idea Description: </b> @currentIdea.Description</MudText>
 
-    @if( liked )
-    {
-        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="unLike">Remove like</MudButton>
-    }
-    else
-    {
-        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="like">Like</MudButton>
-    }
+            @if( liked )
+            {
+                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="unLike">Remove like</MudButton>
+            }
+            else
+            {
+                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="like">Like</MudButton>
+            }
 
-    @if( favorited)
-    {
-        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="unFavorite">Remove Favorite</MudButton>
-    }
-    else
-    {
-        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="favorite">Favorite</MudButton>
-    }
+            @if( favorited)
+            {
+                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="unFavorite">Remove Favorite</MudButton>
+            }
+            else
+            {
+                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="favorite">Favorite</MudButton>
+            }
+        </MudItem>
+        <MudItem xs="6">
+            @if( loggedInUser != null && loggedInUser.IsAdmin)
+            {
+                <MudText>What would you like to do to this idea?</MudText>
+                <MudGrid>
+                    <MudItem><MudText>Close idea</MudText></MudItem>
+                    <MudItem><MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="close">Close</MudButton></MudItem>
+                </MudGrid>
 
-    @if( loggedInUser.IsAdmin)
-    {
-        <MudText>This user is an admin</MudText>
-    }
-    
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="changeURL">Change URL</MudButton>
 
+            }
+        </MudItem>
+    </MudGrid>
 }
 else
 {

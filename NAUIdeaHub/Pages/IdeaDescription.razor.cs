@@ -152,5 +152,15 @@ namespace NAUIdeaHub.Pages
                 favorited = false;
             }
         }
+
+        public void close()
+        {
+
+        }
+
+        public void changeURL()
+        {
+
+        }
     }
 }
