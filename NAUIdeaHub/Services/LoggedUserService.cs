@@ -1,4 +1,4 @@
-﻿using NAUCountryIdeaHub.Models;
+﻿using NAUIdeaHub.Models;
 
 namespace NAUIdeaHub.Services
 {

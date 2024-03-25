@@ -52,20 +52,18 @@
         }
     </MudTabPanel>
 </MudTabs>
-
-
-@if ( loggedInUser != null)
+@if (authenticatedUser != null)
 {
-    <MudText>
-        Email of logged in user is @loggedInUser.Email
-    </MudText>
+    <MudText>@authenticatedUser.Email</MudText>
 }
-else
-{
-    <MudText>You are currently logged out</MudText>
-}
-
-
 @code {
+
+    User? authenticatedUser;
+
+    private async Task GetAuthenticatedUser()
+    {
+        var result = await ProtectedSessionStore.GetAsync<User>("AuthenticatedUser");
+        authenticatedUser = result.Success ? result.Value : null;
+    }
 
 }

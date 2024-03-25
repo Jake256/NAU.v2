@@ -1,10 +1,10 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
-using NAUCountryIdeaHub.Configuration;
-using NAUCountryIdeaHub.Entities;
+using NAUIdeaHub.Configuration;
+using NAUIdeaHub.Entities;
 using static Dapper.SqlMapper;
 
-namespace NAUCountryIdeaHub.Repositories
+namespace NAUIdeaHub.Repositories
 {
     public class IdeaHubRepository : IIdeaHubRepository
     {
@@ -45,28 +45,28 @@ namespace NAUCountryIdeaHub.Repositories
             }
         }
 
-        //public async Task<IEnumerable<RequestEntity>> GetCompletedIdeasAsync()
-        //{
-        //    try
-        //    {
-        //        //var connectionString = _connectionString;
+        public async Task<IEnumerable<RequestEntity>> GetCompletedIdeasAsync()
+        {
+            try
+            {
+                //var connectionString = _connectionString;
 
-        //        var connection = new SqlConnection(ConnectionString);
-        //        await connection.OpenAsync();
+                var connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync();
 
-        //        var ideas = await connection.QueryAsync<RequestEntity>(SqlCommands.GetCompletedIdeas);
+                var ideas = await connection.QueryAsync<RequestEntity>(SqlCommands.GetCompletedIdeas);
 
-        //        //return our list of ideas from db
-        //        return ideas;
+                //return our list of ideas from db
+                return ideas;
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //can help with debugging if run into errors/exceptions
-        //        Console.WriteLine(ex.Message);
-        //        throw;
-        //    }
-        //}
+            }
+            catch (Exception ex)
+            {
+                //can help with debugging if run into errors/exceptions
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
 
         public async Task<IEnumerable<UserEntity>> GetUsersAsync()
         {

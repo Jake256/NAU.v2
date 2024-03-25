@@ -1,6 +1,4 @@
-﻿using NAUCountryIdeaHub.Models;
-
-namespace NAUIdeaHub.Services
+﻿namespace NAUIdeaHub.Services
 {
     public interface IMailService
     {
