@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using NAUCountryIdeaHub.Models;
-using NAUCountryIdeaHub.Services;
+using NAUIdeaHub.Models;
 using NAUIdeaHub.Services;
 
 namespace NAUIdeaHub.Pages
@@ -13,15 +12,10 @@ namespace NAUIdeaHub.Pages
 
         public List<Request> CompletedIdeas { get; set; } = new List<Request>();
 
-        
-
-        [Inject] private ILoggedUserService _loggedUser { get; set; }
-
-        public User loggedInUser;
-
-
         protected override async Task OnInitializedAsync()
         {
+            await GetAuthenticatedUser();
+
             try
             {
                 Ideas = await _service.GetIdeasAsync();
@@ -35,17 +29,6 @@ namespace NAUIdeaHub.Pages
                     }
                 }
 
-
-               
-                if( _loggedUser.getUser() != null)
-                {
-                    loggedInUser = _loggedUser.getUser();
-                }
-                else
-                {
-                    // Some code goes here
-                }
-
             }
             catch(Exception ex)
             {
@@ -54,4 +37,5 @@ namespace NAUIdeaHub.Pages
         }
 
     }
+
 }

@@ -1,6 +1,5 @@
 ﻿@page "/reporting"
 @using MudBlazor
-@using NAUCountryIdeaHub.Models
 @inject NAUIdeaHub.Services.IMailService MailService
 
 <PageTitle>Reporting</PageTitle>
@@ -9,15 +8,15 @@
 
 <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="TestEmail">Test Email</MudButton>
 
-<MudText>@test</MudText>
+<MudText>@authenticatedUser.FullName</MudText>
 
 @code {
-    string? test;
+    User? authenticatedUser;
 
     protected override async Task OnInitializedAsync()
     {
         var result = await ProtectedSessionStore.GetAsync<User>("AuthenticatedUser");
-        test = result.Success ? result.Value.FullName : null;
+        authenticatedUser = result.Success ? result.Value : null;
     }
 
 

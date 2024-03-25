@@ -1,6 +1,6 @@
 ﻿using System.Net.Mail;
 using System.Net;
-using NAUCountryIdeaHub.Models;
+using NAUIdeaHub.Models;
 using NAUIdeaHub.Models;
 
 namespace NAUIdeaHub.Services

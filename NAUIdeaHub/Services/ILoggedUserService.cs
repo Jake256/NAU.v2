@@ -1,4 +1,4 @@
-﻿using NAUCountryIdeaHub.Models;
+﻿using NAUIdeaHub.Models;
 
 /*
  * This class is for sharing the variable of who is logged in throughout the project.

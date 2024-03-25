@@ -2,11 +2,10 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Configuration;
 using MudBlazor.Services;
-using NAUCountryIdeaHub.Configuration;
-using NAUCountryIdeaHub.Repositories;
-using NAUCountryIdeaHub.Services;
-using NAUIdeaHub.Models;
+using NAUIdeaHub.Configuration;
+using NAUIdeaHub.Repositories;
 using NAUIdeaHub.Services;
+using NAUIdeaHub.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

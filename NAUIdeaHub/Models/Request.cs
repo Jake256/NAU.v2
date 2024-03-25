@@ -1,4 +1,4 @@
-﻿namespace NAUCountryIdeaHub.Models
+﻿namespace NAUIdeaHub.Models
 {
     public class Request
     {

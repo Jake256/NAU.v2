@@ -1,4 +1,5 @@
 ﻿@using MudBlazor
+@inject NavigationManager NavigationManager
 
 <MudNavMenu>
     <div class="nau-clickable-blue-text">
@@ -10,35 +11,35 @@
     <div class="nau-clickable-blue-text">
         <MudNavLink Href="idealist" Icon="@Icons.Material.Filled.Home">NAU Ideas</MudNavLink>
     </div>
-        @if (!@authenticated)
-        {
-            <div class="nau-clickable-blue-text">
-                <MudNavLink Href="auth" Icon="@Icons.Material.Filled.Security">Log In</MudNavLink>
-            </div>
-        }
         <div class="nau-clickable-blue-text">
             <MudNavLink Href="ideainfo" Icon="@Icons.Material.Filled.DensitySmall">Idea Details</MudNavLink>
         </div>
         <div class="nau-clickable-blue-text">
             <MudNavLink Href="newrequest" Icon="@Icons.Material.Filled.Add">Submit a New Request</MudNavLink>
         </div>
-        @if (@admin)
+        @if (authenticatedUser != null && authenticatedUser.IsAdmin)
         {
             <div class="nau-clickable-blue-text">
                 <MudNavLink Href="reporting" Icon="@Icons.Material.Filled.Beenhere">Reporting</MudNavLink>
             </div>
         }
-        @if (@authenticated)
-        {
-            <div class="nau-clickable-blue-text">
-                <MudNavLink Href="auth" Icon="@Icons.Material.Filled.Security">Sign Out</MudNavLink>
-            </div>
-        }
+        <div class="nau-clickable-blue-text">
+            <MudNavLink OnClick="SignOut" Icon="@Icons.Material.Filled.Security">Sign Out</MudNavLink>
+        </div>
 </MudNavMenu>
 
 @code {
     private bool authenticated = false;
     private bool admin = true;
+
+    User? authenticatedUser;
+
+    private async Task OnInitializedAsync()
+    {
+        var result = await ProtectedSessionStore.GetAsync<User>("AuthenticatedUser");
+        authenticatedUser = result.Success ? result.Value : null;
+    }
+
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
@@ -47,4 +48,12 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
+    private async Task SignOut()
+    {
+        await ProtectedSessionStore.DeleteAsync("AuthenticatedUser");
+        authenticatedUser = null;
+        NavigationManager.NavigateTo(NavigationManager.Uri, true);
+    }
+
 }

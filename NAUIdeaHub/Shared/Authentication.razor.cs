@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
-using NAUCountryIdeaHub.Services;
-using NAUCountryIdeaHub.Models;
 using NAUIdeaHub.Services;
+using NAUIdeaHub.Models;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace NAUIdeaHub.Shared
 {
@@ -11,11 +11,6 @@ namespace NAUIdeaHub.Shared
         // Allows us to change to a different page within the project.
         [Inject] private IIdeaHubService _service { get; set; }
         public IEnumerable<User> users { get; set; } = new List<User>();
-        [Inject] private ILoggedUserService _loggedUser { get; set; }
-        // Service that allows us to share who is logged in to the different pages
-
-        public User loggedInUser;
-        // Value to display the logged in users data
 
         protected override async Task OnInitializedAsync()
         {
@@ -33,24 +28,32 @@ namespace NAUIdeaHub.Shared
         /*
          * This method will update the LoggedUserService which will allow the other pages to access this data.
          */
-        public async void updateCurrentUser()
+        //public void updateCurrentUser()
+        //{
+        //    _loggedUser.setUser(users.FirstOrDefault(x => x.Email.Equals(usernameField.Value) && x.Password.Equals(passwordField.Value)));
+        //    // Sets the shared value in the service to whatever the user inputted
+
+        //    loggedInUser = _loggedUser.getUser();
+        //    // Updates the pages user value
+
+        //    //refreshes page
+        //    NavigationManager.NavigateTo(NavigationManager.Uri, true);
+
+        //}
+
+        public async void SetAuthenticatedUser(User user)
         {
-            _loggedUser.setUser(users.FirstOrDefault(x => x.Email.Equals(usernameField.Value) && x.Password.Equals(passwordField.Value)));
-            // Sets the shared value in the service to whatever the user inputted
+            await SetSessionAuthenticatedUser();
 
-            loggedInUser = _loggedUser.getUser();
-            // Updates the pages user value
-
+            //refreshes page
             NavigationManager.NavigateTo(NavigationManager.Uri, true);
-            // This will route to the idealist page after a successful login
-
-            await SetName();
 
         }
 
-        private async Task SetName()
+        private async Task SetSessionAuthenticatedUser()
         {
-            await ProtectedSessionStore.SetAsync("AuthenticatedUser", _loggedUser.getUser());
+            
+            await ProtectedSessionStore.SetAsync("AuthenticatedUser", users.FirstOrDefault(x => x.Email.Equals(usernameField.Value) && x.Password.Equals(passwordField.Value)));
         }
 
     }
