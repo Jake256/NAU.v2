@@ -14,6 +14,8 @@ namespace NAUIdeaHub.Pages
         public List<Request> CompletedIdeas { get; set; } = new List<Request>();
 
         public List<Request> YourIdeas { get; set; } = new List<Request>();
+        
+        public IEnumerable<User> Users { get; set; } = new List<User>();
 
         
 
@@ -26,6 +28,7 @@ namespace NAUIdeaHub.Pages
         {
             try
             {
+                Users = await _service.GetUsersAsync();
                 Ideas = await _service.GetIdeasAsync();
 
                 //CompletedIdeas = await _service.GetCompletedIdeasAsync(); 
