@@ -115,6 +115,27 @@ namespace NAUCountryIdeaHub.Repositories
             }
         }
 
+        public async Task<IEnumerable<RequestNoteEntity>> GetNotesAsync(int requestPK)
+        {
+            try
+            {
+                var connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync();
+
+                var requestNotes = await connection.QueryAsync<RequestNoteEntity>(SqlCommands.getNotes + requestPK);
+
+                //return our list of comments from db
+                return requestNotes;
+
+            }
+            catch (Exception ex)
+            {
+                //can help with debugging if run into errors/exceptions
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         public async void LikeIdea(int ideaPK, int userPK)
         {
             try
@@ -258,6 +279,11 @@ namespace NAUCountryIdeaHub.Repositories
                 FROM [dbo].[RequestActions]
                 WHERE RequestID = ";
 
+            public static readonly string getNotes =
+                @"SELECT *
+                 FROM [dbo].[RequestNote]
+                 WHERE RequestID = ";
+
             public static readonly string createLike =
                 @"INSERT INTO RequestActions
                  (UserID, RequestID, UpVote, Favorite)
@@ -279,6 +305,8 @@ namespace NAUCountryIdeaHub.Repositories
                 @"UPDATE RequestActions
                  SET Favorite = '{0}'
                  WHERE UserID = {1} AND RequestID = {2}";
+
+            
 
         }
     }

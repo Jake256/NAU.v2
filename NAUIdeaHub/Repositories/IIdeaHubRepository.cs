@@ -10,6 +10,8 @@ namespace NAUCountryIdeaHub.Repositories
 
         public Task<IEnumerable<RequestActionsEntity>> GetActionsAsync(int pk);
 
+        public Task<IEnumerable<RequestNoteEntity>> GetNotesAsync(int requestPK);
+
         public void LikeIdea(int ideaPK, int userPK);
 
         public void AlterLike(int ideaPK, int userPK, int value);

@@ -38,6 +38,12 @@ namespace NAUCountryIdeaHub.Services
             return actions.Adapt<IEnumerable<RequestActions>>().ToList();
         }
 
+        public async Task<IEnumerable<RequestNote>> GetNotesAsync(int requestPK)
+        {
+            var notes = await _repository.GetNotesAsync(requestPK);
+            return notes.Adapt<IEnumerable<RequestNote>>().ToList();
+        }
+
         // ============================= Beginning of methods for idea description =============================
 
         public void LikeIdea(int ideaPK, int userPK)

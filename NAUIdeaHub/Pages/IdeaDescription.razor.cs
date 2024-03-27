@@ -17,6 +17,8 @@ namespace NAUIdeaHub.Pages
         //IEnumerable to hold all of the ideas
         public IEnumerable<RequestActions> IdeaActions { get; set; }
         // IEnumerable to hold all of the actions on the ideas
+        public IEnumerable<RequestNote> IdeaNotes { get; set; }
+        public IEnumerable<User> Users { get; set; }
 
         [Inject] private ILoggedUserService _loggedUser { get; set; }
         // This will be used to grab the current logged in user
@@ -40,9 +42,10 @@ namespace NAUIdeaHub.Pages
         {
             try
             {
-
+                Users = await _service.GetUsersAsync();
                 Ideas = await _service.GetIdeasAsync();
                 IdeaActions = await _service.GetActionsAsync(int.Parse(id));
+                IdeaNotes = await _service.GetNotesAsync(int.Parse(id));
                 // Grabs all of the ideas and the actions on a single idea.
 
 
