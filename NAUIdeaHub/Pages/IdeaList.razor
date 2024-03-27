@@ -52,18 +52,7 @@
         }
     </MudTabPanel>
 </MudTabs>
-@if (authenticatedUser != null)
-{
-    <MudText>@authenticatedUser.Email</MudText>
-}
+
 @code {
-
-    User? authenticatedUser;
-
-    private async Task GetAuthenticatedUser()
-    {
-        var result = await ProtectedSessionStore.GetAsync<User>("AuthenticatedUser");
-        authenticatedUser = result.Success ? result.Value : null;
-    }
 
 }

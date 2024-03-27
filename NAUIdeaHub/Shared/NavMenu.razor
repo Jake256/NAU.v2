@@ -53,7 +53,7 @@
     {
         await ProtectedSessionStore.DeleteAsync("AuthenticatedUser");
         authenticatedUser = null;
-        NavigationManager.NavigateTo(NavigationManager.Uri, true);
+        NavigationManager.NavigateTo("/", true);
     }
 
 }

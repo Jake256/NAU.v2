@@ -35,24 +35,10 @@
 
                 @if (errorMessage)
                 {
-                    <MudText Typo="Typo.h6" Align="Align.Center" Color="Color.Error">
+                    <MudText Typo="Typo.body1" Align="Align.Center" Color="Color.Error">
                         The email or password you entered was incorrect. Please try again.
                     </MudText>
                 }
-
-                <!--
-                    MudTextFields are the text fields that will be taking the users input.
-                    T: type (string in both cases)
-                    Label: The given name for the text field
-                    ref: Reference to the code section below
-                    InputType: Changes how the information is viewed (Password replaces characters with *'s)
-                    Validation: The way that the form validates all data. We create a Func in the code section below with the
-                        same name as whats in the parenthesis (TestPassword or TestEmail).
-                    Required: Makes the text field a required input
-                    RequiredError: Will get sent to the errors object in the code section if the textfield is wrong.
-                    OnlyValidateIfDirty: Will only attempt to validate if the user enters something in. Won't attempt if the
-                        user simply clicks on it and clicks off.
-                -->
                 
             </MudForm>
             <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="LogIn">Log In</MudButton>

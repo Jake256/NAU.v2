@@ -7,14 +7,17 @@ namespace NAUIdeaHub.Pages
     public partial class IdeaList : ComponentBase
     {
         [Inject] private IIdeaHubService _service { get; set; }
+        [Inject] private ILoggedUserService protectedSessionStore { get; set; }
 
         public IEnumerable<Request> Ideas { get; set; } = new List<Request>();
 
         public List<Request> CompletedIdeas { get; set; } = new List<Request>();
 
+        public User? authenticatedUser;
+
         protected override async Task OnInitializedAsync()
         {
-            await GetAuthenticatedUser();
+            authenticatedUser = await protectedSessionStore.GetUserAsync();
 
             try
             {
