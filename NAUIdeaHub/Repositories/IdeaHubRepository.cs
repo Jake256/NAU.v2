@@ -222,7 +222,8 @@ namespace NAUCountryIdeaHub.Repositories
                 Description,
                 URL,
                 Resolution,
-                DateTimeSubmitted
+                DateTimeSubmitted, 
+                Requestor
                 FROM [dbo].[Request]";
             
             public static readonly string GetCompletedIdeas =
