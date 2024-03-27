@@ -9,6 +9,8 @@ namespace NAUIdeaHub.Pages
     {
         [Inject] private IIdeaHubService _service { get; set; }
 
+        [Inject] private NavigationManager navManager { get; set; }
+
         public IEnumerable<Request> Ideas { get; set; } = new List<Request>();
 
         public List<Request> CompletedIdeas { get; set; } = new List<Request>();
@@ -67,6 +69,19 @@ namespace NAUIdeaHub.Pages
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        /*
+         * This method will route to the idea description page when the user clicks on the learn more button in the card.
+         * This will then route to the page with the ideas id as the input.
+         * 
+         * Ex:
+         * We want to go to an idea with the id of 4. Once the user clicks the learn more button the route will look like this:
+         *      ideadescription/4
+         */
+        public void learnMore(int id)
+        {
+            navManager.NavigateTo("ideadescription/" + id);
         }
 
     }

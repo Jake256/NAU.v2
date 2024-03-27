@@ -1,6 +1,8 @@
-﻿@page "/ideadescription"
+﻿@page "/ideadescription/{id}"
 
 <h3>IdeaDescription</h3>
+
+<MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="goBack">Return to Idea List</MudButton>
 
 @if (currentIdea != null)
 {

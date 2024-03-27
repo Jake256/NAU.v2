@@ -2,11 +2,13 @@
 using NAUCountryIdeaHub.Models;
 using NAUCountryIdeaHub.Services;
 using NAUIdeaHub.Services;
+using System.Numerics;
 
 namespace NAUIdeaHub.Pages
 {
     public partial class IdeaDescription : ComponentBase
     {
+        [Inject] private NavigationManager navManager { get; set; }
 
         [Inject] private IIdeaHubService _service { get; set; }
         // This will be used to return all of the ideas and the actions on them
@@ -18,6 +20,9 @@ namespace NAUIdeaHub.Pages
 
         [Inject] private ILoggedUserService _loggedUser { get; set; }
         // This will be used to grab the current logged in user
+
+        [Parameter] public string id { get; set; }
+        // This will be used to grab the id from routing. We will query the database on this value
 
         public User loggedInUser;
         public Request currentIdea;
@@ -37,25 +42,23 @@ namespace NAUIdeaHub.Pages
             {
 
                 Ideas = await _service.GetIdeasAsync();
-                IdeaActions = await _service.GetActionsAsync(1);
+                IdeaActions = await _service.GetActionsAsync(int.Parse(id));
                 // Grabs all of the ideas and the actions on a single idea.
-                // Right now I'm just looking at the idea with the description of 1, later on we will pass the id
-                // value to this page.                
 
-                currentIdea = Ideas.FirstOrDefault(x => x.RequestID == 1);
+
+                currentIdea = Ideas.FirstOrDefault(x => x.RequestID == int.Parse(id));
                 // Grabs the idea that we are currently looking at.
-                // Again this is only referring to the idea with the id of 1, and will be improved later.
 
                 if (_loggedUser.getUser() != null)
                 {
                     loggedInUser = _loggedUser.getUser();
 
-                    if( IdeaActions.FirstOrDefault(x => x.UserID == loggedInUser.UserID && x.UpVote == true) != null )
+                    if (IdeaActions.FirstOrDefault(x => x.UserID == loggedInUser.UserID && x.UpVote == true) != null)
                     {
                         liked = true;
                         existsInDB = true;
                     }
-                    else if(IdeaActions.FirstOrDefault(x => x.UserID == loggedInUser.UserID && x.UpVote == false) != null)
+                    else if (IdeaActions.FirstOrDefault(x => x.UserID == loggedInUser.UserID && x.UpVote == false) != null)
                     {
                         liked = false;
                         existsInDB = true;
@@ -110,7 +113,7 @@ namespace NAUIdeaHub.Pages
          */
         public void unLike()
         {
-            if(existsInDB) // Checks to see if the user exists.
+            if (existsInDB) // Checks to see if the user exists.
             {
                 _service.AlterLike(currentIdea.RequestID, loggedInUser.UserID, 0);
                 // Updates the database to remove the like from the users account
@@ -146,7 +149,7 @@ namespace NAUIdeaHub.Pages
          */
         public void unFavorite()
         {
-            if( existsInDB ) // Checks to see if the user exists in the database.
+            if (existsInDB) // Checks to see if the user exists in the database.
             {
                 _service.AlterFavorite(currentIdea.RequestID, loggedInUser.UserID, 0);
                 favorited = false;
@@ -161,6 +164,11 @@ namespace NAUIdeaHub.Pages
         public void changeURL()
         {
 
+        }
+
+        public void goBack()
+        {
+            navManager.NavigateTo("idealist");
         }
     }
 }
