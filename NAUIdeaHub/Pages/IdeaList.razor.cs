@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
-using NAUCountryIdeaHub.Models;
-using NAUCountryIdeaHub.Services;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using NAUIdeaHub.Models;
+using NAUIdeaHub.Services;
 using NAUIdeaHub.Services;
 
 namespace NAUIdeaHub.Pages
@@ -19,15 +20,15 @@ namespace NAUIdeaHub.Pages
         
         public IEnumerable<User> Users { get; set; } = new List<User>();
 
-        
+        [Inject] private ILoggedUserService protectedSessionStore { get; set; }
 
-        [Inject] private ILoggedUserService _loggedUser { get; set; }
-
-        public User loggedInUser;
+        public User? authenticatedUser;
 
 
         protected override async Task OnInitializedAsync()
         {
+            authenticatedUser = await protectedSessionStore.GetUserAsync();
+
             try
             {
                 Users = await _service.GetUsersAsync();
@@ -42,22 +43,11 @@ namespace NAUIdeaHub.Pages
                     }
                 }
 
-
-               
-                if (_loggedUser.getUser() != null)
-                {
-                    loggedInUser = _loggedUser.getUser();
-                }
-                else 
-                { 
-                    //some code goes here
-                }
-
-                if(loggedInUser != null)
+                if(authenticatedUser != null)
                 {
                     foreach(var x in Ideas)
                     {
-                        if(x.Requestor == loggedInUser.UserID)
+                        if(x.Requestor == authenticatedUser.UserID)
                         {
                             YourIdeas.Add(x);
                         }

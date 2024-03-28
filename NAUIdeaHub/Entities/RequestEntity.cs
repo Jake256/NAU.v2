@@ -1,6 +1,6 @@
 ﻿using Microsoft.Identity.Client;
 
-namespace NAUCountryIdeaHub.Entities
+namespace NAUIdeaHub.Entities
 {
     public class RequestEntity
     {

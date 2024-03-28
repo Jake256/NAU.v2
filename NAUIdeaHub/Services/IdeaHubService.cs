@@ -1,8 +1,8 @@
 ﻿using Mapster;
-using NAUCountryIdeaHub.Models;
-using NAUCountryIdeaHub.Repositories;
+using NAUIdeaHub.Models;
+using NAUIdeaHub.Repositories;
 
-namespace NAUCountryIdeaHub.Services
+namespace NAUIdeaHub.Services
 {
     public class IdeaHubService : IIdeaHubService
     {

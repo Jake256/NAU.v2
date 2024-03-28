@@ -1,27 +1,34 @@
-﻿using NAUCountryIdeaHub.Models;
+﻿using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using NAUIdeaHub.Models;
 
 namespace NAUIdeaHub.Services
 {
     public class LoggedUserService : ILoggedUserService
     {
-        public User loggedInUser;
-        // This value will hold the current users data
+        /*
+         * Creates and initializes the ProtectedSessionStore object
+         */
+        public ProtectedSessionStorage protectedSessionStore { get; set; }
+        public LoggedUserService(ProtectedSessionStorage protectedSessionStore)
+        {
+            this.protectedSessionStore = protectedSessionStore;
+        }
 
         /*
          * This method will return the current user logged in. If no one has logged in, then it will return null.
          */
-        public User getUser()
+        public async Task<User> GetUserAsync()
         {
-            return loggedInUser;
+            var result = await protectedSessionStore.GetAsync<User>("AuthenticatedUser");
+            return result.Success ? result.Value : null;
         }
 
         /*
-         * This method will mainly be used in Pages.Authentication.razor.cs
          * This method will set the currently logged in user from the inputted values.
          */
-        public void setUser( User user)
+        public async void SetUser(User user)
         {
-            loggedInUser = user;
+            await protectedSessionStore.SetAsync("AuthenticatedUser", user);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace NAUCountryIdeaHub.Configuration
+﻿namespace NAUIdeaHub.Configuration
 {
     public class ConnectionStringsConfig
     {

@@ -4,12 +4,11 @@
     <MudTabPanel Text="Your Ideas">
 
         <MudGrid>
-            @if (YourIdeas != null && loggedInUser != null)
+            @if (YourIdeas != null && authenticatedUser != null)
             {
 
                 @foreach (var x in YourIdeas)
                 {
-                    
                     <MudItem sm="6">
                         <MudCard>
                             <MudCardContent>
@@ -75,26 +74,26 @@
             
            @foreach(var x in Ideas)
            {
-                    <MudItem sm="6">
-            <MudCard>
-                <MudCardContent>
-                        <MudText><strong>@x.Name</strong></MudText><br />
-                        <MudText Typo="Typo.body2"><strong>Type: </strong>@x.Type</MudText>
-                        <MudText Typo="Typo.body2">
-                            <strong>Status: </strong><span>@(x.Closed ? "Closed" : "Open")</span>
-                        </MudText>
-                        <MudText Typo="Typo.body2"><strong>Description: </strong>@x.Description</MudText>
-                        <MudText Typo="Typo.body2"><strong>Resolution: </strong>@x.Resolution</MudText>
-                        <MudText Typo="Typo.body2"><strong>Submission Date: </strong>@x.DateTimeSubmitted</MudText>
-                        <MudText Typo="Typo.body2"><strong>Opened by: </strong>
-                        @Users.FirstOrDefault(y => y.UserID == x.Requestor)?.FullName
-                                </MudText>
-                </MudCardContent>
-                <MudCardActions>
-                                <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="() => learnMore(x.RequestID)">Learn More</MudButton>
-                </MudCardActions>
-            </MudCard>
-                    </MudItem>
+               <MudItem sm="6">
+                   <MudCard>
+                       <MudCardContent>
+                               <MudText><strong>@x.Name</strong></MudText><br />
+                               <MudText Typo="Typo.body2"><strong>Type: </strong>@x.Type</MudText>
+                               <MudText Typo="Typo.body2">
+                                   <strong>Status: </strong><span>@(x.Closed ? "Closed" : "Open")</span>
+                               </MudText>
+                               <MudText Typo="Typo.body2"><strong>Description: </strong>@x.Description</MudText>
+                               <MudText Typo="Typo.body2"><strong>Resolution: </strong>@x.Resolution</MudText>
+                               <MudText Typo="Typo.body2"><strong>Submission Date: </strong>@x.DateTimeSubmitted</MudText>
+                               <MudText Typo="Typo.body2"><strong>Opened by: </strong>
+                               @Users.FirstOrDefault(y => y.UserID == x.Requestor)?.FullName
+                                       </MudText>
+                       </MudCardContent>
+                       <MudCardActions>
+                                       <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="() => learnMore(x.RequestID)">Learn More</MudButton>
+                       </MudCardActions>
+                   </MudCard>
+                </MudItem>
             
            }
            }    

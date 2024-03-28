@@ -41,7 +41,7 @@
 
         </MudItem>
         <MudItem xs="6">
-            @if( loggedInUser != null && loggedInUser.IsAdmin)
+            @if (authenticatedUser != null && authenticatedUser.IsAdmin)
             {
                 <MudCard>
                     <MudCardContent>
@@ -74,7 +74,7 @@
                 <MudText>Submitted by: @Users.FirstOrDefault(x => x.UserID == i.Author).FullName</MudText>
             </MudCardContent>
             <MudCardActions>
-                @if (loggedInUser != null && loggedInUser.IsAdmin)
+                @if (authenticatedUser != null && authenticatedUser.IsAdmin)
                 {
                     <MudButton Variant="Variant.Filled" Color="Color.Primary">Edit Comment</MudButton>
                     <MudButton Variant="Variant.Filled" Color="Color.Error">Remove Comment</MudButton>

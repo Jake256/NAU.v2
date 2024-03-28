@@ -1,4 +1,4 @@
-﻿@using System.Net.Http
+﻿﻿@using System.Net.Http
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
@@ -8,4 +8,7 @@
 @using Microsoft.JSInterop
 @using NAUIdeaHub
 @using NAUIdeaHub.Shared
+@using NAUIdeaHub.Models
 @using MudBlazor;
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage ProtectedSessionStore

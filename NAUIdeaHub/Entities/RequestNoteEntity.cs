@@ -1,4 +1,4 @@
-﻿namespace NAUCountryIdeaHub.Entities
+﻿namespace NAUIdeaHub.Entities
 {
     public class RequestNoteEntity
     {

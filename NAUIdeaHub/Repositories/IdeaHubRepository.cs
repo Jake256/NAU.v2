@@ -1,12 +1,12 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
-using NAUCountryIdeaHub.Configuration;
-using NAUCountryIdeaHub.Entities;
+using NAUIdeaHub.Configuration;
+using NAUIdeaHub.Entities;
 using System.ComponentModel;
 using System.Numerics;
 using static Dapper.SqlMapper;
 
-namespace NAUCountryIdeaHub.Repositories
+namespace NAUIdeaHub.Repositories
 {
     public class IdeaHubRepository : IIdeaHubRepository
     {

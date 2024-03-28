@@ -1,4 +1,4 @@
-﻿@using MudBlazor
+﻿﻿@using MudBlazor
 @inherits LayoutComponentBase
 
 <PageTitle>NAU Country Idea Hub</PageTitle>
@@ -6,72 +6,54 @@
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
-    
-<CascadingValue Value="this">
-    <MudLayout>
-        <MudGrid>
-            <MudItem xs="2"></MudItem>
-            <MudItem xs="8">
-                <div style="display: flex; justify-content: center; align-items: center; background-color: #FFFFFF;">
-                    <img src="nau.png" alt="NAU Country" />
-                </div>
-            </MudItem>
+
+<MudLayout>
+    <MudGrid>
+        <MudItem xs="2"></MudItem>
+        <MudItem xs="8">
+            <div style="display: flex; justify-content: center; align-items: center; background-color: #FFFFFF;">
+                <img src="nau.png" alt="NAU Country" />
+            </div>
+        </MudItem>
+        @if (authenticatedUser != null)
+        {
             <MudItem xs="2" Class="py-8">
-                @if( username == null)
-                {
-                    <MudButton style="display: flex; justify-content: center; align-items: center;" Href="/auth" Color="Color.Primary">Log in</MudButton>
-                }
-                else
-                {
-                    <MudPaper Class="d-flex align-center flex-grow-1" Elevation="0">
-                        <MudPaper Class="d-flex flex-1" Elevation="0"><MudText>Welcome @username</MudText></MudPaper>
-                        <MudPaper Class="d-flex flex-1" Elevation="0"><MudButton style="display: flex; justify-content: center; align-items: center;" OnClick="signOut" Color="Color.Primary">Sign out</MudButton></MudPaper>
-                    </MudPaper>
-
-                    
-                    
-                }
+                <MudButton style="display: flex; justify-content: center; align-items: center;" Color="Color.Primary">Welcome, @authenticatedUser.FirstName</MudButton>
             </MudItem>
-        </MudGrid>
-    
-        <div style="display: flex; justify-content: left; align-items: center; background-color: #00AEEF;">
-            <MudButton OnClick="@ToggleDrawer" Color="Color.Primary"><img src="NavMenuToggle.png" alt="NAU Country" width="25"/></MudButton>
-        </div>
+        }
+    </MudGrid>
 
-        <MudDrawer Open="@openNavMenu">
-            <MudDrawerHeader>
-                <MudText>NAU Country Idea Hub</MudText>
-            </MudDrawerHeader>
-            <NavMenu />
-        </MudDrawer>
+    <div style="display: flex; justify-content: left; align-items: center; background-color: #00AEEF;">
+        <MudButton OnClick="@ToggleDrawer" Color="Color.Primary"><img src="NavMenuToggle.png" alt="NAU Country" width="25" /></MudButton>
+    </div>
 
-        <MudMainContent>
-            @Body
-        </MudMainContent>
-    </MudLayout>
-</CascadingValue>
+    <MudDrawer Open="@openNavMenu">
+        <MudDrawerHeader>
+            <MudText>NAU Country Idea Hub</MudText>
+        </MudDrawerHeader>
+        <NavMenu />
+    </MudDrawer>
 
-@code{
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+@code {
 
     bool openNavMenu = false;
-
-    private string username;
-    // This object will present the value on the webpage
-
-    public string Username // This value talks to the Authentication.razor.cs page
-    {
-        get => username; // Sets the object username to the value sent form Authentication.razor.cs
-        set
-        {
-            username = value;
-            InvokeAsync(() => StateHasChanged());
-            // Rerenders the MainLayout.razor page updating the banner
-        }
-    }
+    User? authenticatedUser;
 
     void ToggleDrawer()
     {
         openNavMenu = !openNavMenu;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await ProtectedSessionStore.GetAsync<User>("AuthenticatedUser");
+        authenticatedUser = result.Success ? result.Value : null;
+
     }
 
 }

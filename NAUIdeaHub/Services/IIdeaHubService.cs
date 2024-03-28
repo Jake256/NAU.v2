@@ -1,6 +1,6 @@
-﻿using NAUCountryIdeaHub.Models;
+﻿using NAUIdeaHub.Models;
 
-namespace NAUCountryIdeaHub.Services
+namespace NAUIdeaHub.Services
 {
     public interface IIdeaHubService
     {

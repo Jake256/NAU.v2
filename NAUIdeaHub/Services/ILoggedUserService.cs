@@ -1,17 +1,16 @@
-﻿using NAUCountryIdeaHub.Models;
+﻿using NAUIdeaHub.Models;
 
 /*
- * This class is for sharing the variable of who is logged in throughout the project.
- * This is the interface for the main LoggedUserService class.
- * This class will outline what is all needed in the LoggedUserService class.
+ * This class is for sharing the ProtectedSessionStorage which stores the user object of the signed in user.
+ * This is the interface for the LoggedUserService class.
  */
 
 namespace NAUIdeaHub.Services
 {
     public interface ILoggedUserService
     {
-        public User getUser();
+        public Task<User> GetUserAsync();
 
-        public void setUser(User user);
+        public void SetUser(User user);
     }
 }

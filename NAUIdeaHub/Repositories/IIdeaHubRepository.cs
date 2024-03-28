@@ -1,6 +1,6 @@
-﻿using NAUCountryIdeaHub.Entities;
+﻿using NAUIdeaHub.Entities;
 
-namespace NAUCountryIdeaHub.Repositories
+namespace NAUIdeaHub.Repositories
 {
     public interface IIdeaHubRepository
     {
