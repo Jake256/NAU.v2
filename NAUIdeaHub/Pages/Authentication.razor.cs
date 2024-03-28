@@ -2,11 +2,17 @@
 using NAUCountryIdeaHub.Services;
 using NAUCountryIdeaHub.Models;
 using NAUIdeaHub.Services;
+using NAUIdeaHub.Shared;
 
 namespace NAUIdeaHub.Pages
 {
     public partial class Authentication : ComponentBase
     {
+        [CascadingParameter]
+        public MainLayout Layout {  get; set; }
+        // This value is a link to the MainLayout.razor page. This will allow us to update the page after the user 
+        // logs in.
+
         [Inject] private NavigationManager NavigationManager { get; set; }
         // Allows us to change to a different page within the project.
         [Inject] private IIdeaHubService _service { get; set; }
@@ -40,6 +46,9 @@ namespace NAUIdeaHub.Pages
 
             loggedInUser = _loggedUser.getUser();
             // Updates the pages user value
+
+            Layout.Username = loggedInUser.FirstName;
+            // Sets the Username object in the MainLayout.razor page to the loggedInUser's full name
 
             NavigationManager.NavigateTo("idealist");
             // This will route to the idealist page after a successful login

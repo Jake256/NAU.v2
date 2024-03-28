@@ -1,0 +1,95 @@
+﻿@page "/ideadescription/{id}"
+
+@if (currentIdea != null)
+{
+    <MudGrid>
+        <MudItem xs="6">
+
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h6">@currentIdea.Name</MudText><br />
+                    <MudText Typo="Typo.body2"><strong>Type: </strong>@currentIdea.Type</MudText>
+                        <MudText Typo="Typo.body2">
+                            <strong>Status: </strong><span>@(currentIdea.Closed ? "Closed" : "Open")</span>
+                        </MudText>
+                        <MudText Typo="Typo.body2"><strong>Description: </strong>@currentIdea.Description</MudText>
+                        <MudText Typo="Typo.body2"><strong>Resolution: </strong>@currentIdea.Resolution</MudText>
+                        <MudText Typo="Typo.body2"><strong>Submission Date: </strong>@currentIdea.DateTimeSubmitted</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    @if (liked)
+                    {
+                        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="unLike">Remove like</MudButton>
+                    }
+                    else
+                    {
+                        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="like">Like</MudButton>
+                    }
+
+                    @if (favorited)
+                    {
+                        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="unFavorite">Remove Favorite</MudButton>
+                    }
+                    else
+                    {
+                        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="favorite">Favorite</MudButton>
+                    }
+
+                    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="goBack">Return to Idea List</MudButton>
+                </MudCardActions>
+            </MudCard>
+
+        </MudItem>
+        <MudItem xs="6">
+            @if( loggedInUser != null && loggedInUser.IsAdmin)
+            {
+                <MudCard>
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6">What would you like to do to this idea?</MudText> <br />
+
+                        <MudGrid>
+                            <MudItem><MudText>Close idea</MudText></MudItem>
+                            <MudItem><MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="close">Close</MudButton></MudItem>
+                        </MudGrid>
+                        <br />
+
+                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="changeURL">Change URL</MudButton>
+                    </MudCardContent>
+                </MudCard>
+            }
+        </MudItem>
+    </MudGrid>
+
+    <br/>
+    <br/>
+
+    <MudText Typo="Typo.h5">Comments</MudText>
+
+    @foreach( var i in IdeaNotes )
+    {
+        <MudCard>
+            <MudCardContent>
+                <MudText>@i.Description</MudText>
+                <MudText>@i.DateTime</MudText>
+                <MudText>Submitted by: @Users.FirstOrDefault(x => x.UserID == i.Author).FullName</MudText>
+            </MudCardContent>
+            <MudCardActions>
+                @if (loggedInUser != null && loggedInUser.IsAdmin)
+                {
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary">Edit Comment</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Error">Remove Comment</MudButton>
+
+                }
+            </MudCardActions>
+        </MudCard>
+        <br/>
+    }
+}
+else
+{
+    <MudText>no current idea</MudText>
+}
+
+@code {
+
+}
