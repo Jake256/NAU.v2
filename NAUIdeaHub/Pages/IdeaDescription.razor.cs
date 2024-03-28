@@ -72,6 +72,11 @@ namespace NAUIdeaHub.Pages
                         existsInDB = false;
                     }
 
+                    if (IdeaActions.FirstOrDefault(x => x.UserID == authenticatedUser.UserID && x.Favorite == true) != null)
+                    {
+                        favorited = true;
+                    }
+
                     // Grabs the current user and checks to see if they already liked the idea or not.
                 }
                 else
