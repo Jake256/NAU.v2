@@ -38,6 +38,12 @@ namespace NAUIdeaHub.Services
             return actions.Adapt<IEnumerable<RequestActions>>().ToList();
         }
 
+        public async Task<IEnumerable<RequestActions>> GetAllActionsAsync()
+        {
+            var allActions = await _repository.GetAllActionsAsync();
+            return allActions.Adapt<IEnumerable<RequestActions>>().ToList();
+        }
+
         public async Task<IEnumerable<RequestNote>> GetNotesAsync(int requestPK)
         {
             var notes = await _repository.GetNotesAsync(requestPK);

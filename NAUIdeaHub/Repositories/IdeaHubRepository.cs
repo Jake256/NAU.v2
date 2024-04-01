@@ -115,6 +115,29 @@ namespace NAUIdeaHub.Repositories
             }
         }
 
+        public async Task<IEnumerable<RequestActionsEntity>> GetAllActionsAsync()
+        {
+            try
+            {
+                //var connectionString = _connectionString;
+
+                var connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync();
+
+                var allActions = await connection.QueryAsync<RequestActionsEntity>(SqlCommands.GetAllActions);
+
+                //return our list of ideas from db
+                return allActions;
+
+            }
+            catch (Exception ex)
+            {
+                //can help with debugging if run into errors/exceptions
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         public async Task<IEnumerable<RequestNoteEntity>> GetNotesAsync(int requestPK)
         {
             try
@@ -278,6 +301,15 @@ namespace NAUIdeaHub.Repositories
                  Favorite
                 FROM [dbo].[RequestActions]
                 WHERE RequestID = ";
+
+            public static readonly string GetAllActions =
+                @"SELECT
+                 UserID,
+                 RequestID,
+                 UpVote,
+                 Favorite
+                FROM [dbo].[RequestActions]";
+                
 
             public static readonly string getNotes =
                 @"SELECT *

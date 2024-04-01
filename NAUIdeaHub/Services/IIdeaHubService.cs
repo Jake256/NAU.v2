@@ -8,6 +8,8 @@ namespace NAUIdeaHub.Services
         //public Task<IEnumerable<Request>> GetCompletedIdeasAsync();
         public Task<IEnumerable<User>> GetUsersAsync();
 
+        public Task<IEnumerable<RequestActions>> GetAllActionsAsync();
+
         public Task<IEnumerable<RequestActions>> GetActionsAsync(int pk);
 
         public Task<IEnumerable<RequestNote>> GetNotesAsync(int requestPK);

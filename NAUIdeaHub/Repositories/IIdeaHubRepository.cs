@@ -20,5 +20,7 @@ namespace NAUIdeaHub.Repositories
 
         public void AlterFavorite(int ideaPK, int userPK, int value);
 
+        public Task<IEnumerable<RequestActionsEntity>> GetAllActionsAsync();
+
     }
 }

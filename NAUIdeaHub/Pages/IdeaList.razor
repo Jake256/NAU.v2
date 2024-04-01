@@ -72,7 +72,7 @@
         <MudGrid>
         @if(Ideas!=null){
             
-           @foreach(var x in Ideas)
+           @foreach(var x in sortedIdeas)
            {
                <MudItem sm="6">
                    <MudCard>
@@ -180,6 +180,80 @@
             </RowTemplate>
         </MudTable>
         }*@
+
+    <MudTabPanel Text="Up Voted Ideas">
+
+        <MudGrid>
+            @if (upVotedIdeas != null && authenticatedUser != null)
+            {
+
+                @foreach (var x in upVotedIdeas)
+                {
+                    <MudItem sm="6">
+                        <MudCard>
+                            <MudCardContent>
+                                <MudText><strong>@x.Name</strong></MudText><br />
+                                <MudText Typo="Typo.body2"><strong>Type: </strong>@x.Type</MudText>
+                                <MudText Typo="Typo.body2">
+                                    <strong>Status: </strong><span>@(x.Closed ? "Closed" : "Open")</span>
+                                </MudText>
+                                <MudText Typo="Typo.body2"><strong>Description: </strong>@x.Description</MudText>
+                                <MudText Typo="Typo.body2"><strong>Resolution: </strong>@x.Resolution</MudText>
+                                <MudText Typo="Typo.body2"><strong>Submission Date: </strong>@x.DateTimeSubmitted</MudText>
+                                <MudText Typo="Typo.body2">
+                                    <strong>Opened by: </strong>
+                                    @Users.FirstOrDefault(y => y.UserID == x.Requestor)?.FullName
+                                </MudText>
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="() => learnMore(x.RequestID)">Learn More</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </MudItem>
+
+
+                }
+            }
+        </MudGrid>
+
+    </MudTabPanel>
+
+     <MudTabPanel Text="Favorited Ideas">
+
+        <MudGrid>
+            @if (favoritedIdeas != null && authenticatedUser != null)
+            {
+
+                @foreach (var x in favoritedIdeas)
+                {
+                    <MudItem sm="6">
+                        <MudCard>
+                            <MudCardContent>
+                                <MudText><strong>@x.Name</strong></MudText><br />
+                                <MudText Typo="Typo.body2"><strong>Type: </strong>@x.Type</MudText>
+                                <MudText Typo="Typo.body2">
+                                    <strong>Status: </strong><span>@(x.Closed ? "Closed" : "Open")</span>
+                                </MudText>
+                                <MudText Typo="Typo.body2"><strong>Description: </strong>@x.Description</MudText>
+                                <MudText Typo="Typo.body2"><strong>Resolution: </strong>@x.Resolution</MudText>
+                                <MudText Typo="Typo.body2"><strong>Submission Date: </strong>@x.DateTimeSubmitted</MudText>
+                                <MudText Typo="Typo.body2">
+                                    <strong>Opened by: </strong>
+                                    @Users.FirstOrDefault(y => y.UserID == x.Requestor)?.FullName
+                                </MudText>
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="() => learnMore(x.RequestID)">Learn More</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </MudItem>
+
+
+                }
+            }
+        </MudGrid>
+
+    </MudTabPanel>
     
 </MudTabs>
 
