@@ -2,7 +2,7 @@
 
 <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
     <MudTabPanel Text="Your Ideas">
-
+        
         <MudGrid>
             @if (YourIdeas != null && authenticatedUser != null)
             {
@@ -69,6 +69,19 @@
         }*@
     
     <MudTabPanel Text="All Ideas">
+        <MudItem Class="pa-3" sm="6">
+            <MudText><strong>Search:</strong></MudText>
+            <MudTextField ShrinkLabel @bind-Value="searchValue" Placeholder="Enter name or description" Variant="Variant.Text"></MudTextField>
+            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Info" DisableElevation="true" OnClick="searchIdeas">Search</MudButton>
+        </MudItem>
+        
+        <MudItem Class="pa-3" sm="6">
+            <MudText><strong>Filter By Date:</strong></MudText>
+            <MudDatePicker Label="Start Date" Editable="true" @bind-Date="startDate" Placeholder="Select Date" DisableToolbar="true" />
+            <MudDatePicker Label="End Date" Editable="true" @bind-Date="endDate" Placeholder="Select Date" DisableToolbar="true" />
+            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Info" DisableElevation="true">Filter</MudButton>
+        </MudItem>
+        
         <MudGrid>
         @if(Ideas!=null){
             
@@ -259,5 +272,7 @@
 
 
 @code {
-
+    DateTime? startDate;
+    DateTime? endDate; // may need to set to null?
+    public string searchValue = null;
 }

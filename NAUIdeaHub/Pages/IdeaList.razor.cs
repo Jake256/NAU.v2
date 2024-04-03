@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.IdentityModel.Tokens;
 using NAUIdeaHub.Models;
 using NAUIdeaHub.Services;
 using NAUIdeaHub.Services;
@@ -118,5 +119,27 @@ namespace NAUIdeaHub.Pages
             navManager.NavigateTo("ideadescription/" + id);
         }
 
+        //public void searchIdeas(string searchString)
+        //{
+        //    foreach(Request x in sortedIdeas)
+        //    {
+        //        if(!string.IsNullOrEmpty(searchString) && !x.Name.Contains(searchString)){
+        //            sortedIdeas.Remove(x); // remove x, name does not contain search string
+        //        }
+        //    }
+        //}
+
+        public void searchIdeas()
+        {
+            foreach (Request x in sortedIdeas.ToList())
+            {
+                if (!searchValue.IsNullOrEmpty() && 
+                    !x.Name.Contains(searchValue, StringComparison.OrdinalIgnoreCase) && 
+                    !x.Description.Contains(searchValue, StringComparison.OrdinalIgnoreCase))
+                {
+                    sortedIdeas.Remove(x); // Remove x, name or description does not contain search string
+                }
+            }
+        }
     }
 }
