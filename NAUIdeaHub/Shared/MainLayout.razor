@@ -3,7 +3,7 @@
 
 <PageTitle>NAU Country Idea Hub</PageTitle>
 
-<MudThemeProvider />
+<MudThemeProvider Theme="NAUTheme"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -18,7 +18,7 @@
         @if (authenticatedUser != null)
         {
             <MudItem xs="2" Class="py-8">
-                <MudButton style="display: flex; justify-content: center; align-items: center;" Color="Color.Primary">Welcome, @authenticatedUser.FirstName</MudButton>
+                <MudText style="display: flex; justify-content: center; align-items: center;" Color="Color.Dark">WELCOME, @authenticatedUser.FirstName.ToUpper()</MudText>
             </MudItem>
         }
     </MudGrid>
@@ -41,6 +41,15 @@
 
 @code {
 
+    MudTheme NAUTheme = new MudTheme()
+    {
+        Palette = new PaletteLight()
+        {
+            Primary = Colors.LightBlue.Accent3,
+            Info = Colors.LightBlue.Accent3
+        }
+    };
+
     bool openNavMenu = false;
     User? authenticatedUser;
 
@@ -55,5 +64,7 @@
         authenticatedUser = result.Success ? result.Value : null;
 
     }
+
+
 
 }

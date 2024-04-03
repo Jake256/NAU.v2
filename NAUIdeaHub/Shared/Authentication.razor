@@ -5,9 +5,9 @@
 @inherits LayoutComponentBase
 
 
-<PageTitle>Log In</PageTitle>
+<PageTitle>Idea Hub - Log In</PageTitle>
 
-<MudThemeProvider />
+<MudThemeProvider Theme="NAUTheme"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -48,6 +48,18 @@
 </MudGrid>
 
 @code {
+
+    MudTheme NAUTheme = new MudTheme()
+    {
+        Palette = new PaletteLight()
+        {
+                Primary = Colors.LightBlue.Accent3,
+                Info = Colors.LightBlue.Accent3
+
+        }
+    };
+    
+
     bool errorMessage = false;
     string[] errors = { };
     // Will hold any error message created. Not currently displayed on the webpage

@@ -247,6 +247,25 @@ namespace NAUIdeaHub.Repositories
             }
         }
 
+        /*
+         * Returns requests by the requesting user
+         */
+        public async Task<IEnumerable<RequestEntity>> GetRequestsByUserAsync(int userId)
+        {
+            try
+            {
+                var connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync();
+                var requests = await connection.QueryAsync<RequestEntity>(String.Format(SqlCommands.getRequestsByUser, userId));
+                return requests;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         private static class SqlCommands
         {
            
@@ -338,7 +357,10 @@ namespace NAUIdeaHub.Repositories
                  SET Favorite = '{0}'
                  WHERE UserID = {1} AND RequestID = {2}";
 
-            
+            public static readonly string getRequestsByUser =
+                @"SELECT *
+                FROM [dbo].[Request]
+                WHERE Requestor = {0}";
 
         }
     }

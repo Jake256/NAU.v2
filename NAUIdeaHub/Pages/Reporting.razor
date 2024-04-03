@@ -3,8 +3,36 @@
 
 <PageTitle>Reporting</PageTitle>
 
-<h3>Reporting</h3>
+@if(authenticatedUser != null){
+    
+        <MudText Typo="Typo.h6" Align="Align.Center">Activity for @authenticatedUser.FullName.ToUpper()</MudText>
+
+        <MudGrid Spacing="2" Justify="Justify.Center">
+            <MudItem sm="8">
+                <MudCard>
+                    <MudCardContent>
+                        <MudText Typo="Typo.body1">Open Ideas</MudText>
+                        @foreach(var request in requests)
+                        {
+                            <MudLink OnClick="() => GoToRequestDetails(request.RequestID)">@request.Name</MudLink>
+                            <MudText>@request.Description</MudText>
+                            @if (request.URL != null)
+                            {
+                                <MudText>@request.URL</MudText>
+                            }
+                            <MudText>@request.DateTimeSubmitted</MudText>
+                            
+                        }
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>    
+
+}
+
 
 @code {
+
+
 
 }
