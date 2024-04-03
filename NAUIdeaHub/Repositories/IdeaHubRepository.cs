@@ -2,9 +2,12 @@
 using Microsoft.Extensions.Options;
 using NAUIdeaHub.Configuration;
 using NAUIdeaHub.Entities;
+using NAUIdeaHub.Models;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Numerics;
 using static Dapper.SqlMapper;
+using static MudBlazor.Colors;
 
 namespace NAUIdeaHub.Repositories
 {
@@ -224,6 +227,68 @@ namespace NAUIdeaHub.Repositories
             }
         }
 
+        public async void AddComment(int ideaPK, string comment, int userPK)
+        {
+            try
+            {
+                var connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync();
+
+                var requestActions = await connection.QueryAsync<RequestActionsEntity>(String.Format(SqlCommands.addComment, ideaPK, comment, userPK));
+                // Uses the String class Format() method which will allow us to insert in the values needed for the query.
+                // ideaPK states what idea the comment is for, comment is the comment the user wants to add to the idea, 
+                // and userPK is the user that is leaving the comment.
+
+            }
+            catch (Exception ex)
+            {
+                //can help with debugging if run into errors/exceptions
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        public async void RemoveComment(int commentID)
+        {
+            try
+            {
+                var connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync();
+
+                var requestActions = await connection.QueryAsync<RequestActionsEntity>(SqlCommands.removeComment + commentID);
+                // Uses the SQL query to remove a certain comment. We are appending on the comment's id to the end of the 
+                // addComment query which will finish the WHERE statement that was built
+
+            }
+            catch (Exception ex)
+            {
+                //can help with debugging if run into errors/exceptions
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        public async void CloseIdea(int ideaID, string resolution)
+        {
+            try
+            {
+                var connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync();
+
+                var requestActions = await connection.QueryAsync<RequestActionsEntity>(String.Format(SqlCommands.closeIdea, resolution, ideaID));
+                // Uses the String class Format() method which will allow us to insert in the values needed for the query.
+                // resolution will be the string comment stating what the resolution of the idea was, and ideaID is used to
+                // update only the needed idea instead of all ideas in the table
+
+            }
+            catch (Exception ex)
+            {
+                //can help with debugging if run into errors/exceptions
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         private static class SqlCommands
         {
            
@@ -306,8 +371,20 @@ namespace NAUIdeaHub.Repositories
                  SET Favorite = '{0}'
                  WHERE UserID = {1} AND RequestID = {2}";
 
-            
+            public static readonly string addComment =
+                @"INSERT INTO RequestNote
+                 (RequestID, Description, Author)
+                 VALUES
+                 ({0}, {1}, {2})";
 
+            public static readonly string removeComment =
+                @"DELETE FROM RequestNote
+                 WHERE RequestNoteID = ";
+
+            public static readonly string closeIdea =
+                @"UPDATE Request
+                 SET Closed = 1, Resolution = {0}
+                 WHERE RequestID = {1}";
         }
     }
 }

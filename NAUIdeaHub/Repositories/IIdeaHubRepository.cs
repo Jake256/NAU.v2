@@ -20,5 +20,11 @@ namespace NAUIdeaHub.Repositories
 
         public void AlterFavorite(int ideaPK, int userPK, int value);
 
+        public void AddComment(int ideaID, string comment, int userID);
+
+        public void RemoveComment(int commentID);
+
+        public void CloseIdea(int ideaID, string resolution);
+
     }
 }
