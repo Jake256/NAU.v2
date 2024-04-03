@@ -4,15 +4,21 @@
 <PageTitle>Reporting</PageTitle>
 
 @if(authenticatedUser != null){
-    
-        <MudText Typo="Typo.h6" Align="Align.Center">Activity for @authenticatedUser.FullName.ToUpper()</MudText>
 
+        @if (authenticatedUser.IsAdmin)
+        {
+            @* <MudAutocomplete T="string" Label="US States" @bind-Value="value" SearchFunc="@Search" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" /> *@
+        }
+        <MudText Typo="Typo.h6" Align="Align.Center">Requests for @authenticatedUser.FullName.ToUpper()</MudText>
+        <MudText Typo="Typo.body1" Align="Align.Center">@authenticatedUser.Email</MudText>
+        <br />
         <MudGrid Spacing="2" Justify="Justify.Center">
             <MudItem sm="8">
                 <MudCard>
                     <MudCardContent>
-                        <MudText Typo="Typo.body1">Open Ideas</MudText>
-                        @foreach(var request in requests)
+                    <MudText Typo="Typo.body1"><strong>Open Requests</strong></MudText>
+                        <br />
+                        @foreach(var request in openRequests)
                         {
                             <MudLink OnClick="() => GoToRequestDetails(request.RequestID)">@request.Name</MudLink>
                             <MudText>@request.Description</MudText>
@@ -20,8 +26,26 @@
                             {
                                 <MudText>@request.URL</MudText>
                             }
-                            <MudText>@request.DateTimeSubmitted</MudText>
-                            
+                            <MudText>Submitted: @request.DateTimeSubmitted</MudText>                     
+                        }
+                    </MudCardContent>
+                </MudCard>
+                <br />
+                <MudCard>
+                    <MudCardContent>
+                        <MudText Typo="Typo.body1"><strong>Closed Requests</strong></MudText>
+                        <br />
+                        @foreach (var request in closedRequests)
+                        {
+                            <MudLink OnClick="() => GoToRequestDetails(request.RequestID)">@request.Name</MudLink>
+                            <MudText>@request.Description</MudText>
+                            @if (request.URL != null)
+                            {
+                                <MudText>@request.URL</MudText>
+                            }
+                            <MudText>Submitted: @request.DateTimeSubmitted</MudText>
+                            <MudText>Closed: @request.DateTimeResolved</MudText>
+                            <MudText>Resolution: @request.Resolution</MudText>
                         }
                     </MudCardContent>
                 </MudCard>
