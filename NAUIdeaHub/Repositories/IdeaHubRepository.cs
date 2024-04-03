@@ -270,16 +270,16 @@ namespace NAUIdeaHub.Repositories
                 Requestor
                 FROM [dbo].[Request]";
             
-            public static readonly string GetCompletedIdeas =
-               @"SELECT
-                Name,
-                Type,
-                Closed,
-                Description,
-                URL,
-                Resolution,
-                DateTimeSubmitted
-                FROM [dbo].[Request] WHERE Closed = 1";
+            //public static readonly string GetCompletedIdeas =
+            //   @"SELECT
+            //    Name,
+            //    Type,
+            //    Closed,
+            //    Description,
+            //    URL,
+            //    Resolution,
+            //    DateTimeSubmitted
+            //    FROM [dbo].[Request] WHERE Closed = 1";
 
             public static readonly string GetUsers =
                 @"SELECT
