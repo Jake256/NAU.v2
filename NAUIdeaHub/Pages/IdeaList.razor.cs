@@ -45,13 +45,13 @@ namespace NAUIdeaHub.Pages
                 Ideas = await _service.GetIdeasAsync();
                 allActions = await _service.GetAllActionsAsync();
 
-                var ideasWithFavoritesCount = Ideas.Select(idea => new {
+                var ideasWithUpVotesCount = Ideas.Select(idea => new {
                     Idea = idea,
-                    FavoritesCount = allActions.Count(action => action.RequestID == idea.RequestID && action.Favorite)
+                    upVotesCount = allActions.Count(action => action.RequestID == idea.RequestID && action.UpVote)
                 });
 
                 // Sort Ideas based on FavoritesCount
-                sortedIdeas = ideasWithFavoritesCount.OrderByDescending(item => item.FavoritesCount).Select(item => item.Idea).ToList();
+                sortedIdeas = ideasWithUpVotesCount.OrderByDescending(item => item.upVotesCount).Select(item => item.Idea).ToList();
 
 
                 //CompletedIdeas = await _service.GetCompletedIdeasAsync(); 
