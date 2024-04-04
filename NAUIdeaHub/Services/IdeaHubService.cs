@@ -38,6 +38,12 @@ namespace NAUIdeaHub.Services
             return actions.Adapt<IEnumerable<RequestActions>>().ToList();
         }
 
+        public async Task<IEnumerable<RequestActions>> GetAllActionsAsync()
+        {
+            var allActions = await _repository.GetAllActionsAsync();
+            return allActions.Adapt<IEnumerable<RequestActions>>().ToList();
+        }
+
         public async Task<IEnumerable<RequestNote>> GetNotesAsync(int requestPK)
         {
             var notes = await _repository.GetNotesAsync(requestPK);
@@ -81,5 +87,14 @@ namespace NAUIdeaHub.Services
             _repository.CloseIdea(ideaID, resolution);
         }
         // =============================== End of methods for idea description ===============================
+
+        // ===================================== Methods for Reporting =======================================
+        public async Task<IEnumerable<Request>> GetRequestsByUserAsync(int userId)
+        {
+            var requests = await _repository.GetRequestsByUserAsync(userId);
+            return requests.Adapt<IEnumerable<Request>>().ToList();
+        }
+        // ===================================================================================================
+
     }
 }

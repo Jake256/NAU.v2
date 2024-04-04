@@ -1,4 +1,5 @@
-﻿using NAUIdeaHub.Models;
+﻿using NAUIdeaHub.Entities;
+using NAUIdeaHub.Models;
 
 namespace NAUIdeaHub.Services
 {
@@ -7,6 +8,8 @@ namespace NAUIdeaHub.Services
         public Task<IEnumerable<Request>> GetIdeasAsync();
         //public Task<IEnumerable<Request>> GetCompletedIdeasAsync();
         public Task<IEnumerable<User>> GetUsersAsync();
+
+        public Task<IEnumerable<RequestActions>> GetAllActionsAsync();
 
         public Task<IEnumerable<RequestActions>> GetActionsAsync(int pk);
 
@@ -25,5 +28,7 @@ namespace NAUIdeaHub.Services
         public void RemoveComment(int commentID);
 
         public void CloseIdea(int ideaID, string resolution);
+
+        public Task<IEnumerable<Request>> GetRequestsByUserAsync(int userId);
     }
 }

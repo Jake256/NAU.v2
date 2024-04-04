@@ -118,6 +118,29 @@ namespace NAUIdeaHub.Repositories
             }
         }
 
+        public async Task<IEnumerable<RequestActionsEntity>> GetAllActionsAsync()
+        {
+            try
+            {
+                //var connectionString = _connectionString;
+
+                var connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync();
+
+                var allActions = await connection.QueryAsync<RequestActionsEntity>(SqlCommands.GetAllActions);
+
+                //return our list of ideas from db
+                return allActions;
+
+            }
+            catch (Exception ex)
+            {
+                //can help with debugging if run into errors/exceptions
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
         public async Task<IEnumerable<RequestNoteEntity>> GetNotesAsync(int requestPK)
         {
             try
@@ -233,7 +256,6 @@ namespace NAUIdeaHub.Repositories
             {
                 var connection = new SqlConnection(ConnectionString);
                 await connection.OpenAsync();
-
                 var requestActions = await connection.QueryAsync<RequestActionsEntity>(String.Format(SqlCommands.addComment, ideaPK, comment, userPK));
                 // Uses the String class Format() method which will allow us to insert in the values needed for the query.
                 // ideaPK states what idea the comment is for, comment is the comment the user wants to add to the idea, 
@@ -283,7 +305,24 @@ namespace NAUIdeaHub.Repositories
             }
             catch (Exception ex)
             {
-                //can help with debugging if run into errors/exceptions
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+         /*
+         * Returns requests by the requesting user
+         */
+        public async Task<IEnumerable<RequestEntity>> GetRequestsByUserAsync(int userId)
+        {
+            try
+            {
+                var connection = new SqlConnection(ConnectionString);
+                await connection.OpenAsync();
+                var requests = await connection.QueryAsync<RequestEntity>(String.Format(SqlCommands.getRequestsByUser, userId));
+                return requests;
+            }
+            catch (Exception ex)
+            {
                 Console.WriteLine(ex.Message);
                 throw;
             }
@@ -344,6 +383,15 @@ namespace NAUIdeaHub.Repositories
                 FROM [dbo].[RequestActions]
                 WHERE RequestID = ";
 
+            public static readonly string GetAllActions =
+                @"SELECT
+                 UserID,
+                 RequestID,
+                 UpVote,
+                 Favorite
+                FROM [dbo].[RequestActions]";
+                
+
             public static readonly string getNotes =
                 @"SELECT *
                  FROM [dbo].[RequestNote]
@@ -380,6 +428,10 @@ namespace NAUIdeaHub.Repositories
             public static readonly string removeComment =
                 @"DELETE FROM RequestNote
                  WHERE RequestNoteID = ";
+            public static readonly string getRequestsByUser =
+                @"SELECT *
+                FROM [dbo].[Request]
+                WHERE Requestor = {0}";
 
             public static readonly string closeIdea =
                 @"UPDATE Request
