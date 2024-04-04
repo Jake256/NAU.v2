@@ -239,7 +239,7 @@ namespace NAUIdeaHub.Pages
          */
         public void closeIdea()
         {
-            _service.CloseIdea(currentIdea.RequestID, "'" + sanitization(resolutionField.Value) + "'");
+            _service.CloseIdea(currentIdea.RequestID, resolutionField.Value);
             closeIdeaVisible = false;
             navManager.NavigateTo("idealist");
         }
