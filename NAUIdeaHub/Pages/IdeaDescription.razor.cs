@@ -13,6 +13,8 @@ namespace NAUIdeaHub.Pages
         [Inject] private IIdeaHubService _service { get; set; }
         // This will be used to return all of the ideas and the actions on them
 
+        [Inject] private IEmailService _emailService { get; set; }
+
         public IEnumerable<Request> Ideas { get; set; } = new List<Request>();
         //IEnumerable to hold all of the ideas
         public IEnumerable<RequestActions> IdeaActions { get; set; }
@@ -172,6 +174,7 @@ namespace NAUIdeaHub.Pages
                 favorited = false;
             }
         }
+
 
         public void goBack()
         {
