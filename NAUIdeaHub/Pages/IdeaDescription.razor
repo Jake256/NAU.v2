@@ -65,31 +65,88 @@
 
     <MudText Typo="Typo.h5">Comments</MudText>
 
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="addComment">Add Comment</MudButton>
+
+    <br />
+
     @foreach( var i in IdeaNotes )
     {
         <MudCard>
             <MudCardContent>
                 <MudText>@i.Description</MudText>
                 <MudText>@i.DateTime</MudText>
-                <MudText>Submitted by: @Users.FirstOrDefault(x => x.UserID == i.Author).FullName</MudText>
-            </MudCardContent>
-            <MudCardActions>
-                @if (authenticatedUser != null && authenticatedUser.IsAdmin)
-                {
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary">Edit Comment</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Error">Remove Comment</MudButton>
 
+                @if(authenticatedUser.UserID == i.Author)
+                {
+                    <MudText>Submitted by: You</MudText>
                 }
-            </MudCardActions>
+                else
+                {
+                    <MudText>Submitted by: @Users.FirstOrDefault(x => x.UserID == i.Author).FullName</MudText>
+                }
+
+                </MudCardContent>
+                <MudCardActions>
+                    @if ((authenticatedUser != null && authenticatedUser.IsAdmin) 
+                    || (authenticatedUser != null && authenticatedUser.UserID == i.Author))
+                    {
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="editComment">Edit Comment</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="() => removeComment(i.RequestNoteID)">Remove Comment</MudButton>
+
+                    }
+                </MudCardActions>
         </MudCard>
         <br/>
     }
-}
-else
-{
-    <MudText>no current idea</MudText>
+
+    <!-- This overlay will allow the user to add a comment to the idea. 
+    This will only pop up after the user clicks on the relevant button -->
+    <MudOverlay @bind-Visible="addCommentVisible" DarkBackground="true" ZIndex="9999">
+        <MudPaper Class="pa-4">
+            <MudForm @ref="addCommentForm">
+                <MudText>Enter Comment</MudText>
+                <MudTextField T="string" Counter="5000" MaxLength="5000" Immediate="true" Label="Comment" 
+                    @ref="commentField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" Lines="3"/>
+
+                <br />
+
+
+            </MudForm>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="submitComment">Submit Comment</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelComment">Cancel</MudButton>
+
+        </MudPaper>
+    </MudOverlay>
+
+    <!-- This overlay will allow the authenticated user to close the idea.
+    This will only pop up after the user clicks on the relevant button -->
+    <MudOverlay @bind-Visible="closeIdeaVisible" DarkBackground="true" ZIndex="9999">
+        <MudPaper Class="pa-4">
+            <MudForm @ref="closeIdeaForm">
+                <MudText>Please enter some resolution text</MudText>
+                <MudTextField T="string" Counter="5000" MaxLength="5000" Immediate="true" Label="Resolution"
+                              @ref="resolutionField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" Lines="3" />
+
+                <br />
+
+            </MudForm>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="closeIdea">Close Idea</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelClosure">Cancel</MudButton>
+
+        </MudPaper>
+    </MudOverlay>
 }
 
 @code {
+    public bool addCommentVisible = false;
+    public bool closeIdeaVisible = false;
+    public bool changeURLVisible = false;
+    // These bool variables will allow the pop ups to appear when the user triggers them
 
+    MudForm? addCommentForm;
+    MudForm? closeIdeaForm;
+
+    MudTextField<string> commentField;
+    MudTextField<string> resolutionField;
+    // These two fields relate to the text fields in the forms.
 }

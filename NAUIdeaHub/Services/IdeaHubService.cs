@@ -72,6 +72,20 @@ namespace NAUIdeaHub.Services
             _repository.AlterFavorite(ideaPK, userPK, value);
         }
 
+        public void AddComment(int ideaPK, string comment, int userPK)
+        {
+            _repository.AddComment(ideaPK, comment, userPK);
+        }
+
+        public void RemoveComment(int commentID)
+        {
+            _repository.RemoveComment(commentID);
+        }
+
+        public void CloseIdea(int ideaID, string resolution)
+        {
+            _repository.CloseIdea(ideaID, resolution);
+        }
         // =============================== End of methods for idea description ===============================
 
         // ===================================== Methods for Reporting =======================================
