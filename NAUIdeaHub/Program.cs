@@ -16,6 +16,7 @@ builder.Services.AddMudServices();
 builder.Services.AddScoped<IIdeaHubRepository, IdeaHubRepository>();
 builder.Services.AddScoped<IIdeaHubService, IdeaHubService>();
 builder.Services.AddScoped<ILoggedUserService, LoggedUserService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 IConfiguration configuration = builder.Configuration;
 var connectionStrings = new ConnectionStringsConfig();
