@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.IdentityModel.Tokens;
 using NAUIdeaHub.Models;
 using NAUIdeaHub.Services;
 using NAUIdeaHub.Services;
@@ -45,13 +46,13 @@ namespace NAUIdeaHub.Pages
                 Ideas = await _service.GetIdeasAsync();
                 allActions = await _service.GetAllActionsAsync();
 
-                var ideasWithFavoritesCount = Ideas.Select(idea => new {
+                var ideasWithUpVotesCount = Ideas.Select(idea => new {
                     Idea = idea,
-                    FavoritesCount = allActions.Count(action => action.RequestID == idea.RequestID && action.Favorite)
+                    upVotesCount = allActions.Count(action => action.RequestID == idea.RequestID && action.UpVote)
                 });
 
                 // Sort Ideas based on FavoritesCount
-                sortedIdeas = ideasWithFavoritesCount.OrderByDescending(item => item.FavoritesCount).Select(item => item.Idea).ToList();
+                sortedIdeas = ideasWithUpVotesCount.OrderByDescending(item => item.upVotesCount).Select(item => item.Idea).ToList();
 
 
                 //CompletedIdeas = await _service.GetCompletedIdeasAsync(); 
@@ -118,5 +119,27 @@ namespace NAUIdeaHub.Pages
             navManager.NavigateTo("ideadescription/" + id);
         }
 
+        //public void searchIdeas(string searchString)
+        //{
+        //    foreach(Request x in sortedIdeas)
+        //    {
+        //        if(!string.IsNullOrEmpty(searchString) && !x.Name.Contains(searchString)){
+        //            sortedIdeas.Remove(x); // remove x, name does not contain search string
+        //        }
+        //    }
+        //}
+
+        public void searchIdeas()
+        {
+            foreach (Request x in sortedIdeas.ToList())
+            {
+                if (!searchValue.IsNullOrEmpty() && 
+                    !x.Name.Contains(searchValue, StringComparison.OrdinalIgnoreCase) && 
+                    !x.Description.Contains(searchValue, StringComparison.OrdinalIgnoreCase))
+                {
+                    sortedIdeas.Remove(x); // Remove x, name or description does not contain search string
+                }
+            }
+        }
     }
 }

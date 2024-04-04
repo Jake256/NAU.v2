@@ -2,6 +2,7 @@
 using NAUIdeaHub.Models;
 using NAUIdeaHub.Services;
 using System.Numerics;
+using System.Security.Principal;
 
 namespace NAUIdeaHub.Pages
 {
@@ -94,6 +95,14 @@ namespace NAUIdeaHub.Pages
         }
 
         /*
+         * Method that will attempt to prevent sql injections
+         */
+        private static string sanitization(string input)
+        {
+            return input.Replace("'", "").Replace("\"", "");
+        }
+
+        /*
          * Method for dealing with the like button code.
          * Will write/update database values based on if the user is in the actions database.
          */
@@ -166,19 +175,98 @@ namespace NAUIdeaHub.Pages
             }
         }
 
-        public async void close()
-        {
-            await _emailService.ExecuteEmailServiceAsync(currentIdea);
-        }
-
-        public void changeURL()
-        {
-
-        }
 
         public void goBack()
         {
             navManager.NavigateTo("idealist");
+        }
+
+        /*
+         * Pops up the add comment overlay.
+         */
+        public void addComment()
+        {
+            addCommentVisible = true;
+        }
+
+        /*
+         * Logic to add the comment to the database and refresh the idea description page.
+         */
+        public void submitComment()
+        {
+            _service.AddComment(currentIdea.RequestID, "'" + sanitization(commentField.Value) + "'", authenticatedUser.UserID);
+            addCommentVisible = false;
+            navManager.NavigateTo("ideadescription/" + id, true);
+        }
+
+        /*
+         * Gets rid of the add comment overlay.
+         */
+        public void cancelComment()
+        {
+            addCommentVisible = false;
+        }
+
+        // Authenticated User methods
+
+        /*
+         * WIP method
+         */
+        public void editComment()
+        {
+
+        }
+
+        /*
+         * Logic for removing a comment from the database. This will also refresh the idea description page.
+         */
+        public void removeComment(int commentID)
+        {
+            _service.RemoveComment(commentID);
+            navManager.NavigateTo("ideadescription/" + id, true);
+        }
+
+        /*
+         * Pops up the close idea overlay.
+         */
+        public void close()
+        {
+            closeIdeaVisible = true;
+        }
+
+        /*
+         * Logic for closing an idea. This will redirect the user back to the idea list page.
+         */
+        public void closeIdea()
+        {
+            _service.CloseIdea(currentIdea.RequestID, "'" + sanitization(resolutionField.Value) + "'");
+            closeIdeaVisible = false;
+            navManager.NavigateTo("idealist");
+        }
+
+        /*
+         * Gets rid of the close idea overlay.
+         */
+        public void cancelClosure()
+        {
+            closeIdeaVisible = false;
+        }
+
+        
+        /*
+         * Pops up the change URL overlay.
+         */
+        public void changeURL()
+        {
+            changeURLVisible = true;
+        }
+
+        /*
+         * WIP method
+         */
+        public void submitURL()
+        {
+
         }
     }
 }

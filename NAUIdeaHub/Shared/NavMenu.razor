@@ -2,27 +2,12 @@
 @inject NavigationManager NavigationManager
 
 <MudNavMenu>
-    <div class="nau-clickable-blue-text">
-        <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    </div>
-    <div class="nau-clickable-blue-text">
-        <MudNavLink Href="strategic-plan" Icon="@Icons.Material.Filled.Home">Strategic Plan</MudNavLink>
-    </div>
-    <div class="nau-clickable-blue-text">
-        <MudNavLink Href="idealist" Icon="@Icons.Material.Filled.Home">NAU Ideas</MudNavLink>
-    </div>
-    <div class="nau-clickable-blue-text">
-        <MudNavLink Href="newrequest" Icon="@Icons.Material.Filled.Add">Submit a New Request</MudNavLink>
-    </div>
-    @if (authenticatedUser != null && authenticatedUser.IsAdmin)
-    {
-        <div class="nau-clickable-blue-text">
-            <MudNavLink Href="reporting" Icon="@Icons.Material.Filled.Beenhere">Reporting</MudNavLink>
-        </div>
-    }
-    <div class="nau-clickable-blue-text">
-        <MudNavLink OnClick="SignOut" Icon="@Icons.Material.Filled.Security">Sign Out</MudNavLink>
-    </div>
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    <MudNavLink Href="strategic-plan" Icon="@Icons.Material.Filled.CheckCircle">Strategic Plan</MudNavLink>
+    <MudNavLink Href="idealist" Icon="@Icons.Material.Filled.QuestionAnswer">NAU Ideas</MudNavLink>
+    <MudNavLink Href="newrequest" Icon="@Icons.Material.Filled.AddComment">Submit a New Request</MudNavLink>
+    <MudNavLink Href="reporting" Icon="@Icons.Material.Filled.Ballot">Reporting</MudNavLink>
+    <MudNavLink OnClick="SignOut" Icon="@Icons.Material.Filled.Badge">Sign Out</MudNavLink>
 </MudNavMenu>
 
 @code {
