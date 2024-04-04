@@ -73,5 +73,14 @@ namespace NAUIdeaHub.Services
         }
 
         // =============================== End of methods for idea description ===============================
+
+        // ===================================== Methods for Reporting =======================================
+        public async Task<IEnumerable<Request>> GetRequestsByUserAsync(int userId)
+        {
+            var requests = await _repository.GetRequestsByUserAsync(userId);
+            return requests.Adapt<IEnumerable<Request>>().ToList();
+        }
+        // ===================================================================================================
+
     }
 }

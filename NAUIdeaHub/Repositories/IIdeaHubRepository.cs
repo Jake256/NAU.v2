@@ -22,5 +22,7 @@ namespace NAUIdeaHub.Repositories
 
         public Task<IEnumerable<RequestActionsEntity>> GetAllActionsAsync();
 
+        public Task<IEnumerable<RequestEntity>> GetRequestsByUserAsync(int userId);
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using NAUIdeaHub.Models;
+﻿using NAUIdeaHub.Entities;
+using NAUIdeaHub.Models;
 
 namespace NAUIdeaHub.Services
 {
@@ -21,5 +22,7 @@ namespace NAUIdeaHub.Services
         public void FavoriteIdea(int ideaPK, int userPK);
 
         public void AlterFavorite(int ideaPK, int userPK, int value);
+
+        public Task<IEnumerable<Request>> GetRequestsByUserAsync(int userId);
     }
 }
