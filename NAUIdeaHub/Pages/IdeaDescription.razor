@@ -14,7 +14,7 @@
                         </MudText>
                         <MudText Typo="Typo.body2"><strong>Description: </strong>@currentIdea.Description</MudText>
                         <MudText Typo="Typo.body2"><strong>Resolution: </strong>@currentIdea.Resolution</MudText>
-                        <MudText Typo="Typo.body2"><strong>Submission Date: </strong>@currentIdea.DateTimeSubmitted</MudText>
+                        <MudText Typo="Typo.body2"><strong>Submission Date: </strong>@currentIdea.DateTimeSubmitted.ToShortDateString()</MudText>
                 </MudCardContent>
                 <MudCardActions>
                     @if (liked)
@@ -74,7 +74,7 @@
         <MudCard>
             <MudCardContent>
                 <MudText>@i.Description</MudText>
-                <MudText>@i.DateTime</MudText>
+                <MudText>@i.DateTime.ToShortDateString</MudText>
 
                 @if(authenticatedUser.UserID == i.Author)
                 {
@@ -90,7 +90,7 @@
                     @if ((authenticatedUser != null && authenticatedUser.IsAdmin) 
                     || (authenticatedUser != null && authenticatedUser.UserID == i.Author))
                     {
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="editComment">Edit Comment</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => editComment(i.RequestNoteID, i.Description)">Edit Comment</MudButton>
                         <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="() => removeComment(i.RequestNoteID)">Remove Comment</MudButton>
 
                     }
@@ -101,52 +101,89 @@
 
     <!-- This overlay will allow the user to add a comment to the idea. 
     This will only pop up after the user clicks on the relevant button -->
-    <MudOverlay @bind-Visible="addCommentVisible" DarkBackground="true" ZIndex="9999">
+    <MudOverlay @bind-Visible="updateVisible" DarkBackground="true" ZIndex="9999">
         <MudPaper Class="pa-4">
-            <MudForm @ref="addCommentForm">
+            @if (addCommentVisible)
+            {
+                <MudForm @ref="addCommentForm">
                 <MudText>Enter Comment</MudText>
-                <MudTextField T="string" Counter="5000" MaxLength="5000" Immediate="true" Label="Comment" 
-                    @ref="commentField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" Lines="3"/>
+                <MudTextField T="string" Counter="1000" MaxLength="1000" Immediate="true" Label="Comment"
+                      @ref="commentField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" Lines="3" />
 
                 <br />
 
 
-            </MudForm>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="submitComment">Submit Comment</MudButton>
-            <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelComment">Cancel</MudButton>
-
-        </MudPaper>
-    </MudOverlay>
-
-    <!-- This overlay will allow the authenticated user to close the idea.
-    This will only pop up after the user clicks on the relevant button -->
-    <MudOverlay @bind-Visible="closeIdeaVisible" DarkBackground="true" ZIndex="9999">
-        <MudPaper Class="pa-4">
-            <MudForm @ref="closeIdeaForm">
+                </MudForm>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="submitComment">Submit Comment</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelUpdate">Cancel</MudButton>
+            }
+            @if (closeIdeaVisible)
+            {
+                <MudForm @ref="closeIdeaForm">
                 <MudText>Please enter some resolution text</MudText>
                 <MudTextField T="string" Counter="5000" MaxLength="5000" Immediate="true" Label="Resolution"
-                              @ref="resolutionField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" Lines="3" />
+                      @ref="resolutionField" Required="true" RequiredError="Resolution Required" OnlyValidateIfDirty="true" Lines="3" />
 
                 <br />
 
-            </MudForm>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="closeIdea">Close Idea</MudButton>
-            <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelClosure">Cancel</MudButton>
+                </MudForm>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="closeIdea">Close Idea</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelUpdate">Cancel</MudButton>
+            }
+            @if (editCommentVisible)
+            {
+                <MudForm @ref="editCommentForm">
+                <MudText>Please enter the new comment</MudText>
+                <MudTextField T="string" Counter="1000" MaxLength="1000" Immediate="true" Label="New comment" @bind-Value="oldComment"
+                      @ref="newCommentField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" Lines="3" />
+
+                <br />
+
+                </MudForm>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="editCommentConfirmation">Update Comment</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelUpdate">Cancel</MudButton>
+
+                
+            }
+
 
         </MudPaper>
     </MudOverlay>
+
+    <MudOverlay @bind-Visible="editCommentConfirmationVisible" DarkBackground="true" ZIndex="9999">
+        <MudPaper Class="pa-4">
+        <MudForm @ref="editCommentForm">
+            <MudText>Are you sure you want to update this comment to:</MudText>
+            <MudTextField T="string" @bind-Value="oldComment" ReadOnly="true" Lines="3" />
+
+            <br />
+
+        </MudForm>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="updateComment">Yes</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelNewComment">No</MudButton>
+        </MudPaper>
+    </MudOverlay>
+
 }
 
 @code {
+    public bool updateVisible = false;
     public bool addCommentVisible = false;
     public bool closeIdeaVisible = false;
+    public bool editCommentVisible = false;
+    public bool editCommentConfirmationVisible = false;
     public bool changeURLVisible = false;
     // These bool variables will allow the pop ups to appear when the user triggers them
 
     MudForm? addCommentForm;
     MudForm? closeIdeaForm;
+    MudForm? editCommentForm;
 
     MudTextField<string> commentField;
     MudTextField<string> resolutionField;
+    MudTextField<string> newCommentField;
     // These two fields relate to the text fields in the forms.
+
+    public string oldComment = "";
+    public int oldCommentID = 0;
 }

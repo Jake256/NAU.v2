@@ -29,6 +29,8 @@ namespace NAUIdeaHub.Services
 
         public void CloseIdea(int ideaID, string resolution);
 
+        public void editComment(int commentID, string newComment);
+
         public Task<IEnumerable<Request>> GetRequestsByUserAsync(int userId);
     }
 }

@@ -186,6 +186,7 @@ namespace NAUIdeaHub.Pages
          */
         public void addComment()
         {
+            updateVisible = true;
             addCommentVisible = true;
         }
 
@@ -194,17 +195,9 @@ namespace NAUIdeaHub.Pages
          */
         public void submitComment()
         {
-            _service.AddComment(currentIdea.RequestID, "'" + sanitization(commentField.Value) + "'", authenticatedUser.UserID);
+            _service.AddComment(currentIdea.RequestID, commentField.Value, authenticatedUser.UserID);
             addCommentVisible = false;
             navManager.NavigateTo("ideadescription/" + id, true);
-        }
-
-        /*
-         * Gets rid of the add comment overlay.
-         */
-        public void cancelComment()
-        {
-            addCommentVisible = false;
         }
 
         // Authenticated User methods
@@ -212,9 +205,36 @@ namespace NAUIdeaHub.Pages
         /*
          * WIP method
          */
-        public void editComment()
+        public void editComment(int oldCommentID, string oldComment)
         {
+            this.oldComment = oldComment;
+            this.oldCommentID = oldCommentID;
+            updateVisible = true;
+            editCommentVisible = true;
 
+        }
+
+        public void editCommentConfirmation()
+        {
+            editCommentVisible = false;
+            updateVisible = false;
+            editCommentConfirmationVisible = true;
+        }
+
+        public void cancelNewComment()
+        {
+            editCommentConfirmationVisible = false;
+            updateVisible = true;
+            editCommentVisible = true;
+        }
+
+        public void updateComment()
+        {
+            _service.editComment(oldCommentID, oldComment);
+            editCommentConfirmationVisible = false;
+            oldCommentID = 0;
+            oldComment = "";
+            navManager.NavigateTo("ideadescription/" + id, true);
         }
 
         /*
@@ -231,6 +251,7 @@ namespace NAUIdeaHub.Pages
          */
         public void close()
         {
+            updateVisible = true;
             closeIdeaVisible = true;
         }
 
@@ -245,19 +266,11 @@ namespace NAUIdeaHub.Pages
         }
 
         /*
-         * Gets rid of the close idea overlay.
-         */
-        public void cancelClosure()
-        {
-            closeIdeaVisible = false;
-        }
-
-        
-        /*
          * Pops up the change URL overlay.
          */
         public void changeURL()
         {
+            updateVisible = true;
             changeURLVisible = true;
         }
 
@@ -267,6 +280,15 @@ namespace NAUIdeaHub.Pages
         public void submitURL()
         {
 
+        }
+
+        public void cancelUpdate()
+        {
+            updateVisible = false;
+            addCommentVisible = false;
+            closeIdeaVisible = false;
+            editCommentVisible = false;
+            changeURLVisible = false;
         }
     }
 }

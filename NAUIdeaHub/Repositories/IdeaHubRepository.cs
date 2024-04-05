@@ -341,6 +341,41 @@ namespace NAUIdeaHub.Repositories
                 throw;
             }
         }
+
+        public async void editComment(int commentID, string newComment)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    SqlCommand command = new SqlCommand(null, connection);
+
+                    command.CommandText = SqlCommands.editComment;
+                    SqlParameter idParameter = new SqlParameter("@id", System.Data.SqlDbType.Int, 0);
+                    SqlParameter newCommentParameter = new SqlParameter("@newComment", System.Data.SqlDbType.NVarChar, 1000);
+                    // Creates the parameters for the parameterized query
+
+                    idParameter.Value = commentID;
+                    newCommentParameter.Value = newComment;
+                    // Sets the values for these parameters
+
+                    command.Parameters.Add(idParameter);
+                    command.Parameters.Add(newCommentParameter);
+                    // Adds the parameters to the query in the objects correlated @ position
+
+                    command.Prepare();
+                    command.ExecuteNonQuery();
+                    // Prepares and executes the query.
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
          /*
          * Returns requests by the requesting user
          */
@@ -455,7 +490,7 @@ namespace NAUIdeaHub.Repositories
                 @"INSERT INTO RequestNote
                  (RequestID, Description, Author)
                  VALUES
-                 (@reqID, @desc, @autID)";
+                 (@reqID, @desc, @authID)";
 
             public static readonly string removeComment =
                 @"DELETE FROM RequestNote
@@ -470,6 +505,11 @@ namespace NAUIdeaHub.Repositories
                 @"UPDATE Request
                  SET Closed = 1, Resolution = @res
                  WHERE RequestID = @id";
+
+            public static readonly string editComment =
+                @"UPDATE RequestNote
+                 SET Description = @newComment
+                 WHERE RequestNoteID = @id";
         }
     }
 }
