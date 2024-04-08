@@ -2,63 +2,45 @@
 
 @if (currentIdea != null)
 {
-    <MudGrid>
-        <MudItem xs="6">
 
-            <MudCard>
-                <MudCardContent>
-                    <MudText Typo="Typo.h6">@currentIdea.Name</MudText><br />
-                    <MudText Typo="Typo.body2"><strong>Type: </strong>@currentIdea.Type</MudText>
-                        <MudText Typo="Typo.body2">
-                            <strong>Status: </strong><span>@(currentIdea.Closed ? "Closed" : "Open")</span>
-                        </MudText>
-                        <MudText Typo="Typo.body2"><strong>Description: </strong>@currentIdea.Description</MudText>
-                        <MudText Typo="Typo.body2"><strong>Resolution: </strong>@currentIdea.Resolution</MudText>
-                        <MudText Typo="Typo.body2"><strong>Submission Date: </strong>@currentIdea.DateTimeSubmitted.ToShortDateString()</MudText>
-                </MudCardContent>
-                <MudCardActions>
-                    @if (liked)
-                    {
-                        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="unLike">Remove like</MudButton>
-                    }
-                    else
-                    {
-                        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="like">Like</MudButton>
-                    }
-
-                    @if (favorited)
-                    {
-                        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="unFavorite">Remove Favorite</MudButton>
-                    }
-                    else
-                    {
-                        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="favorite">Favorite</MudButton>
-                    }
-
-                    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="goBack">Return to Idea List</MudButton>
-                </MudCardActions>
-            </MudCard>
-
-        </MudItem>
-        <MudItem xs="6">
-            @if (authenticatedUser != null && authenticatedUser.IsAdmin)
+    <MudCard>
+        <MudCardContent>
+            <MudText Typo="Typo.h6">@currentIdea.Name</MudText><br />
+            <MudText Typo="Typo.body2"><strong>Type: </strong>@currentIdea.Type</MudText>
+            <MudText Typo="Typo.body2">
+                <strong>Status: </strong><span>@(currentIdea.Closed ? "Closed" : "Open")</span>
+            </MudText>
+            <MudText Typo="Typo.body2"><strong>Description: </strong>@currentIdea.Description</MudText>
+            <MudText Typo="Typo.body2"><strong>Resolution: </strong>@currentIdea.Resolution</MudText>
+            <MudText Typo="Typo.body2"><strong>Submission Date: </strong>@currentIdea.DateTimeSubmitted.ToShortDateString()</MudText>
+        </MudCardContent>
+        <MudCardActions>
+            @if (liked)
             {
-                <MudCard>
-                    <MudCardContent>
-                        <MudText Typo="Typo.h6">What would you like to do to this idea?</MudText> <br />
-
-                        <MudGrid>
-                            <MudItem><MudText>Close idea</MudText></MudItem>
-                            <MudItem><MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="close">Close</MudButton></MudItem>
-                        </MudGrid>
-                        <br />
-
-                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="changeURL">Change URL</MudButton>
-                    </MudCardContent>
-                </MudCard>
+                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="unLike">Remove like</MudButton>
             }
-        </MudItem>
-    </MudGrid>
+            else
+            {
+                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="like">Like</MudButton>
+            }
+
+            @if (favorited)
+            {
+                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="unFavorite">Remove Favorite</MudButton>
+            }
+            else
+            {
+                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="favorite">Favorite</MudButton>
+            }
+
+            @if (authenticatedUser.IsAdmin)
+            {
+                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Warning" DisableElevation="true" OnClick="editIdea">Edit/Close Idea</MudButton>
+            }
+
+            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="goBack">Return to Idea List</MudButton>
+        </MudCardActions>
+    </MudCard>
 
     <br/>
     <br/>
@@ -74,7 +56,7 @@
         <MudCard>
             <MudCardContent>
                 <MudText>@i.Description</MudText>
-                <MudText>@i.DateTime.ToShortDateString</MudText>
+                <MudText>@i.DateTime.ToShortDateString()</MudText>
 
                 @if(authenticatedUser.UserID == i.Author)
                 {
@@ -85,16 +67,16 @@
                     <MudText>Submitted by: @Users.FirstOrDefault(x => x.UserID == i.Author).FullName</MudText>
                 }
 
-                </MudCardContent>
-                <MudCardActions>
-                    @if ((authenticatedUser != null && authenticatedUser.IsAdmin) 
+            </MudCardContent>
+            <MudCardActions>
+                @if ((authenticatedUser != null && authenticatedUser.IsAdmin) 
                     || (authenticatedUser != null && authenticatedUser.UserID == i.Author))
-                    {
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => editComment(i.RequestNoteID, i.Description)">Edit Comment</MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="() => removeComment(i.RequestNoteID)">Remove Comment</MudButton>
+                {
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => editComment(i.RequestNoteID, i.Description)">Edit Comment</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="() => removeComment(i.RequestNoteID)">Remove Comment</MudButton>
 
-                    }
-                </MudCardActions>
+                }
+            </MudCardActions>
         </MudCard>
         <br/>
     }
@@ -103,64 +85,84 @@
     This will only pop up after the user clicks on the relevant button -->
     <MudOverlay @bind-Visible="updateVisible" DarkBackground="true" ZIndex="9999">
         <MudPaper Class="pa-4">
+            @if(editIdeaVisible)
+            {
+                <MudForm @ref="editIdeaForm">
+                    <MudText>Edit the variables below to change the form:</MudText>
+                    <MudTextField T="string" Counter="100" MaxLength="100" Immediate="true" Label="Idea Name" @bind-Value="currentIdea.Name"
+                        @ref="ideaNameField" Required="true" RequiredError="Name Required" OnlyValidateIfDirty="true" Lines="1" />
+
+                    <MudTextField T="string" Counter="100" MaxLength="100" Immediate="true" Label="Idea Type" @bind-Value="currentIdea.Type"
+                        @ref="ideaTypeField" Required="true" RequiredError="Type Required" OnlyValidateIfDirty="true" Lines="1" />
+
+                    <MudTextField T="string" Counter="5000" MaxLength="5000" Immediate="true" Label="Idea Description" @bind-Value="currentIdea.Description"
+                        @ref="ideaDescriptionField" Required="true" RequiredError="Description Required" OnlyValidateIfDirty="true" Lines="3" />
+
+                    <MudTextField T="string" Counter="1000" MaxLength="1000" Immediate="true" Label="Idea URL" @bind-Value="currentIdea.URL"
+                        @ref="ideaURLField" Required="false" Lines="1" />
+
+                    <br />
+
+
+                </MudForm>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="submitComment">Update Idea</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="close">Close Idea</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelUpdate">Cancel</MudButton>
+            }
+            @if (closeIdeaVisible)
+            {
+                <MudForm @ref="closeIdeaForm">
+                    <MudText>Please enter some resolution text</MudText>
+                    <MudTextField T="string" Counter="5000" MaxLength="5000" Immediate="true" Label="Resolution"
+                        @ref="resolutionField" Required="true" RequiredError="Resolution Required" OnlyValidateIfDirty="true" Lines="3" />
+
+                    <br />
+
+                </MudForm>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="closeIdea">Confirm Closure</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelClosure">Cancel</MudButton>
+            }
             @if (addCommentVisible)
             {
                 <MudForm @ref="addCommentForm">
-                <MudText>Enter Comment</MudText>
-                <MudTextField T="string" Counter="1000" MaxLength="1000" Immediate="true" Label="Comment"
-                      @ref="commentField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" Lines="3" />
+                    <MudText>Enter Comment</MudText>
+                    <MudTextField T="string" Counter="1000" MaxLength="1000" Immediate="true" Label="Comment"
+                        @ref="commentField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" Lines="3" />
 
-                <br />
+                    <br />
 
 
                 </MudForm>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="submitComment">Submit Comment</MudButton>
                 <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelUpdate">Cancel</MudButton>
             }
-            @if (closeIdeaVisible)
-            {
-                <MudForm @ref="closeIdeaForm">
-                <MudText>Please enter some resolution text</MudText>
-                <MudTextField T="string" Counter="5000" MaxLength="5000" Immediate="true" Label="Resolution"
-                      @ref="resolutionField" Required="true" RequiredError="Resolution Required" OnlyValidateIfDirty="true" Lines="3" />
-
-                <br />
-
-                </MudForm>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="closeIdea">Close Idea</MudButton>
-                <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelUpdate">Cancel</MudButton>
-            }
             @if (editCommentVisible)
             {
                 <MudForm @ref="editCommentForm">
-                <MudText>Please enter the new comment</MudText>
-                <MudTextField T="string" Counter="1000" MaxLength="1000" Immediate="true" Label="New comment" @bind-Value="oldComment"
-                      @ref="newCommentField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" Lines="3" />
+                    <MudText>Please enter the new comment</MudText>
+                    <MudTextField T="string" Counter="1000" MaxLength="1000" Immediate="true" Label="New comment" @bind-Value="oldComment"
+                        @ref="newCommentField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" Lines="3" />
 
-                <br />
+                    <br />
 
                 </MudForm>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="editCommentConfirmation">Update Comment</MudButton>
                 <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelUpdate">Cancel</MudButton>
-
-                
             }
-
-
         </MudPaper>
     </MudOverlay>
 
     <MudOverlay @bind-Visible="editCommentConfirmationVisible" DarkBackground="true" ZIndex="9999">
         <MudPaper Class="pa-4">
-        <MudForm @ref="editCommentForm">
-            <MudText>Are you sure you want to update this comment to:</MudText>
-            <MudTextField T="string" @bind-Value="oldComment" ReadOnly="true" Lines="3" />
+            <MudForm @ref="editCommentForm">
+                <MudText>Are you sure you want to update this comment to:</MudText>
+                <MudTextField T="string" @bind-Value="oldComment" ReadOnly="true" Lines="3" />
 
-            <br />
+                <br />
 
-        </MudForm>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="updateComment">Yes</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelNewComment">No</MudButton>
+            </MudForm>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="updateComment">Yes</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelNewComment">No</MudButton>
         </MudPaper>
     </MudOverlay>
 
@@ -172,12 +174,19 @@
     public bool closeIdeaVisible = false;
     public bool editCommentVisible = false;
     public bool editCommentConfirmationVisible = false;
-    public bool changeURLVisible = false;
+    public bool editIdeaVisible = false;
     // These bool variables will allow the pop ups to appear when the user triggers them
 
+    MudForm? editIdeaForm;
     MudForm? addCommentForm;
     MudForm? closeIdeaForm;
     MudForm? editCommentForm;
+
+    MudTextField<string> ideaNameField;
+    MudTextField<string> ideaTypeField;
+    MudTextField<string> ideaDescriptionField;
+    MudTextField<string> ideaURLField;
+
 
     MudTextField<string> commentField;
     MudTextField<string> resolutionField;

@@ -251,8 +251,14 @@ namespace NAUIdeaHub.Pages
          */
         public void close()
         {
-            updateVisible = true;
+            editIdeaVisible = false;
             closeIdeaVisible = true;
+        }
+
+        public void cancelClosure()
+        {
+            closeIdeaVisible = false;
+            editIdeaVisible = true;
         }
 
         /*
@@ -268,10 +274,10 @@ namespace NAUIdeaHub.Pages
         /*
          * Pops up the change URL overlay.
          */
-        public void changeURL()
+        public void editIdea()
         {
             updateVisible = true;
-            changeURLVisible = true;
+            editIdeaVisible = true;
         }
 
         /*
@@ -288,7 +294,9 @@ namespace NAUIdeaHub.Pages
             addCommentVisible = false;
             closeIdeaVisible = false;
             editCommentVisible = false;
-            changeURLVisible = false;
+            editIdeaVisible = false;
         }
+
+        
     }
 }
