@@ -129,8 +129,18 @@ namespace NAUIdeaHub.Pages
         //    }
         //}
 
-        public void searchIdeas()
+        public void SearchIdeas()
         {
+            // Reset sorted ideas to include all ideas
+            var ideasWithUpVotesCount = Ideas.Select(idea => new {
+                Idea = idea,
+                upVotesCount = allActions.Count(action => action.RequestID == idea.RequestID && action.UpVote)
+            });
+
+            // Sort Ideas based on FavoritesCount
+            sortedIdeas = ideasWithUpVotesCount.OrderByDescending(item => item.upVotesCount).Select(item => item.Idea).ToList();
+
+            // Loop through each Request
             foreach (Request x in sortedIdeas.ToList())
             {
                 if (!searchValue.IsNullOrEmpty() && 
@@ -138,6 +148,29 @@ namespace NAUIdeaHub.Pages
                     !x.Description.Contains(searchValue, StringComparison.OrdinalIgnoreCase))
                 {
                     sortedIdeas.Remove(x); // Remove x, name or description does not contain search string
+                }
+            }
+        }
+
+        public void FilterByDate()
+        {
+            // Reset sorted ideas to include all ideas
+            var ideasWithUpVotesCount = Ideas.Select(idea => new {
+                Idea = idea,
+                upVotesCount = allActions.Count(action => action.RequestID == idea.RequestID && action.UpVote)
+            });
+
+            // Sort Ideas based on FavoritesCount
+            sortedIdeas = ideasWithUpVotesCount.OrderByDescending(item => item.upVotesCount).Select(item => item.Idea).ToList();
+
+            if(startDate != null && endDate != null) // Check for null values
+            {
+                foreach(Request r in sortedIdeas.ToList()) // Loop through each Request
+                {
+                    if(r.DateTimeSubmitted <  startDate || r.DateTimeSubmitted > endDate)
+                    {
+                        sortedIdeas.Remove(r); // Remove idea, not within date range
+                    }
                 }
             }
         }
