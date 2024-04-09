@@ -230,7 +230,7 @@ namespace NAUIdeaHub.Pages
 
         public void updateComment()
         {
-            _service.editComment(oldCommentID, oldComment);
+            _service.editComment(oldCommentID, newCommentField.Value);
             editCommentConfirmationVisible = false;
             oldCommentID = 0;
             oldComment = "";
@@ -276,20 +276,51 @@ namespace NAUIdeaHub.Pages
          */
         public void editIdea()
         {
+            oldIdeaName = currentIdea.Name;
+            oldIdeaType = currentIdea.Type;
+            oldIdeaDescription = currentIdea.Description;
+            oldIdeaURL = currentIdea.URL;
             updateVisible = true;
             editIdeaVisible = true;
         }
 
-        /*
-         * WIP method
-         */
-        public void submitURL()
+        public void updateIdeaConfirmation()
         {
+            updateVisible = false;
+            editIdeaVisible = false;
+            editIdeaConfirmationVisible = true;
+        }
 
+        public void updateIdea()
+        {
+            _service.editIdea(currentIdea.RequestID, newIdeaNameField.Value,
+                newIdeaTypeField.Value, newIdeaDescriptionField.Value, newIdeaURLField.Value);
+            editIdeaConfirmationVisible = false;
+            oldIdeaName = "";
+            oldIdeaType = "";
+            oldIdeaDescription = "";
+            oldIdeaURL = "";
+            navManager.NavigateTo("ideadescription/" + id, true);
+
+        }
+
+        public void cancelIdeaUpdate()
+        {
+            updateVisible = true;
+            editIdeaVisible = true;
+            editIdeaConfirmationVisible = false;
         }
 
         public void cancelUpdate()
         {
+            if (editIdeaVisible)
+            {
+                oldIdeaName = "";
+                oldIdeaType = "";
+                oldIdeaDescription = "";
+                oldIdeaURL = "";
+            }
+
             updateVisible = false;
             addCommentVisible = false;
             closeIdeaVisible = false;

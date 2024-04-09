@@ -376,6 +376,49 @@ namespace NAUIdeaHub.Repositories
             }
         }
 
+        public async void editIdea(int ideaID, string newName, string newType, string newDescription, string newURL)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    SqlCommand command = new SqlCommand(null, connection);
+
+                    command.CommandText = SqlCommands.editIdea;
+                    SqlParameter idParameter = new SqlParameter("@id", System.Data.SqlDbType.Int, 0);
+                    SqlParameter newNameParameter = new SqlParameter("@newName", System.Data.SqlDbType.NVarChar, 100);
+                    SqlParameter newTypeParameter = new SqlParameter("@newType", System.Data.SqlDbType.NVarChar, 100);
+                    SqlParameter newDescriptionParameter = new SqlParameter("@newDescription", System.Data.SqlDbType.NVarChar, 5000);
+                    SqlParameter newURLParameter = new SqlParameter("@newURL", System.Data.SqlDbType.NVarChar, 1000);
+                    // Creates the parameters for the parameterized query
+
+                    idParameter.Value = ideaID;
+                    newNameParameter.Value = newName;
+                    newTypeParameter.Value = newType;
+                    newDescriptionParameter.Value = newDescription;
+                    newURLParameter.Value = newURL;
+                    // Sets the values for these parameters
+
+                    command.Parameters.Add(idParameter);
+                    command.Parameters.Add(newNameParameter);
+                    command.Parameters.Add(newTypeParameter);
+                    command.Parameters.Add(newDescriptionParameter);
+                    command.Parameters.Add(newURLParameter);
+                    // Adds the parameters to the query in the objects correlated @ position
+
+                    command.Prepare();
+                    command.ExecuteNonQuery();
+                    // Prepares and executes the query.
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
          /*
          * Returns requests by the requesting user
          */
@@ -510,6 +553,11 @@ namespace NAUIdeaHub.Repositories
                 @"UPDATE RequestNote
                  SET Description = @newComment
                  WHERE RequestNoteID = @id";
+
+            public static readonly string editIdea =
+                @"UPDATE Request
+                 SET Name = @newName, Type = @newType, Description = @newDescription, URL = @newURL
+                 WHERE RequestID = @id";
         }
     }
 }

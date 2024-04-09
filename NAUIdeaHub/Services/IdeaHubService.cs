@@ -92,6 +92,11 @@ namespace NAUIdeaHub.Services
             _repository.editComment(commentID, newComment);
         }
 
+        public void editIdea(int ideaID, string newName, string newType, string newDescription, string newURL)
+        {
+            _repository.editIdea(ideaID, newName, newType, newDescription, newURL);
+        }
+
         // =============================== End of methods for idea description ===============================
 
         // ===================================== Methods for Reporting =======================================

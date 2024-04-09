@@ -89,23 +89,23 @@
             {
                 <MudForm @ref="editIdeaForm">
                     <MudText>Edit the variables below to change the form:</MudText>
-                    <MudTextField T="string" Counter="100" MaxLength="100" Immediate="true" Label="Idea Name" @bind-Value="currentIdea.Name"
-                        @ref="ideaNameField" Required="true" RequiredError="Name Required" OnlyValidateIfDirty="true" Lines="1" />
+                    <MudTextField T="string" Counter="100" MaxLength="100" Immediate="true" Label="Idea Name" @bind-Value="@oldIdeaName"
+                        @ref="newIdeaNameField" Required="true" RequiredError="Name Required" OnlyValidateIfDirty="true" Lines="1" />
 
-                    <MudTextField T="string" Counter="100" MaxLength="100" Immediate="true" Label="Idea Type" @bind-Value="currentIdea.Type"
-                        @ref="ideaTypeField" Required="true" RequiredError="Type Required" OnlyValidateIfDirty="true" Lines="1" />
+                    <MudTextField T="string" Counter="100" MaxLength="100" Immediate="true" Label="Idea Type" @bind-Value="@oldIdeaType"
+                        @ref="newIdeaTypeField" Required="true" RequiredError="Type Required" OnlyValidateIfDirty="true" Lines="1" />
 
-                    <MudTextField T="string" Counter="5000" MaxLength="5000" Immediate="true" Label="Idea Description" @bind-Value="currentIdea.Description"
-                        @ref="ideaDescriptionField" Required="true" RequiredError="Description Required" OnlyValidateIfDirty="true" Lines="3" />
+                    <MudTextField T="string" Counter="5000" MaxLength="5000" Immediate="true" Label="Idea Description" @bind-Value="@oldIdeaDescription"
+                        @ref="newIdeaDescriptionField" Required="true" RequiredError="Description Required" OnlyValidateIfDirty="true" Lines="3" />
 
-                    <MudTextField T="string" Counter="1000" MaxLength="1000" Immediate="true" Label="Idea URL" @bind-Value="currentIdea.URL"
-                        @ref="ideaURLField" Required="false" Lines="1" />
+                    <MudTextField T="string" Counter="1000" MaxLength="1000" Immediate="true" Label="Idea URL" @bind-Value="@oldIdeaURL"
+                        @ref="newIdeaURLField" Required="false" Lines="1" />
 
                     <br />
 
 
                 </MudForm>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="submitComment">Update Idea</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="updateIdeaConfirmation">Update Idea</MudButton>
                 <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="close">Close Idea</MudButton>
                 <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelUpdate">Cancel</MudButton>
             }
@@ -166,6 +166,23 @@
         </MudPaper>
     </MudOverlay>
 
+    <MudOverlay @bind-Visible="editIdeaConfirmationVisible" DarkBackground="true" ZIndex="9999">
+        <MudPaper Class="pa-4">
+            <MudForm @ref="editIdeaForm">
+                <MudText>Are you sure you want to update this idea to:</MudText>
+                <MudTextField T="string" @bind-Value="newIdeaNameField.Value" ReadOnly="true" Lines="1" />
+                <MudTextField T="string" @bind-Value="newIdeaTypeField.Value" ReadOnly="true" Lines="1" />
+                <MudTextField T="string" @bind-Value="newIdeaDescriptionField.Value" ReadOnly="true" Lines="3" />
+                <MudTextField T="string" @bind-Value="newIdeaURLField.Value" ReadOnly="true" Lines="1" />
+
+                <br />
+
+            </MudForm>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="updateIdea">Yes</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelIdeaUpdate">No</MudButton>
+        </MudPaper>
+    </MudOverlay>
+
 }
 
 @code {
@@ -175,6 +192,7 @@
     public bool editCommentVisible = false;
     public bool editCommentConfirmationVisible = false;
     public bool editIdeaVisible = false;
+    public bool editIdeaConfirmationVisible = false;
     // These bool variables will allow the pop ups to appear when the user triggers them
 
     MudForm? editIdeaForm;
@@ -182,10 +200,10 @@
     MudForm? closeIdeaForm;
     MudForm? editCommentForm;
 
-    MudTextField<string> ideaNameField;
-    MudTextField<string> ideaTypeField;
-    MudTextField<string> ideaDescriptionField;
-    MudTextField<string> ideaURLField;
+    MudTextField<string> newIdeaNameField;
+    MudTextField<string> newIdeaTypeField;
+    MudTextField<string> newIdeaDescriptionField;
+    MudTextField<string> newIdeaURLField;
 
 
     MudTextField<string> commentField;
@@ -193,6 +211,11 @@
     MudTextField<string> newCommentField;
     // These two fields relate to the text fields in the forms.
 
-    public string oldComment = "";
-    public int oldCommentID = 0;
+    private string oldComment = "";
+    private int oldCommentID = 0;
+
+    private string oldIdeaName = "";
+    private string oldIdeaType = "";
+    private string oldIdeaDescription = "";
+    private string oldIdeaURL = "";
 }
