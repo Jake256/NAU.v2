@@ -97,6 +97,11 @@ namespace NAUIdeaHub.Services
             _repository.editIdea(ideaID, newName, newType, newDescription, newURL);
         }
 
+        public void reopenIdea(int ideaID)
+        {
+            _repository.reopenIdea(ideaID);
+        }
+
         // =============================== End of methods for idea description ===============================
 
         // ===================================== Methods for Reporting =======================================

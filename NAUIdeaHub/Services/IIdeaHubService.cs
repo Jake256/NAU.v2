@@ -33,6 +33,8 @@ namespace NAUIdeaHub.Services
 
         public void editIdea(int ideaID, string newName, string newType, string newDescription, string newURL);
 
+        public void reopenIdea(int ideaID);
+
         public Task<IEnumerable<Request>> GetRequestsByUserAsync(int userId);
     }
 }

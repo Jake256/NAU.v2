@@ -35,7 +35,15 @@
 
             @if (authenticatedUser.IsAdmin)
             {
-                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Warning" DisableElevation="true" OnClick="editIdea">Edit/Close Idea</MudButton>
+                @if (!currentIdea.Closed)
+                {
+                    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Warning" DisableElevation="true" OnClick="editIdea">Edit/Close Idea</MudButton>
+
+                }
+                else
+                {
+                    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Warning" DisableElevation="true" OnClick="reopenIdea">Reopen Idea</MudButton>
+                }
             }
 
             <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="goBack">Return to Idea List</MudButton>
@@ -81,8 +89,7 @@
         <br/>
     }
 
-    <!-- This overlay will allow the user to add a comment to the idea. 
-    This will only pop up after the user clicks on the relevant button -->
+
     <MudOverlay @bind-Visible="updateVisible" DarkBackground="true" ZIndex="9999">
         <MudPaper Class="pa-4">
             @if(editIdeaVisible)
@@ -183,39 +190,62 @@
         </MudPaper>
     </MudOverlay>
 
+    <MudOverlay @bind-Visible="reopenIdeaConfirmationVisible" DarkBackground="true" ZIndex="9999">
+        <MudPaper Class="pa-4">
+            <MudForm>
+                <MudText>Are you sure you want to reopen this idea? This will remove the resolution text.</MudText>
+
+                <br />
+
+            </MudForm>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="reopenIdeaConfirmation">Yes</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="cancelReopenIdea">No</MudButton>
+        </MudPaper>
+    </MudOverlay>
+
 }
 
 @code {
-    public bool updateVisible = false;
-    public bool addCommentVisible = false;
-    public bool closeIdeaVisible = false;
-    public bool editCommentVisible = false;
-    public bool editCommentConfirmationVisible = false;
-    public bool editIdeaVisible = false;
-    public bool editIdeaConfirmationVisible = false;
-    // These bool variables will allow the pop ups to appear when the user triggers them
 
-    MudForm? editIdeaForm;
-    MudForm? addCommentForm;
-    MudForm? closeIdeaForm;
-    MudForm? editCommentForm;
-
-    MudTextField<string> newIdeaNameField;
-    MudTextField<string> newIdeaTypeField;
-    MudTextField<string> newIdeaDescriptionField;
-    MudTextField<string> newIdeaURLField;
+    private bool updateVisible = false;
+    // This object relates to the edit idea, close idea, add comment, and edit comment sections
 
 
-    MudTextField<string> commentField;
-    MudTextField<string> resolutionField;
-    MudTextField<string> newCommentField;
-    // These two fields relate to the text fields in the forms.
-
-    private string oldComment = "";
-    private int oldCommentID = 0;
-
+    // Objects for Editing an Idea
+    private bool editIdeaVisible = false;
+    private bool editIdeaConfirmationVisible = false;
+    private MudForm? editIdeaForm;
+    private MudTextField<string> newIdeaNameField;
+    private MudTextField<string> newIdeaTypeField;
+    private MudTextField<string> newIdeaDescriptionField;
+    private MudTextField<string> newIdeaURLField;
     private string oldIdeaName = "";
     private string oldIdeaType = "";
     private string oldIdeaDescription = "";
     private string oldIdeaURL = "";
+
+
+    // Objects for Closing an Idea
+    private bool closeIdeaVisible = false;
+    private MudForm? closeIdeaForm;
+    private MudTextField<string> resolutionField;
+
+
+    // Objects for Reopening Ideas
+    private bool reopenIdeaConfirmationVisible = false;
+
+
+    // Objects for Adding Comments
+    private bool addCommentVisible = false;
+    private MudTextField<string> commentField;
+    private MudForm? addCommentForm;
+
+
+    // Objects for Editing Comments
+    private bool editCommentVisible = false;
+    private bool editCommentConfirmationVisible = false;
+    private MudForm? editCommentForm;
+    private MudTextField<string> newCommentField;
+    private string oldComment = "";
+    private int oldCommentID = 0;
 }

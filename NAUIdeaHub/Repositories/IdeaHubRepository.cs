@@ -419,6 +419,37 @@ namespace NAUIdeaHub.Repositories
             }
         }
 
+        public async void reopenIdea(int ideaID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    SqlCommand command = new SqlCommand(null, connection);
+
+                    command.CommandText = SqlCommands.reopenIdea;
+                    SqlParameter idParameter = new SqlParameter("@id", System.Data.SqlDbType.Int, 0);
+                    // Creates the parameters for the parameterized query
+
+                    idParameter.Value = ideaID;
+                    // Sets the values for these parameters
+
+                    command.Parameters.Add(idParameter);
+                    // Adds the parameters to the query in the objects correlated @ position
+
+                    command.Prepare();
+                    command.ExecuteNonQuery();
+                    // Prepares and executes the query.
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
          /*
          * Returns requests by the requesting user
          */
@@ -557,6 +588,11 @@ namespace NAUIdeaHub.Repositories
             public static readonly string editIdea =
                 @"UPDATE Request
                  SET Name = @newName, Type = @newType, Description = @newDescription, URL = @newURL
+                 WHERE RequestID = @id";
+
+            public static readonly string reopenIdea =
+                @"UPDATE Request
+                 SET Closed = 0, Resolution = null
                  WHERE RequestID = @id";
         }
     }
