@@ -254,13 +254,31 @@ namespace NAUIdeaHub.Repositories
         {
             try
             {
-                var connection = new SqlConnection(ConnectionString);
-                await connection.OpenAsync();
-                var requestActions = await connection.QueryAsync<RequestActionsEntity>(String.Format(SqlCommands.addComment, ideaPK, comment, userPK));
-                // Uses the String class Format() method which will allow us to insert in the values needed for the query.
-                // ideaPK states what idea the comment is for, comment is the comment the user wants to add to the idea, 
-                // and userPK is the user that is leaving the comment.
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    SqlCommand command = new SqlCommand(null, connection);
 
+                    command.CommandText = SqlCommands.addComment;
+                    SqlParameter ideaParameter = new SqlParameter("@reqID", System.Data.SqlDbType.Int, 0);
+                    SqlParameter descriptionParameter = new SqlParameter("@desc", System.Data.SqlDbType.NVarChar, 5000);
+                    SqlParameter authorParameter = new SqlParameter("authID", System.Data.SqlDbType.Int, 0);
+                    // Creates the parameters for the parameterized query
+
+                    ideaParameter.Value = ideaPK;
+                    descriptionParameter.Value = comment;
+                    authorParameter.Value = userPK;
+                    // Sets the values for these parameters
+
+                    command.Parameters.Add(ideaParameter);
+                    command.Parameters.Add(descriptionParameter);
+                    command.Parameters.Add(authorParameter);
+                    // Adds the parameters to the query in the objects correlated @ position
+
+                    command.Prepare();
+                    command.ExecuteNonQuery();
+                    // Prepares and executes the query.
+                }
             }
             catch (Exception ex)
             {
@@ -294,14 +312,28 @@ namespace NAUIdeaHub.Repositories
         {
             try
             {
-                var connection = new SqlConnection(ConnectionString);
-                await connection.OpenAsync();
+                using(SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    SqlCommand command = new SqlCommand(null, connection);
 
-                var requestActions = await connection.QueryAsync<RequestActionsEntity>(String.Format(SqlCommands.closeIdea, resolution, ideaID));
-                // Uses the String class Format() method which will allow us to insert in the values needed for the query.
-                // resolution will be the string comment stating what the resolution of the idea was, and ideaID is used to
-                // update only the needed idea instead of all ideas in the table
+                    command.CommandText = SqlCommands.closeIdea;
+                    SqlParameter resolutionParameter = new SqlParameter("@res", System.Data.SqlDbType.NVarChar, 5000);
+                    SqlParameter idParameter = new SqlParameter("@id", System.Data.SqlDbType.Int, 0);
+                    // Creates the parameters for the parameterized query
 
+                    idParameter.Value = ideaID;
+                    resolutionParameter.Value = resolution;
+                    // Sets the values for these parameters
+
+                    command.Parameters.Add(idParameter);
+                    command.Parameters.Add(resolutionParameter);
+                    // Adds the parameters to the query in the objects correlated @ position
+
+                    command.Prepare();
+                    command.ExecuteNonQuery();
+                    // Prepares and executes the query.
+                }
             }
             catch (Exception ex)
             {
@@ -309,6 +341,115 @@ namespace NAUIdeaHub.Repositories
                 throw;
             }
         }
+
+        public async void editComment(int commentID, string newComment)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    SqlCommand command = new SqlCommand(null, connection);
+
+                    command.CommandText = SqlCommands.editComment;
+                    SqlParameter idParameter = new SqlParameter("@id", System.Data.SqlDbType.Int, 0);
+                    SqlParameter newCommentParameter = new SqlParameter("@newComment", System.Data.SqlDbType.NVarChar, 1000);
+                    // Creates the parameters for the parameterized query
+
+                    idParameter.Value = commentID;
+                    newCommentParameter.Value = newComment;
+                    // Sets the values for these parameters
+
+                    command.Parameters.Add(idParameter);
+                    command.Parameters.Add(newCommentParameter);
+                    // Adds the parameters to the query in the objects correlated @ position
+
+                    command.Prepare();
+                    command.ExecuteNonQuery();
+                    // Prepares and executes the query.
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        public async void editIdea(int ideaID, string newName, string newType, string newDescription, string newURL)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    SqlCommand command = new SqlCommand(null, connection);
+
+                    command.CommandText = SqlCommands.editIdea;
+                    SqlParameter idParameter = new SqlParameter("@id", System.Data.SqlDbType.Int, 0);
+                    SqlParameter newNameParameter = new SqlParameter("@newName", System.Data.SqlDbType.NVarChar, 100);
+                    SqlParameter newTypeParameter = new SqlParameter("@newType", System.Data.SqlDbType.NVarChar, 100);
+                    SqlParameter newDescriptionParameter = new SqlParameter("@newDescription", System.Data.SqlDbType.NVarChar, 5000);
+                    SqlParameter newURLParameter = new SqlParameter("@newURL", System.Data.SqlDbType.NVarChar, 1000);
+                    // Creates the parameters for the parameterized query
+
+                    idParameter.Value = ideaID;
+                    newNameParameter.Value = newName;
+                    newTypeParameter.Value = newType;
+                    newDescriptionParameter.Value = newDescription;
+                    newURLParameter.Value = newURL;
+                    // Sets the values for these parameters
+
+                    command.Parameters.Add(idParameter);
+                    command.Parameters.Add(newNameParameter);
+                    command.Parameters.Add(newTypeParameter);
+                    command.Parameters.Add(newDescriptionParameter);
+                    command.Parameters.Add(newURLParameter);
+                    // Adds the parameters to the query in the objects correlated @ position
+
+                    command.Prepare();
+                    command.ExecuteNonQuery();
+                    // Prepares and executes the query.
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        public async void reopenIdea(int ideaID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    SqlCommand command = new SqlCommand(null, connection);
+
+                    command.CommandText = SqlCommands.reopenIdea;
+                    SqlParameter idParameter = new SqlParameter("@id", System.Data.SqlDbType.Int, 0);
+                    // Creates the parameters for the parameterized query
+
+                    idParameter.Value = ideaID;
+                    // Sets the values for these parameters
+
+                    command.Parameters.Add(idParameter);
+                    // Adds the parameters to the query in the objects correlated @ position
+
+                    command.Prepare();
+                    command.ExecuteNonQuery();
+                    // Prepares and executes the query.
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
          /*
          * Returns requests by the requesting user
          */
@@ -423,11 +564,12 @@ namespace NAUIdeaHub.Repositories
                 @"INSERT INTO RequestNote
                  (RequestID, Description, Author)
                  VALUES
-                 ({0}, {1}, {2})";
+                 (@reqID, @desc, @authID)";
 
             public static readonly string removeComment =
                 @"DELETE FROM RequestNote
                  WHERE RequestNoteID = ";
+
             public static readonly string getRequestsByUser =
                 @"SELECT *
                 FROM [dbo].[Request]
@@ -435,8 +577,23 @@ namespace NAUIdeaHub.Repositories
 
             public static readonly string closeIdea =
                 @"UPDATE Request
-                 SET Closed = 1, Resolution = {0}
-                 WHERE RequestID = {1}";
+                 SET Closed = 1, Resolution = @res
+                 WHERE RequestID = @id";
+
+            public static readonly string editComment =
+                @"UPDATE RequestNote
+                 SET Description = @newComment
+                 WHERE RequestNoteID = @id";
+
+            public static readonly string editIdea =
+                @"UPDATE Request
+                 SET Name = @newName, Type = @newType, Description = @newDescription, URL = @newURL
+                 WHERE RequestID = @id";
+
+            public static readonly string reopenIdea =
+                @"UPDATE Request
+                 SET Closed = 0, Resolution = null
+                 WHERE RequestID = @id";
         }
     }
 }

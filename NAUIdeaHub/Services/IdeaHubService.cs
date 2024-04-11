@@ -86,6 +86,22 @@ namespace NAUIdeaHub.Services
         {
             _repository.CloseIdea(ideaID, resolution);
         }
+
+        public void editComment(int commentID, string newComment)
+        {
+            _repository.editComment(commentID, newComment);
+        }
+
+        public void editIdea(int ideaID, string newName, string newType, string newDescription, string newURL)
+        {
+            _repository.editIdea(ideaID, newName, newType, newDescription, newURL);
+        }
+
+        public void reopenIdea(int ideaID)
+        {
+            _repository.reopenIdea(ideaID);
+        }
+
         // =============================== End of methods for idea description ===============================
 
         // ===================================== Methods for Reporting =======================================

@@ -25,6 +25,12 @@ namespace NAUIdeaHub.Repositories
         public void RemoveComment(int commentID);
 
         public void CloseIdea(int ideaID, string resolution);
+
+        public void editComment(int commentID, string newComment);
+
+        public void editIdea(int ideaID, string newName, string newType, string newDescription, string newURL);
+
+        public void reopenIdea(int ideaID);
       
         public Task<IEnumerable<RequestActionsEntity>> GetAllActionsAsync();
 

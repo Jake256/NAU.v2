@@ -9,6 +9,7 @@ namespace NAUIdeaHub.Pages
     public partial class IdeaDescription : ComponentBase
     {
         [Inject] private NavigationManager navManager { get; set; }
+        // Allows the transitioning between pages and the ability to reload a page
 
         [Inject] private IIdeaHubService _service { get; set; }
         // This will be used to return all of the ideas and the actions on them
@@ -17,9 +18,12 @@ namespace NAUIdeaHub.Pages
 
         public IEnumerable<Request> Ideas { get; set; } = new List<Request>();
         //IEnumerable to hold all of the ideas
+
         public IEnumerable<RequestActions> IdeaActions { get; set; }
         // IEnumerable to hold all of the actions on the ideas
+
         public IEnumerable<RequestNote> IdeaNotes { get; set; }
+
         public IEnumerable<User> Users { get; set; }
 
         [Inject] private ILoggedUserService protectedSessionStore { get; set; }
@@ -40,6 +44,10 @@ namespace NAUIdeaHub.Pages
         // This object is used to see if the user is in the actions db for the current idea.
         // Will use this value to determine if we need to make a new insertion into database or just alter a value.
 
+
+        /*
+         * This method will run when the page is loaded.
+         */
         protected override async Task OnInitializedAsync()
         {
             authenticatedUser = await protectedSessionStore.GetUserAsync();
@@ -55,7 +63,9 @@ namespace NAUIdeaHub.Pages
 
                 currentIdea = Ideas.FirstOrDefault(x => x.RequestID == int.Parse(id));
                 // Grabs the idea that we are currently looking at.
+                
 
+                // This if statement checks to see if the current user has liked or favorited the current idea
                 if (authenticatedUser != null)
                 {
 
@@ -80,13 +90,7 @@ namespace NAUIdeaHub.Pages
                         favorited = true;
                     }
 
-                    // Grabs the current user and checks to see if they already liked the idea or not.
                 }
-                else
-                {
-                    // Some code goes here
-                }
-
             }
             catch (Exception ex)
             {
@@ -94,13 +98,14 @@ namespace NAUIdeaHub.Pages
             }
         }
 
-        /*
-         * Method that will attempt to prevent sql injections
-         */
-        private static string sanitization(string input)
+        // --------------------------- All Methods for IdeaDescription Logic ---------------------------
+
+        public void goBack()
         {
-            return input.Replace("'", "").Replace("\"", "");
+            navManager.NavigateTo("idealist");
         }
+
+        // -------------------- Methods for Liking/Unliking and Favoriting an Idea ---------------------
 
         /*
          * Method for dealing with the like button code.
@@ -175,17 +180,17 @@ namespace NAUIdeaHub.Pages
             }
         }
 
+        // ---------------- End of Methods for Liking/Unliking and Favoriting an Idea ----------------
 
-        public void goBack()
-        {
-            navManager.NavigateTo("idealist");
-        }
+
+        // ------------------------------ Methods Relating to Comments -------------------------------
 
         /*
          * Pops up the add comment overlay.
          */
         public void addComment()
         {
+            updateVisible = true;
             addCommentVisible = true;
         }
 
@@ -194,27 +199,57 @@ namespace NAUIdeaHub.Pages
          */
         public void submitComment()
         {
-            _service.AddComment(currentIdea.RequestID, "'" + sanitization(commentField.Value) + "'", authenticatedUser.UserID);
+            _service.AddComment(currentIdea.RequestID, commentField.Value, authenticatedUser.UserID);
             addCommentVisible = false;
             navManager.NavigateTo("ideadescription/" + id, true);
         }
 
         /*
-         * Gets rid of the add comment overlay.
+         * Pops up the overlay allowing the user to edit a comment
          */
-        public void cancelComment()
+        public void editComment(int oldCommentID, string oldComment)
         {
-            addCommentVisible = false;
+            this.oldComment = oldComment;
+            this.oldCommentID = oldCommentID;
+            // Assigns the values of the original comment to these two objects allowing the user to edit them.
+
+            updateVisible = true;
+            editCommentVisible = true;
+
         }
 
-        // Authenticated User methods
+        /*
+         * Pops up the edit comment confirmation overlay before commiting any changes
+         */
+        public void editCommentConfirmation()
+        {
+            editCommentVisible = false;
+            updateVisible = false;
+            editCommentConfirmationVisible = true;
+        }
 
         /*
-         * WIP method
+         * Hides the edit comment confirmation overlay and brings the user back to the edit comment overlay
          */
-        public void editComment()
+        public void cancelNewComment()
         {
+            editCommentConfirmationVisible = false;
+            updateVisible = true;
+            editCommentVisible = true;
+        }
 
+        /*
+         * Commits the changes that the user created to the commnet
+         * Makes a database UPDATE call that will change the comment, and uses NavManager to reload the page.
+         */
+        public void updateComment()
+        {
+            _service.editComment(oldCommentID, newCommentField.Value);
+
+            editCommentConfirmationVisible = false;
+            oldCommentID = 0;
+            oldComment = "";
+            navManager.NavigateTo("ideadescription/" + id, true);
         }
 
         /*
@@ -226,47 +261,155 @@ namespace NAUIdeaHub.Pages
             navManager.NavigateTo("ideadescription/" + id, true);
         }
 
+        // --------------------------- End of Methods Relating to Comments --------------------------
+
+        // -------------------------- Methods Relating to Editing an Idea ---------------------------
+
+        /*
+         * Pops up the edit idea overlay. This overlay will allow the user to edit many values of an idea and possibly
+         * close the current idea.
+         */
+        public void editIdea()
+        {
+            oldIdeaName = currentIdea.Name;
+            oldIdeaType = currentIdea.Type;
+            oldIdeaDescription = currentIdea.Description;
+            oldIdeaURL = currentIdea.URL;
+            // These objects are going to be used to edit the current values of the idea. This approach is very similar to
+            // edit comment approach.
+
+            updateVisible = true;
+            editIdeaVisible = true;
+        }
+
+        /*
+         * Pops up the update idea confirmation overlay which will be used to show the changes made to the idea before making
+         * the changes.
+         */
+        public void updateIdeaConfirmation()
+        {
+            updateVisible = false;
+            editIdeaVisible = false;
+            editIdeaConfirmationVisible = true;
+        }
+
+        /*
+         * Updates the current idea with the users provided changes.
+         * Makes a database UPDATE call and uses NavManager to reload the page.
+         */
+        public void updateIdea()
+        {
+            _service.editIdea(currentIdea.RequestID, newIdeaNameField.Value,
+                newIdeaTypeField.Value, newIdeaDescriptionField.Value, newIdeaURLField.Value);
+
+            editIdeaConfirmationVisible = false;
+
+            oldIdeaName = "";
+            oldIdeaType = "";
+            oldIdeaDescription = "";
+            oldIdeaURL = "";
+
+            navManager.NavigateTo("ideadescription/" + id, true);
+
+        }
+
+        /*
+         * Closes the update idea overlay and returns the user back to the edit idea overlay.
+         */
+        public void cancelIdeaUpdate()
+        {
+            updateVisible = true;
+            editIdeaVisible = true;
+            editIdeaConfirmationVisible = false;
+        }
+
+        // ---------------------- End of Methods Relating to Editing an Idea ------------------------
+
+        // --------------------------- Methods Relating to Closing an Idea --------------------------
+
         /*
          * Pops up the close idea overlay.
          */
         public void close()
         {
+            editIdeaVisible = false;
             closeIdeaVisible = true;
         }
 
         /*
-         * Logic for closing an idea. This will redirect the user back to the idea list page.
-         */
-        public void closeIdea()
-        {
-            _service.CloseIdea(currentIdea.RequestID, "'" + sanitization(resolutionField.Value) + "'");
-            closeIdeaVisible = false;
-            navManager.NavigateTo("idealist");
-        }
-
-        /*
-         * Gets rid of the close idea overlay.
+         * Hides the close idea overlay and brings the user back to the edit idea overlay
          */
         public void cancelClosure()
         {
             closeIdeaVisible = false;
-        }
-
-        
-        /*
-         * Pops up the change URL overlay.
-         */
-        public void changeURL()
-        {
-            changeURLVisible = true;
+            editIdeaVisible = true;
         }
 
         /*
-         * WIP method
+         * Logic for closing an idea. This will redirect the user back to the idea list page.
+         * Makes a database UPDATE call.
          */
-        public void submitURL()
+        public void closeIdea()
         {
-
+            _service.CloseIdea(currentIdea.RequestID, resolutionField.Value);
+            closeIdeaVisible = false;
+            navManager.NavigateTo("idealist");
         }
+
+        // ---------------------- End of Methods Relating to Closing an Idea ------------------------
+
+        // --------------------------- Methods Relating to Reopening Ideas --------------------------
+
+        /*
+         * Opens the reopen idea confirmation overlay which asks the user if they really want to reopen the current idea.
+         */
+        public void reopenIdea()
+        {
+            reopenIdeaConfirmationVisible = true;
+        }
+
+        /*
+         * Reopens the current idea deleting whatever was in the resolution section.
+         * This makes a database UPDATE call and uses NavManager to reload the page
+         */
+        public void reopenIdeaConfirmation()
+        {
+            _service.reopenIdea(currentIdea.RequestID);
+            reopenIdeaConfirmationVisible = false;
+            navManager.NavigateTo("ideadescription/" + id, true);
+        }
+
+        /*
+         * Closes the reopen idea confirmation overlay.
+         */
+        public void cancelReopenIdea()
+        {
+            reopenIdeaConfirmationVisible = false;
+        }
+
+        // ----------------------- End of Methods Relating to Reopening Ideas -----------------------
+
+        /*
+         * This method is used for all update methods except for the reopen idea section.
+         * If the user doesn't want to update a section of this idea this method is invoked closing any of the overlays.
+         */
+        public void cancelUpdate()
+        {
+            if (editIdeaVisible)
+            {
+                oldIdeaName = "";
+                oldIdeaType = "";
+                oldIdeaDescription = "";
+                oldIdeaURL = "";
+            }
+
+            updateVisible = false;
+            addCommentVisible = false;
+            closeIdeaVisible = false;
+            editCommentVisible = false;
+            editIdeaVisible = false;
+        }
+
+        // ------------------------- End of Methods for IdeaDescription Logic -------------------------
     }
 }
