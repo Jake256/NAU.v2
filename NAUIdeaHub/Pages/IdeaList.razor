@@ -69,19 +69,21 @@
         }*@
     
     <MudTabPanel Text="All Ideas">
-        <MudItem Class="pa-3" sm="6">
-            <MudText><strong>Search:</strong></MudText>
-            <MudTextField ShrinkLabel @bind-Value="searchValue" Placeholder="Enter name or description" Variant="Variant.Text"></MudTextField>
-            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Info" DisableElevation="true" OnClick="searchIdeas">Search</MudButton>
-        </MudItem>
+        <MudGrid>
+            <MudItem xs="6">
+                <MudText Class="ml-4 mt-4"><strong>Search:</strong></MudText>
+                <MudTextField Class="ml-4" ShrinkLabel @bind-Value="searchValue" Placeholder="Enter name or description" Variant="Variant.Text"></MudTextField>
+                <MudButton Class="mt-4 ml-4" Variant="Variant.Filled" Color="Color.Info" DisableElevation="true" OnClick="SearchIdeas">Search</MudButton>
+            </MudItem>
         
-        <MudItem Class="pa-3" sm="6">
-            <MudText><strong>Filter By Date:</strong></MudText>
-            <MudDatePicker Label="Start Date" Editable="true" @bind-Date="startDate" Placeholder="Select Date" DisableToolbar="true" />
-            <MudDatePicker Label="End Date" Editable="true" @bind-Date="endDate" Placeholder="Select Date" DisableToolbar="true" />
-            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Info" DisableElevation="true">Filter</MudButton>
-        </MudItem>
-        
+            <MudItem xs="6">
+                <MudText Class="mt-4"><strong>Filter By Date:</strong></MudText>
+                <MudDatePicker Class="mr-4" Label="Start Date" Editable="true" @bind-Date="startDate" Placeholder="Select Date" DisableToolbar="true" />
+                <MudDatePicker Class="mr-4" Label="End Date" Editable="true" @bind-Date="endDate" Placeholder="Select Date" DisableToolbar="true" />
+                <MudButton Class="mt-4 mr-4" Variant="Variant.Filled" Color="Color.Info" DisableElevation="true" OnClick="FilterByDate">Filter</MudButton>
+            </MudItem>
+        </MudGrid>
+
         <MudGrid>
         @if(Ideas!=null){
             
