@@ -2,7 +2,7 @@
 
 @if (currentIdea != null)
 {
-    <MudGrid Spacing="2" Justify="Justify.Center">
+    <MudGrid Spacing="2" Justify="Justify.Center" Style="width: 100%;">
         <MudItem sm="8">
             <MudCard>
                 <MudCardContent>
@@ -55,9 +55,11 @@
             <br/>
             <br/>
 
+            <MudPaper Style="display: flex;" Elevation="0">
             <MudText Typo="Typo.h5">Comments</MudText>
 
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="addComment">Add Comment</MudButton>
+            <MudButton Style="margin-left: 10px" Variant="Variant.Filled" Color="Color.Primary" OnClick="addComment">Add Comment</MudButton>
+            </MudPaper>
 
             <br />
 
@@ -196,7 +198,13 @@
     <MudOverlay @bind-Visible="reopenIdeaConfirmationVisible" DarkBackground="true" ZIndex="9999">
         <MudPaper Class="pa-4">
             <MudForm>
-                <MudText>Are you sure you want to reopen this idea? This will remove the resolution text.</MudText>
+                <MudText>
+                    Are you sure you want to reopen this idea? 
+                    
+                    <br />
+
+                    This will remove the resolution text.
+                </MudText>
 
                 <br />
 

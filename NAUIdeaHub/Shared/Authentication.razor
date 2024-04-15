@@ -11,7 +11,7 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudGrid>
+<MudGrid Style="width: 100%;">
     <MudItem xs="2"></MudItem>
     <MudItem xs="8">
         <div style="display: flex; justify-content: center; align-items: center; background-color: #FFFFFF;">
@@ -20,10 +20,11 @@
     </MudItem>
 </MudGrid>
 
+
 <div style="display: flex; justify-content: left; align-items: center; background-color: #00AEEF;"><br /><br /></div>
 
 <br /><br />
-<MudGrid>
+<MudGrid Style="width: 100%;">
     <MudItem xs="3"></MudItem>
     <MudItem xs="6">
         <MudPaper Class="pa-4">
@@ -112,27 +113,6 @@
         }
         return "";
     }
-
-    //validates the password
-    //private string ValidatePassword(string password)
-    //{
-
-    //Regex numberRequirement = new Regex(@"[0-9]+");
-    //Regex lowerRequirement = new Regex(@"[a-z]+");
-    //Regex upperRequirement = new Regex(@"[A-Z]+");
-    //Regex specialRequirement = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
-    //Regex lengthRequirement = new Regex(@".{8,20}");
-
-    //checks that the password format to limit queries to the database (AD in future)
-    //if (!numberRequirement.IsMatch(password) || !lowerRequirement.IsMatch(password) || !upperRequirement.IsMatch(password) || !specialRequirement.IsMatch(password) || !lengthRequirement.IsMatch(password))
-    //{
-    //    return "Invalid password";
-    //}
-
-
-    //return "";
-
-     //}
 
      /*
      * This method is to check to see if the use inputted values match a user from the database
