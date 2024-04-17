@@ -35,7 +35,6 @@ namespace NAUIdeaHub.Shared
 
         private async Task SetSessionAuthenticatedUser(User user)
         {
-            //User loggedInUser = users.FirstOrDefault(x => user.UserID == x.UserID);
             User loggedInUser = user;
             protectedSessionStore.SetUser(loggedInUser);
             await ProtectedSessionStore.SetAsync("AuthenticatedUser", loggedInUser);

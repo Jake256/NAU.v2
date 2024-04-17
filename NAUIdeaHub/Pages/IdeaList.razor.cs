@@ -119,16 +119,6 @@ namespace NAUIdeaHub.Pages
             navManager.NavigateTo("ideadescription/" + id);
         }
 
-        //public void searchIdeas(string searchString)
-        //{
-        //    foreach(Request x in sortedIdeas)
-        //    {
-        //        if(!string.IsNullOrEmpty(searchString) && !x.Name.Contains(searchString)){
-        //            sortedIdeas.Remove(x); // remove x, name does not contain search string
-        //        }
-        //    }
-        //}
-
         public void SearchIdeas()
         {
             // Reset sorted ideas to include all ideas

@@ -5,7 +5,7 @@ namespace NAUIdeaHub.Repositories
     public interface IIdeaHubRepository
     {
         public Task<IEnumerable<RequestEntity>> GetIdeasAsync();
-        //public Task<IEnumerable<RequestEntity>> GetCompletedIdeasAsync();
+
         public Task<IEnumerable<UserEntity>> GetUsersAsync();
 
         public Task<IEnumerable<RequestActionsEntity>> GetActionsAsync(int pk);
