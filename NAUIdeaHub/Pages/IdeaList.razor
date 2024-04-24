@@ -3,7 +3,7 @@
 <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
     <MudTabPanel Text="Your Ideas">
         
-        <MudGrid>
+        <MudGrid Style="width: 100%;">
             @if (YourIdeas != null && authenticatedUser != null)
             {
 
@@ -36,40 +36,9 @@
         </MudGrid>
 
     </MudTabPanel>
-        
-        @*@if (YourIdeas != null && loggedInUser != null)
-        {
-            <MudTable Items="@YourIdeas" Style="width: 100%">
-                <HeaderContent>
-                    <MudTh>Name</MudTh>
-                    <MudTh>Type</MudTh>
-                    <MudTh>Status</MudTh>
-                    <MudTh>Description</MudTh>
-                    <MudTh>Resolution</MudTh>
-                    <MudTh>Submission Date</MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="Name">@context.Name</MudTd>
-                    <MudTd DataLabel="Type">@context.Type</MudTd>
-                    <MudTd DataLabel="Status">
-                        @if (@context.Closed)
-                        {
-                            <div>Closed</div>
-                        }
-                        else
-                        {
-                            <div>Open</div>
-                        }
-                    </MudTd>
-                    <MudTd DataLabel="Description">@context.Description</MudTd>
-                    <MudTd DataLabel="Resolution">@context.Resolution</MudTd>
-                    <MudTd DataLabel="Submission Date">@context.DateTimeSubmitted</MudTd>
-                </RowTemplate>
-            </MudTable>
-        }*@
     
     <MudTabPanel Text="All Ideas">
-        <MudGrid>
+        <MudGrid Style="width: 100%;">
             <MudItem xs="6">
                 <MudText Class="ml-4 mt-4"><strong>Search:</strong></MudText>
                 <MudTextField Class="ml-4" ShrinkLabel @bind-Value="searchValue" Placeholder="Enter name or description" Variant="Variant.Text"></MudTextField>
@@ -84,7 +53,7 @@
             </MudItem>
         </MudGrid>
 
-        <MudGrid>
+        <MudGrid Style="width: 100%;">
         @if(Ideas!=null){
             
            @foreach(var x in sortedIdeas)
@@ -114,33 +83,10 @@
            }    
         </MudGrid>
     </MudTabPanel>
-
-
-        @*<MudTable Items = "@Ideas" Style="width: 100%">
-            <HeaderContent>
-                <MudTh>Name</MudTh>
-                <MudTh>Type</MudTh>
-                <MudTh>Status</MudTh>
-                <MudTh>Description</MudTh>
-                <MudTh>Resolution</MudTh>
-                <MudTh>Submission Date</MudTh>
-            </HeaderContent>
-            <RowTemplate>
-                <MudTd DataLabel="Name">@context.Name</MudTd>
-                <MudTd DataLabel="Type">@context.Type</MudTd>
-                <MudTd DataLabel="Status">
-                    @if (@context.Closed) {<div>Closed</div>}
-                    else{<div>Open</div>}
-                </MudTd>
-                <MudTd DataLabel="Description">@context.Description</MudTd>
-                <MudTd DataLabel="Resolution">@context.Resolution</MudTd>
-                <MudTd DataLabel="Submission Date">@context.DateTimeSubmitted</MudTd>
-            </RowTemplate>
-        </MudTable>*@
         
     <MudTabPanel Text="Completed Ideas">
 
-        <MudGrid>
+        <MudGrid Style="width: 100%;">
             @if (CompletedIdeas != null)
             {
 
@@ -172,33 +118,10 @@
         </MudGrid>
 
     </MudTabPanel>    
-        
-        @*@if(@CompletedIdeas!=null){
-        <MudTable Items = "@CompletedIdeas" Style="width: 100%">
-            <HeaderContent>
-                <MudTh>Name</MudTh>
-                <MudTh>Type</MudTh>
-                <MudTh>Status</MudTh>
-                <MudTh>Description</MudTh>
-                <MudTh>Resolution</MudTh>
-                <MudTh>Submission Date</MudTh>
-            </HeaderContent>
-            <RowTemplate>
-                <MudTd DataLabel="Name">@context.Name</MudTd>
-                <MudTd DataLabel="Type">@context.Type</MudTd>
-                <MudTd DataLabel="Status">
-                    @if (@context.Closed) {<div>Closed</div>}
-                    else{<div>Open</div>}</MudTd>
-                <MudTd DataLabel="Description">@context.Description</MudTd>
-                <MudTd DataLabel="Resolution">@context.Resolution</MudTd>
-                <MudTd DataLabel="Submission Date">@context.DateTimeSubmitted</MudTd>
-            </RowTemplate>
-        </MudTable>
-        }*@
 
     <MudTabPanel Text="Up Voted Ideas">
 
-        <MudGrid>
+        <MudGrid Style="width: 100%;">
             @if (upVotedIdeas != null && authenticatedUser != null)
             {
 
@@ -235,7 +158,7 @@
 
      <MudTabPanel Text="Favorited Ideas">
 
-        <MudGrid>
+        <MudGrid Style="width: 100%;">
             @if (favoritedIdeas != null && authenticatedUser != null)
             {
 
@@ -275,6 +198,6 @@
 
 @code {
     DateTime? startDate;
-    DateTime? endDate; // may need to set to null?
+    DateTime? endDate; // may need to set to null
     public string searchValue = null;
 }

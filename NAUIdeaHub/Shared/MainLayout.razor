@@ -9,7 +9,7 @@
 
 <MudLayout>
     
-    <MudGrid>
+    <MudGrid Style="width: 100%;">
         <MudItem xs="2"></MudItem>
         <MudItem xs="8">
             <div style="display: flex; justify-content: center; align-items: center; background-color: #FFFFFF;">
@@ -24,12 +24,13 @@
         }
     </MudGrid>
 
+
     <div style="display: flex; justify-content: left; align-items: center; background-color: #00AEEF;">
         <MudButton OnClick="@ToggleDrawer" Color="Color.Primary"><img src="NavMenuToggle.png" alt="NAU Country" width="25" /></MudButton>
     </div>
 
 
-    <MudDrawer Open="@openNavMenu">
+    <MudDrawer @bind-Open="@openNavMenu">
         <MudDrawerHeader>
             <MudText>NAU Country Idea Hub</MudText>
         </MudDrawerHeader>

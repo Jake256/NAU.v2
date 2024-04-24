@@ -244,6 +244,7 @@ namespace NAUIdeaHub.Pages
          */
         public void updateComment()
         {
+            
             _service.editComment(oldCommentID, newCommentField.Value);
 
             editCommentConfirmationVisible = false;
@@ -351,6 +352,7 @@ namespace NAUIdeaHub.Pages
          */
         public void closeIdea()
         {
+            _emailService.ExecuteEmailServiceAsync(currentIdea);
             _service.CloseIdea(currentIdea.RequestID, resolutionField.Value);
             closeIdeaVisible = false;
             navManager.NavigateTo("idealist");

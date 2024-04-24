@@ -2,93 +2,98 @@
 
 @if (currentIdea != null)
 {
+    <MudGrid Spacing="2" Justify="Justify.Center" Style="width: 100%;">
+        <MudItem sm="8">
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h6">@currentIdea.Name</MudText><br />
+                    <MudText Typo="Typo.body2"><strong>Type: </strong>@currentIdea.Type</MudText>
+                    <MudText Typo="Typo.body2">
+                        <strong>Status: </strong><span>@(currentIdea.Closed ? "Closed" : "Open")</span>
+                    </MudText>
+                    <MudText Typo="Typo.body2"><strong>Description: </strong>@currentIdea.Description</MudText>
+                    <MudText Typo="Typo.body2"><strong>Resolution: </strong>@currentIdea.Resolution</MudText>
+                    <MudText Typo="Typo.body2"><strong>Submission Date: </strong>@currentIdea.DateTimeSubmitted.ToShortDateString()</MudText>
+                </MudCardContent>
+                <MudCardActions Class="justify-center">
+                    @if (liked)
+                    {
+                        <MudButton Class="mt-4" Style="width: 125px; height: 40px; margin-right: 10px;" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="unLike">Remove like</MudButton>
+                    }
+                    else
+                    {
+                        <MudButton Class="mt-4" Style="width: 125px; height: 40px; margin-right: 10px;" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="like">Like</MudButton>
+                    }
 
-    <MudCard>
-        <MudCardContent>
-            <MudText Typo="Typo.h6">@currentIdea.Name</MudText><br />
-            <MudText Typo="Typo.body2"><strong>Type: </strong>@currentIdea.Type</MudText>
-            <MudText Typo="Typo.body2">
-                <strong>Status: </strong><span>@(currentIdea.Closed ? "Closed" : "Open")</span>
-            </MudText>
-            <MudText Typo="Typo.body2"><strong>Description: </strong>@currentIdea.Description</MudText>
-            <MudText Typo="Typo.body2"><strong>Resolution: </strong>@currentIdea.Resolution</MudText>
-            <MudText Typo="Typo.body2"><strong>Submission Date: </strong>@currentIdea.DateTimeSubmitted.ToShortDateString()</MudText>
-        </MudCardContent>
-        <MudCardActions>
-            @if (liked)
+                    @if (favorited)
+                    {
+                        <MudButton Class="mt-4" Style="width: 160px; height: 40px; margin-right: 10px;" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="unFavorite">Remove Favorite</MudButton>
+                    }
+                    else
+                    {
+                        <MudButton Class="mt-4" Style="width: 160px; height: 40px; margin-right: 10px;" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="favorite">Favorite</MudButton>
+                    }
+
+                    @if (authenticatedUser.IsAdmin)
+                    {
+                        @if (!currentIdea.Closed)
+                        {
+                            <MudButton Class="mt-4" Style="width: 150px; height: 40px; margin-right: 10px;" Variant="Variant.Filled" Color="Color.Warning" DisableElevation="true" OnClick="editIdea">Edit/Close Idea</MudButton>
+
+                        }
+                        else
+                        {
+                            <MudButton Class="mt-4" Style="width: 150px; height: 40px; margin-right: 10px;" Variant="Variant.Filled" Color="Color.Warning" DisableElevation="true" OnClick="reopenIdea">Reopen Idea</MudButton>
+                        }
+                    }
+                    
+
+                    <MudButton Class="mt-4" Style="width: 180px; height: 40px;" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="goBack">Return to Idea List</MudButton>
+                </MudCardActions>
+            </MudCard>
+
+            <br/>
+            <br/>
+
+            <MudPaper Style="display: flex;" Elevation="0">
+            <MudText Typo="Typo.h5">Comments</MudText>
+
+            <MudButton Style="margin-left: 10px" Variant="Variant.Filled" Color="Color.Primary" OnClick="addComment">Add Comment</MudButton>
+            </MudPaper>
+
+            <br />
+
+            @foreach( var i in IdeaNotes )
             {
-                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="unLike">Remove like</MudButton>
+                <MudCard>
+                    <MudCardContent>
+                        <MudText>@i.Description</MudText>
+                        <MudText>@i.DateTime.ToShortDateString()</MudText>
+
+                        @if(authenticatedUser.UserID == i.Author)
+                        {
+                            <MudText>Submitted by: You</MudText>
+                        }
+                        else
+                        {
+                            <MudText>Submitted by: @Users.FirstOrDefault(x => x.UserID == i.Author).FullName</MudText>
+                        }
+
+                    </MudCardContent>
+                    <MudCardActions>
+                        @if ((authenticatedUser != null && authenticatedUser.IsAdmin) 
+                            || (authenticatedUser != null && authenticatedUser.UserID == i.Author))
+                        {
+                            <MudButton Variant="Variant.Filled" Style="margin-right: 10px;" Color="Color.Primary" OnClick="() => editComment(i.RequestNoteID, i.Description)">Edit Comment</MudButton>
+                            <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="() => removeComment(i.RequestNoteID)">Remove Comment</MudButton>
+
+                        }
+                    </MudCardActions>
+                </MudCard>
+                <br/>
             }
-            else
-            {
-                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="like">Like</MudButton>
-            }
-
-            @if (favorited)
-            {
-                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="unFavorite">Remove Favorite</MudButton>
-            }
-            else
-            {
-                <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="favorite">Favorite</MudButton>
-            }
-
-            @if (authenticatedUser.IsAdmin)
-            {
-                @if (!currentIdea.Closed)
-                {
-                    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Warning" DisableElevation="true" OnClick="editIdea">Edit/Close Idea</MudButton>
-
-                }
-                else
-                {
-                    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Warning" DisableElevation="true" OnClick="reopenIdea">Reopen Idea</MudButton>
-                }
-            }
-
-            <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" DisableElevation="true" OnClick="goBack">Return to Idea List</MudButton>
-        </MudCardActions>
-    </MudCard>
-
-    <br/>
-    <br/>
-
-    <MudText Typo="Typo.h5">Comments</MudText>
-
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="addComment">Add Comment</MudButton>
-
-    <br />
-
-    @foreach( var i in IdeaNotes )
-    {
-        <MudCard>
-            <MudCardContent>
-                <MudText>@i.Description</MudText>
-                <MudText>@i.DateTime.ToShortDateString()</MudText>
-
-                @if(authenticatedUser.UserID == i.Author)
-                {
-                    <MudText>Submitted by: You</MudText>
-                }
-                else
-                {
-                    <MudText>Submitted by: @Users.FirstOrDefault(x => x.UserID == i.Author).FullName</MudText>
-                }
-
-            </MudCardContent>
-            <MudCardActions>
-                @if ((authenticatedUser != null && authenticatedUser.IsAdmin) 
-                    || (authenticatedUser != null && authenticatedUser.UserID == i.Author))
-                {
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => editComment(i.RequestNoteID, i.Description)">Edit Comment</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="() => removeComment(i.RequestNoteID)">Remove Comment</MudButton>
-
-                }
-            </MudCardActions>
-        </MudCard>
-        <br/>
-    }
-
+        </MudItem>
+    </MudGrid>
 
     <MudOverlay @bind-Visible="updateVisible" DarkBackground="true" ZIndex="9999">
         <MudPaper Class="pa-4">
@@ -97,16 +102,16 @@
                 <MudForm @ref="editIdeaForm">
                     <MudText>Edit the variables below to change the form:</MudText>
                     <MudTextField T="string" Counter="100" MaxLength="100" Immediate="true" Label="Idea Name" @bind-Value="@oldIdeaName"
-                        @ref="newIdeaNameField" Required="true" RequiredError="Name Required" OnlyValidateIfDirty="true" Lines="1" />
+                                  @ref="newIdeaNameField" Required="true" RequiredError="Name Required" OnlyValidateIfDirty="true" AutoGrow />
 
                     <MudTextField T="string" Counter="100" MaxLength="100" Immediate="true" Label="Idea Type" @bind-Value="@oldIdeaType"
-                        @ref="newIdeaTypeField" Required="true" RequiredError="Type Required" OnlyValidateIfDirty="true" Lines="1" />
+                                   @ref="newIdeaTypeField" Required="true" RequiredError="Type Required" OnlyValidateIfDirty="true" AutoGrow />
 
                     <MudTextField T="string" Counter="5000" MaxLength="5000" Immediate="true" Label="Idea Description" @bind-Value="@oldIdeaDescription"
-                        @ref="newIdeaDescriptionField" Required="true" RequiredError="Description Required" OnlyValidateIfDirty="true" Lines="3" />
+                        @ref="newIdeaDescriptionField" Required="true" RequiredError="Description Required" OnlyValidateIfDirty="true" AutoGrow MaxLines="5" />
 
                     <MudTextField T="string" Counter="1000" MaxLength="1000" Immediate="true" Label="Idea URL" @bind-Value="@oldIdeaURL"
-                        @ref="newIdeaURLField" Required="false" Lines="1" />
+                        @ref="newIdeaURLField" Required="false" AutoGrow />
 
                     <br />
 
@@ -121,7 +126,7 @@
                 <MudForm @ref="closeIdeaForm">
                     <MudText>Please enter some resolution text</MudText>
                     <MudTextField T="string" Counter="5000" MaxLength="5000" Immediate="true" Label="Resolution"
-                        @ref="resolutionField" Required="true" RequiredError="Resolution Required" OnlyValidateIfDirty="true" Lines="3" />
+                        @ref="resolutionField" Required="true" RequiredError="Resolution Required" OnlyValidateIfDirty="true" AutoGrow MaxLines="5" />
 
                     <br />
 
@@ -134,7 +139,7 @@
                 <MudForm @ref="addCommentForm">
                     <MudText>Enter Comment</MudText>
                     <MudTextField T="string" Counter="1000" MaxLength="1000" Immediate="true" Label="Comment"
-                        @ref="commentField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" Lines="3" />
+                        @ref="commentField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" AutoGrow MaxLines="5" />
 
                     <br />
 
@@ -148,7 +153,7 @@
                 <MudForm @ref="editCommentForm">
                     <MudText>Please enter the new comment</MudText>
                     <MudTextField T="string" Counter="1000" MaxLength="1000" Immediate="true" Label="New comment" @bind-Value="oldComment"
-                        @ref="newCommentField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" Lines="3" />
+                        @ref="newCommentField" Required="true" RequiredError="Comment Required" OnlyValidateIfDirty="true" AutoGrow MaxLines="5" />
 
                     <br />
 
@@ -163,7 +168,7 @@
         <MudPaper Class="pa-4">
             <MudForm @ref="editCommentForm">
                 <MudText>Are you sure you want to update this comment to:</MudText>
-                <MudTextField T="string" @bind-Value="oldComment" ReadOnly="true" Lines="3" />
+                <MudTextField T="string" @bind-Value="oldComment" ReadOnly="true" AutoGrow MaxLines="5" />
 
                 <br />
 
@@ -177,10 +182,10 @@
         <MudPaper Class="pa-4">
             <MudForm @ref="editIdeaForm">
                 <MudText>Are you sure you want to update this idea to:</MudText>
-                <MudTextField T="string" @bind-Value="newIdeaNameField.Value" ReadOnly="true" Lines="1" />
-                <MudTextField T="string" @bind-Value="newIdeaTypeField.Value" ReadOnly="true" Lines="1" />
-                <MudTextField T="string" @bind-Value="newIdeaDescriptionField.Value" ReadOnly="true" Lines="3" />
-                <MudTextField T="string" @bind-Value="newIdeaURLField.Value" ReadOnly="true" Lines="1" />
+                <MudTextField T="string" @bind-Value="newIdeaNameField.Value" ReadOnly="true" AutoGrow />
+                 <MudTextField T="string" @bind-Value="newIdeaTypeField.Value" ReadOnly="true" AutoGrow />
+                <MudTextField T="string" @bind-Value="newIdeaDescriptionField.Value" ReadOnly="true" AutoGrow MaxLines="3" />
+                 <MudTextField T="string" @bind-Value="newIdeaURLField.Value" ReadOnly="true" AutoGrow />
 
                 <br />
 
@@ -193,7 +198,13 @@
     <MudOverlay @bind-Visible="reopenIdeaConfirmationVisible" DarkBackground="true" ZIndex="9999">
         <MudPaper Class="pa-4">
             <MudForm>
-                <MudText>Are you sure you want to reopen this idea? This will remove the resolution text.</MudText>
+                <MudText>
+                    Are you sure you want to reopen this idea? 
+                    
+                    <br />
+
+                    This will remove the resolution text.
+                </MudText>
 
                 <br />
 

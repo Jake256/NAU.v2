@@ -19,7 +19,6 @@ namespace NAUIdeaHub.Repositories
 
 
         ///Constructor
-        //public IdeaHubRepository(IOptions<ConnectionStringsConfig> connectionString) => ConnectionString = connectionString.Value.DefaultConnection;
         public IdeaHubRepository(IConfiguration config)
         {
             ConnectionString = config.GetConnectionString("DefaultConnection");
@@ -30,7 +29,6 @@ namespace NAUIdeaHub.Repositories
         {
             try
             {
-                //var connectionString = _connectionString;
 
                 var connection = new SqlConnection(ConnectionString);
                 await connection.OpenAsync();
@@ -49,41 +47,17 @@ namespace NAUIdeaHub.Repositories
             }
         }
 
-        //public async Task<IEnumerable<RequestEntity>> GetCompletedIdeasAsync()
-        //{
-        //    try
-        //    {
-        //        //var connectionString = _connectionString;
-
-        //        var connection = new SqlConnection(ConnectionString);
-        //        await connection.OpenAsync();
-
-        //        var ideas = await connection.QueryAsync<RequestEntity>(SqlCommands.GetCompletedIdeas);
-
-        //        //return our list of ideas from db
-        //        return ideas;
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //can help with debugging if run into errors/exceptions
-        //        Console.WriteLine(ex.Message);
-        //        throw;
-        //    }
-        //}
-
         public async Task<IEnumerable<UserEntity>> GetUsersAsync()
         {
             try
             {
-                //var connectionString = _connectionString;
 
                 var connection = new SqlConnection(ConnectionString);
                 await connection.OpenAsync();
 
                 var users = await connection.QueryAsync<UserEntity>(SqlCommands.GetUsers);
 
-                //return our list of ideas from db
+                //return our list of users from db
                 return users;
 
             }
@@ -99,14 +73,13 @@ namespace NAUIdeaHub.Repositories
         {
             try
             {
-                //var connectionString = _connectionString;
 
                 var connection = new SqlConnection(ConnectionString);
                 await connection.OpenAsync();
 
                 var requestActions = await connection.QueryAsync<RequestActionsEntity>(SqlCommands.GetActions + pk);
 
-                //return our list of ideas from db
+                //return our list of actions for a specific idea from db
                 return requestActions;
 
             }
@@ -122,14 +95,13 @@ namespace NAUIdeaHub.Repositories
         {
             try
             {
-                //var connectionString = _connectionString;
 
                 var connection = new SqlConnection(ConnectionString);
                 await connection.OpenAsync();
 
                 var allActions = await connection.QueryAsync<RequestActionsEntity>(SqlCommands.GetAllActions);
 
-                //return our list of ideas from db
+                //return our list of actions from db
                 return allActions;
 
             }
@@ -166,7 +138,6 @@ namespace NAUIdeaHub.Repositories
         {
             try
             {
-                //var connectionString = _connectionString;
 
                 var connection = new SqlConnection(ConnectionString);
                 await connection.OpenAsync();
@@ -187,7 +158,6 @@ namespace NAUIdeaHub.Repositories
         {
             try
             {
-                //var connectionString = _connectionString;
 
                 var connection = new SqlConnection(ConnectionString);
                 await connection.OpenAsync();
@@ -210,7 +180,6 @@ namespace NAUIdeaHub.Repositories
         {
             try
             {
-                //var connectionString = _connectionString;
 
                 var connection = new SqlConnection(ConnectionString);
                 await connection.OpenAsync();
@@ -231,7 +200,6 @@ namespace NAUIdeaHub.Repositories
         {
             try
             {
-                //var connectionString = _connectionString;
 
                 var connection = new SqlConnection(ConnectionString);
                 await connection.OpenAsync();
@@ -471,13 +439,6 @@ namespace NAUIdeaHub.Repositories
 
         private static class SqlCommands
         {
-           
-            /*public static readonly string GetIdeas =
-                @"SELECT Request.*
-                FROM Request
-                LEFT JOIN RequestActions ON Request.RequestID = RequestActions.RequestID AND RequestActions.UserID = {0}
-                ORDER BY RequestActions.Favorite DESC";*/
-
 
             public static readonly string GetIdeas =
                 @"SELECT
@@ -491,17 +452,6 @@ namespace NAUIdeaHub.Repositories
                 DateTimeSubmitted, 
                 Requestor
                 FROM [dbo].[Request]";
-            
-            //public static readonly string GetCompletedIdeas =
-            //   @"SELECT
-            //    Name,
-            //    Type,
-            //    Closed,
-            //    Description,
-            //    URL,
-            //    Resolution,
-            //    DateTimeSubmitted
-            //    FROM [dbo].[Request] WHERE Closed = 1";
 
             public static readonly string GetUsers =
                 @"SELECT
